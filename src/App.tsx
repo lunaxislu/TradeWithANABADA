@@ -1,15 +1,13 @@
-import Router from "./shared/Router"
-import GlobalStyle from "./styles/GlobalStyle"
+import Router from "./shared/Router";
+import GlobalStyle from "./styles/GlobalStyle";
 
 const App = () => {
   return (
     <>
-   <GlobalStyle/> 
-    <Router/>
+      <GlobalStyle />
+      <Router />
     </>
-  )
-}
+  );
+};
 
-export default App
-
-
+export default App;
