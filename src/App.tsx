@@ -4,8 +4,8 @@ import GlobalStyle from "./styles/GlobalStyle";
 const App = () => {
   return (
     <>
-      <GlobalStyle />
       <Router />
+      <GlobalStyle />
     </>
   );
 };
