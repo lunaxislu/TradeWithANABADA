@@ -3,66 +3,69 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export interface Database {
   public: {
     Tables: {
-      comments: {
+      follow: {
         Row: {
-          comment: string | null;
-          comment_id: string | null;
           created_at: string;
+          from_user_id: string;
           id: number;
-          post_id: number | null;
-          user_name: string | null;
         };
         Insert: {
-          comment?: string | null;
-          comment_id?: string | null;
-          created_at: string;
+          created_at?: string;
+          from_user_id: string;
           id?: number;
-          post_id?: number | null;
-          user_name?: string | null;
         };
         Update: {
-          comment?: string | null;
-          comment_id?: string | null;
           created_at?: string;
+          from_user_id?: string;
           id?: number;
-          post_id?: number | null;
-          user_name?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'comments_post_id_fkey';
-            columns: ['post_id'];
+            foreignKeyName: 'follow_from_user_id_fkey';
+            columns: ['from_user_id'];
             isOneToOne: false;
-            referencedRelation: 'posts';
+            referencedRelation: 'users';
             referencedColumns: ['id'];
           },
         ];
       };
-      follow: {
+      hash_tag: {
         Row: {
           created_at: string;
-          from_user_id: string | null;
+          hash_1: string | null;
+          hash_2: string | null;
+          hash_3: string | null;
+          hash_4: string | null;
+          hash_5: string | null;
           id: number;
-          to_user_id: string | null;
+          post_id: number;
         };
         Insert: {
           created_at?: string;
-          from_user_id?: string | null;
+          hash_1?: string | null;
+          hash_2?: string | null;
+          hash_3?: string | null;
+          hash_4?: string | null;
+          hash_5?: string | null;
           id?: number;
-          to_user_id?: string | null;
+          post_id: number;
         };
         Update: {
           created_at?: string;
-          from_user_id?: string | null;
+          hash_1?: string | null;
+          hash_2?: string | null;
+          hash_3?: string | null;
+          hash_4?: string | null;
+          hash_5?: string | null;
           id?: number;
-          to_user_id?: string | null;
+          post_id?: number;
         };
         Relationships: [
           {
-            foreignKeyName: 'follow_id_fkey';
-            columns: ['id'];
-            isOneToOne: true;
-            referencedRelation: 'users';
+            foreignKeyName: 'hash_tag_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
+            referencedRelation: 'posts';
             referencedColumns: ['id'];
           },
         ];
@@ -94,6 +97,13 @@ export interface Database {
             referencedRelation: 'posts';
             referencedColumns: ['id'];
           },
+          {
+            foreignKeyName: 'likes_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
         ];
       };
       posts: {
@@ -101,55 +111,145 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: number;
+          price: number | null;
+          product_img: string | null;
           title: string | null;
-          user_name: string | null;
+          user_id: string;
         };
         Insert: {
           content?: string | null;
           created_at: string;
-          id?: number;
+          id: number;
+          price?: number | null;
+          product_img?: string | null;
           title?: string | null;
-          user_name?: string | null;
+          user_id: string;
         };
         Update: {
           content?: string | null;
           created_at?: string;
           id?: number;
+          price?: number | null;
+          product_img?: string | null;
           title?: string | null;
-          user_name?: string | null;
+          user_id?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'posts_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      product_category: {
+        Row: {
+          books: string | null;
+          clothes: string | null;
+          created_at: string;
+          electronic: string | null;
+          gift_card: string | null;
+          id: number;
+          pet_item: string | null;
+          post_id: number;
+        };
+        Insert: {
+          books?: string | null;
+          clothes?: string | null;
+          created_at?: string;
+          electronic?: string | null;
+          gift_card?: string | null;
+          id?: number;
+          pet_item?: string | null;
+          post_id: number;
+        };
+        Update: {
+          books?: string | null;
+          clothes?: string | null;
+          created_at?: string;
+          electronic?: string | null;
+          gift_card?: string | null;
+          id?: number;
+          pet_item?: string | null;
+          post_id?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'product_category_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
+            referencedRelation: 'posts';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      review: {
+        Row: {
+          created_at: string;
+          good_product: number | null;
+          good_time: number | null;
+          kind: number | null;
+          res_fast: number | null;
+          same_product: number | null;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          good_product?: number | null;
+          good_time?: number | null;
+          kind?: number | null;
+          res_fast?: number | null;
+          same_product?: number | null;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          good_product?: number | null;
+          good_time?: number | null;
+          kind?: number | null;
+          res_fast?: number | null;
+          same_product?: number | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'review_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: true;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       users: {
         Row: {
           created_at: string;
           email: string | null;
-          id: number;
+          id: string;
           nickname: string | null;
           password: string | null;
-          u_id: string | null;
         };
         Insert: {
           created_at?: string;
           email?: string | null;
-          id?: number;
+          id: string;
           nickname?: string | null;
           password?: string | null;
-          u_id?: string | null;
         };
         Update: {
           created_at?: string;
           email?: string | null;
-          id?: number;
+          id?: string;
           nickname?: string | null;
           password?: string | null;
-          u_id?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'users_u_id_fkey';
-            columns: ['u_id'];
-            isOneToOne: false;
+            foreignKeyName: 'users_id_fkey';
+            columns: ['id'];
+            isOneToOne: true;
             referencedRelation: 'users';
             referencedColumns: ['id'];
           },
