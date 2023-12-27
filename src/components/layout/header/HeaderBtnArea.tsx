@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Button } from '../../ui/Button';
+import * as St from './header.styled';
 
 const HeaderBtnArea = () => {
   // 로그인 상태 (테스트용)
@@ -14,7 +14,7 @@ const HeaderBtnArea = () => {
     { text: '로그아웃', isLogin: false, clickHandler: dummyEvent },
   ];
   return (
-    <StHeaderBtnSection>
+    <St.HeaderBtnSection>
       {headerButton
         .filter((btn) => btn.isLogin === currentLoginStatus)
         .map((btn, index) => (
@@ -22,16 +22,8 @@ const HeaderBtnArea = () => {
             {btn.text}
           </Button>
         ))}
-    </StHeaderBtnSection>
+    </St.HeaderBtnSection>
   );
 };
-
-const StHeaderBtnSection = styled.section`
-  & > button {
-    font-size: 2.5rem;
-    color: black;
-    margin-left: 2rem;
-  }
-`;
 
 export default HeaderBtnArea;

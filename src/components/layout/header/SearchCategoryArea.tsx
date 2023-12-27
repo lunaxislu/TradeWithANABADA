@@ -1,18 +1,14 @@
-import styled from 'styled-components';
 import CategoryNav from './CategoryNav';
 import SearchArea from './SearchArea';
+import * as St from './header.styled';
 
 const SearchCategoryArea = () => {
   return (
-    <StHeaderSearchCategoryArea>
+    <St.HeaderSearchCategoryArea>
       <CategoryNav />
       <SearchArea />
-    </StHeaderSearchCategoryArea>
+    </St.HeaderSearchCategoryArea>
   );
 };
-
-const StHeaderSearchCategoryArea = styled.div`
-  display: flex;
-`;
 
 export default SearchCategoryArea;
