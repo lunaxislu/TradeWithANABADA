@@ -65,7 +65,7 @@ export interface Database {
             foreignKeyName: 'hash_tag_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
-            referencedRelation: 'posts';
+            referencedRelation: 'product';
             referencedColumns: ['id'];
           },
         ];
@@ -94,7 +94,7 @@ export interface Database {
             foreignKeyName: 'likes_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
-            referencedRelation: 'posts';
+            referencedRelation: 'product';
             referencedColumns: ['id'];
           },
           {
@@ -106,7 +106,7 @@ export interface Database {
           },
         ];
       };
-      posts: {
+      product: {
         Row: {
           content: string | null;
           created_at: string;
@@ -136,7 +136,7 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'posts_user_id_fkey';
+            foreignKeyName: 'product_user_id_fkey';
             columns: ['user_id'];
             isOneToOne: false;
             referencedRelation: 'users';
@@ -180,7 +180,7 @@ export interface Database {
             foreignKeyName: 'product_category_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
-            referencedRelation: 'posts';
+            referencedRelation: 'product';
             referencedColumns: ['id'];
           },
         ];
@@ -226,24 +226,21 @@ export interface Database {
       users: {
         Row: {
           created_at: string;
-          email: string | null;
+          email: string;
           id: string;
           nickname: string | null;
-          password: string | null;
         };
         Insert: {
           created_at?: string;
-          email?: string | null;
+          email: string;
           id: string;
           nickname?: string | null;
-          password?: string | null;
         };
         Update: {
           created_at?: string;
-          email?: string | null;
+          email?: string;
           id?: string;
           nickname?: string | null;
-          password?: string | null;
         };
         Relationships: [
           {
