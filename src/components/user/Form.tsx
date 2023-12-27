@@ -33,7 +33,6 @@ const Form = () => {
                 <St.Logo>
                   <Link to="/">ANABADA</Link>
                 </St.Logo>
-                {/* <St.Logo onClick={() => navigate('/')}>ANABADA</St.Logo> */}
                 <form>
                   <input type="email" name="email" placeholder="이메일" value={value.email} onChange={onChange} />
                   {emailErrorMessage && <span>{emailErrorMessage}</span>}
@@ -47,7 +46,6 @@ const Form = () => {
                     onChange={onChange}
                   />
                 </form>
-                {/* Button 컴포넌트 사용해야 합니다. */}
                 <St.ButtonWrapper $active={!isValid}>
                   <button
                     type="submit"
@@ -68,7 +66,7 @@ const Form = () => {
                   </div>
                   <St.SocialButtonWrapper>
                     <img
-                      src="https://developers.google.com/static/identity/images/g-logo.png?hl=ko"
+                      src={process.env.PUBLIC_URL + '/images/g-logo.png'}
                       alt=""
                       onClick={() => signInWithProvider('google')}
                     />
@@ -147,7 +145,7 @@ const Form = () => {
                   </button>
                   <St.SocialButtonWrapper>
                     <img
-                      src="https://developers.google.com/static/identity/images/g-logo.png?hl=ko"
+                      src={process.env.PUBLIC_URL + '/images/g-logo.png'}
                       alt=""
                       onClick={() => signInWithProvider('google')}
                     />
