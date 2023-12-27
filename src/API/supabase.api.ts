@@ -5,6 +5,7 @@ const supabaseUrl = process.env.REACT_APP_SUPABASE_URL as string;
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY as string;
 const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
+// TODO: 나중에 따로 분리
 type users = Record<string, string>;
 
 /**
@@ -24,21 +25,51 @@ export const signupHandler = async (values: users) => {
       },
     });
     if (error) throw error;
-    console.log('data: ', data);
+    return data;
   } catch (error) {
     console.error(error);
   }
 };
 
 /**
- * 로그인 상태 확인
+ * 로그인
+ * @param values 이메일, 비밀번호
  */
-export const checkUser = async () => {
-  // const {
-  //   data: { user },
-  // } = await supabase.auth.getUser();
-  // console.log('user: ', user);
-  // return user;
+export const loginHandler = async (values: users) => {
+  const { email, password } = values;
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) throw error;
+  return data;
+};
+
+/**
+ * 로그아웃
+ */
+export const logoutHandler = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
+};
+
+/**
+ * 유저 정보 가져오기
+ * @returns 유저 정보
+ */
+export const getUserData = async () => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user;
+};
+
+/**
+ * 유저 세션 가져오기
+ * @returns 유저 세션
+ */
+export const getUserSession = async () => {
   const { data, error } = await supabase.auth.getSession();
-  console.log('data: ', data);
+  if (error) throw error;
+  return data;
 };
