@@ -1,15 +1,14 @@
 import * as St from './PostForm.styled';
+import FormButton from './formButton/FormButton';
+import ProductInfo from './productInfo/ProductInfo';
+import UserInfo from './userInfo/UserInfo';
 const PostForm = () => {
   return (
     <St.Container>
-      <St.Form action="">
-        <St.ProductInfo>
-          <input type="text" name="product_name" placeholder="품명을 입력해주세요" />
-          <input type="text" name="product_value" placeholder="원화로 가치를 환산해주세요" />
-        </St.ProductInfo>
-
-        <St.UesrInfo></St.UesrInfo>
-        <St.ButtonContainer></St.ButtonContainer>
+      <St.Form>
+        <ProductInfo />
+        <UserInfo />
+        <FormButton />
       </St.Form>
     </St.Container>
   );

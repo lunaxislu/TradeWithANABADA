@@ -1,5 +1,5 @@
 import ImageContainer from './ImageSlider/ImageContainer';
-import * as St from './Post.styled';
+import * as St from './Registration.styled';
 import PostForm from './form/PostForm';
 
 const Registration = () => {
