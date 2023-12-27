@@ -2,12 +2,15 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { resetPasswordHandler, signInWithProvider } from '../../API/supabase.api';
 import { useAuth } from '../../hooks/userHook/useAuth';
 import { useInput } from '../../hooks/userHook/useInput';
+import { Button } from '../ui/ButtonCopy';
+import * as St from './Form.styled';
 
 /**
  * TODO
  * 1. 버튼 컴포넌트 사용해야 합니다.
  * 2. 구글, 카카오 로고 넣어야 합니다.
  * 3. 리팩토링 필요합니다.
+ * @description 회원가입, 로그인, 비밀번호 메일 전송, 비밀번호 변경 따로 분리하지 않고 하나의 컴포넌트로 구현했습니다.
  * @returns 회원가입, 로그인, 비밀번호 메일 전송, 비밀번호 변경 Form
  */
 const Form = () => {
@@ -21,13 +24,13 @@ const Form = () => {
   });
 
   return (
-    <>
+    <St.FormWrapper>
       {(() => {
         switch (params.auth) {
           case 'login':
             return (
-              <div>
-                <h1>로그인</h1>
+              <>
+                <h1>ANABADA</h1>
                 <form>
                   <input type="email" name="email" placeholder="이메일" value={value.email} onChange={onChange} />
                   {emailErrorMessage && <span>{emailErrorMessage}</span>}
@@ -63,12 +66,12 @@ const Form = () => {
                 <Link to="/auth/sendMail" onClick={reset}>
                   비밀번호 변경
                 </Link>
-              </div>
+              </>
             );
           case 'signup':
             return (
               <div>
-                <h1>회원가입</h1>
+                <h1>ANABADA</h1>
                 <form>
                   <input
                     type="email"
@@ -78,6 +81,7 @@ const Form = () => {
                     onChange={onChange}
                     required
                   />
+                  {emailErrorMessage && <span>{emailErrorMessage}</span>}
                   <input
                     type="password"
                     name="password"
@@ -102,20 +106,37 @@ const Form = () => {
                   <input type="text" name="name" placeholder="닉네임" value={value.name} onChange={onChange} required />
                 </form>
                 {/* Button 컴포넌트 사용해야 합니다. */}
-                <button
-                  type="submit"
-                  disabled={!isValid}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    reset();
-                    signup(value);
-                  }}
-                >
-                  회원가입
-                </button>
-                <Link to="/auth/login" onClick={reset}>
-                  로그인
-                </Link>
+                <St.ButtonWrapper>
+                  <Button
+                    type="submit"
+                    color="black"
+                    disabled={!isValid}
+                    active={!isValid}
+                    btnType="auth"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      reset();
+                      signup(value);
+                    }}
+                  >
+                    회원가입
+                  </Button>
+                  <div>
+                    <St.GoogleButton
+                      src="https://developers.google.com/static/identity/images/g-logo.png?hl=ko"
+                      alt=""
+                      onClick={() => signInWithProvider('google')}
+                    />
+                    <St.KakaoButton
+                      src={process.env.PUBLIC_URL + '/images/k-logo.png'}
+                      alt=""
+                      onClick={() => signInWithProvider('kakao')}
+                    />
+                  </div>
+                  <Link to="/auth/login" onClick={reset}>
+                    로그인
+                  </Link>
+                </St.ButtonWrapper>
               </div>
             );
           case 'sendMail':
@@ -183,7 +204,7 @@ const Form = () => {
             return <Navigate to="/auth/login" replace />;
         }
       })()}
-    </>
+    </St.FormWrapper>
   );
 };
 
