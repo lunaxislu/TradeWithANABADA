@@ -30,7 +30,7 @@ type ButtonProps = {
 };
 
 const btnColors: Record<ButtonColors, string> = {
-  default: '#e31c5f',
+  default: 'transparent',
   success: '#0abd00',
   primary: '#e31c5f',
   warning: '#ff4444',
