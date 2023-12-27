@@ -2,13 +2,12 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { resetPasswordHandler, signInWithProvider } from '../../API/supabase.api';
 import { useAuth } from '../../hooks/userHook/useAuth';
 import { useInput } from '../../hooks/userHook/useInput';
+import { ReactComponent as Google } from '../../styles/assets/google.svg';
+import { ReactComponent as Kakao } from '../../styles/assets/kakao.svg';
 import * as St from './Form.styled';
 
 /**
- * TODO
- * 1. 버튼 컴포넌트 사용해야 합니다.
- * 2. 구글, 카카오 로고 넣어야 합니다.
- * 3. 리팩토링 필요합니다.
+ * TODO: 리팩토링 필요합니다.
  * @description 회원가입, 로그인, 비밀번호 메일 전송, 비밀번호 변경 따로 분리하지 않고 하나의 컴포넌트로 구현했습니다.
  * @returns 회원가입, 로그인, 비밀번호 메일 전송, 비밀번호 변경 Form
  */
@@ -33,7 +32,6 @@ const Form = () => {
                 <St.Logo>
                   <Link to="/">ANABADA</Link>
                 </St.Logo>
-                {/* <St.Logo onClick={() => navigate('/')}>ANABADA</St.Logo> */}
                 <form>
                   <input type="email" name="email" placeholder="이메일" value={value.email} onChange={onChange} />
                   {emailErrorMessage && <span>{emailErrorMessage}</span>}
@@ -47,7 +45,6 @@ const Form = () => {
                     onChange={onChange}
                   />
                 </form>
-                {/* Button 컴포넌트 사용해야 합니다. */}
                 <St.ButtonWrapper $active={!isValid}>
                   <button
                     type="submit"
@@ -67,16 +64,8 @@ const Form = () => {
                     </Link>
                   </div>
                   <St.SocialButtonWrapper>
-                    <img
-                      src="https://developers.google.com/static/identity/images/g-logo.png?hl=ko"
-                      alt=""
-                      onClick={() => signInWithProvider('google')}
-                    />
-                    <img
-                      src={process.env.PUBLIC_URL + '/images/k-logo.png'}
-                      alt=""
-                      onClick={() => signInWithProvider('kakao')}
-                    />
+                    <Google onClick={() => signInWithProvider('google')} />
+                    <Kakao onClick={() => signInWithProvider('kakao')} />
                   </St.SocialButtonWrapper>
                   <St.CaptionWrapper>
                     <St.P1>아직 회원이 아니신가요?</St.P1>
@@ -146,16 +135,8 @@ const Form = () => {
                     회원가입
                   </button>
                   <St.SocialButtonWrapper>
-                    <img
-                      src="https://developers.google.com/static/identity/images/g-logo.png?hl=ko"
-                      alt=""
-                      onClick={() => signInWithProvider('google')}
-                    />
-                    <img
-                      src={process.env.PUBLIC_URL + '/images/k-logo.png'}
-                      alt=""
-                      onClick={() => signInWithProvider('kakao')}
-                    />
+                    <Google onClick={() => signInWithProvider('google')} />
+                    <Kakao onClick={() => signInWithProvider('kakao')} />
                   </St.SocialButtonWrapper>
                   <St.CaptionWrapper>
                     <St.P1>이미 회원이신가요?</St.P1>
