@@ -78,6 +78,7 @@ const Form = () => {
                     onChange={onChange}
                     required
                   />
+                  {emailErrorMessage && <span>{emailErrorMessage}</span>}
                   <input
                     type="password"
                     name="password"
