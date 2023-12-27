@@ -1,22 +1,16 @@
-import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { checkUser } from '../../API/supabase.api';
 import { useAuth } from '../../hooks/userHook/useAuth';
 import { useInput } from '../../hooks/userHook/useInput';
 
 const Form = () => {
   const { signup, login } = useAuth();
   const params = useParams();
-  const { value, onChange, isValid, emailErrorMessage, passwordErrorMessage } = useInput({
+  const { value, onChange, reset, isValid, emailErrorMessage, passwordErrorMessage } = useInput({
     email: '',
     password: '',
     passwordCheck: '',
     nickname: '',
   });
-
-  useEffect(() => {
-    checkUser();
-  }, []);
 
   return (
     <>
@@ -42,6 +36,7 @@ const Form = () => {
             disabled={!isValid}
             onClick={(e) => {
               e.preventDefault();
+              reset();
               login(value);
             }}
           >
@@ -90,6 +85,7 @@ const Form = () => {
             disabled={!isValid}
             onClick={(e) => {
               e.preventDefault();
+              reset();
               signup(value);
             }}
           >
