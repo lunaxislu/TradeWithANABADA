@@ -46,6 +46,18 @@ export const loginHandler = async (values: users) => {
 };
 
 /**
+ * 소셜 로그인
+ * @param provider 구글, 카카오
+ */
+export const signInWithProvider = async (provider: 'google' | 'kakao') => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider,
+  });
+
+  if (error) throw error;
+  console.log('로그인한 사용자:', data);
+};
+/**
  * 로그아웃
  */
 export const logoutHandler = async () => {

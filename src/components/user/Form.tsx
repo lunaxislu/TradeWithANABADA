@@ -94,6 +94,9 @@ const Form = () => {
           <Link to="/auth/login">로그인</Link>
         </div>
       )}
+                {/* 구글, 카카오 로고 넣어야 합니다. */}
+                <button onClick={() => signInWithProvider('google')}>구글</button>
+                <button onClick={() => signInWithProvider('kakao')}>카카오</button>
     </>
   );
 };
