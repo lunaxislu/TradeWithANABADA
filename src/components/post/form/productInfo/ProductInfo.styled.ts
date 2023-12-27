@@ -10,13 +10,13 @@ export const InputWrapper = styled.div`
   position: relative;
   input {
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #222222;
     width: 100%;
     padding: 0.5rem;
     padding-left: 0.8rem;
     border-bottom: solid #aaaaaa 1px;
-    padding-bottom: 10px;
+    padding-bottom: 0.6rem;
     padding-left: 10px;
     position: relative;
     background: none;
