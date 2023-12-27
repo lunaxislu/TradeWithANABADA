@@ -5,7 +5,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="auth" element={<Auth />} />
+        <Route path="/auth/:auth" element={<Auth />} />
 
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
