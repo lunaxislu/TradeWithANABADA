@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { loginHandler, logoutHandler, signupHandler } from '../../API/supabase.api';
+import { loginHandler, logoutHandler, signupHandler, updatePasswordHandler } from '../../API/supabase.api';
 
 const enum queryKey {
   SIGNUP = 'signup',
   LOGIN = 'login',
   LOGOUT = 'logout',
+  UPDATE_PASSWORD = 'updatePassword',
 }
 
 export const useAuth = () => {
@@ -39,5 +40,19 @@ export const useAuth = () => {
     },
   });
 
-  return { signup: signupMutation.mutate, login: loginMutation.mutate, logout: logoutMutation.mutate };
+  // 비밀번호 변경
+  const updatePasswordMutation = useMutation({
+    mutationFn: updatePasswordHandler,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKey.UPDATE_PASSWORD] });
+      navigate('/auth/login');
+    },
+  });
+
+  return {
+    signup: signupMutation.mutate,
+    login: loginMutation.mutate,
+    logout: logoutMutation.mutate,
+    updatePassword: updatePasswordMutation.mutate,
+  };
 };
