@@ -2,28 +2,36 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   > :nth-child(2) {
-    margin-top: 1rem;
+    margin-top: 1.3rem;
   }
 `;
 
 export const InputWrapper = styled.div`
   position: relative;
+
   input {
     border: none;
     font-size: 1.2rem;
     color: #222222;
     width: 100%;
     padding: 0.5rem;
-    padding-left: 0.8rem;
-    border-bottom: solid #aaaaaa 1px;
-    padding-bottom: 0.6rem;
-    padding-left: 10px;
+    border-bottom: solid #ffae73 1px;
+    padding-bottom: 0.8rem;
+    padding-left: 7rem;
     position: relative;
     background: none;
     z-index: 5;
 
     &:focus {
       outline: none;
+    }
+
+    &:focus ~ label,
+    &:valid ~ label {
+      font-size: 16px;
+      left: 10px;
+      color: #666;
+      font-weight: bold;
     }
 
     &::placeholder {
@@ -35,6 +43,15 @@ export const InputWrapper = styled.div`
       width: 100%;
     }
   }
+
+  label {
+    position: absolute;
+    color: #aaa;
+    left: 10px;
+    font-size: 1.8rem;
+    bottom: 10px;
+    transition: all 0.2s;
+  }
 `;
 
 export const Span = styled.span`
@@ -42,7 +59,7 @@ export const Span = styled.span`
   position: absolute;
   bottom: 0;
   left: 0%; /* right로만 바꿔주면 오 - 왼 */
-  background-color: #666;
+  background-color: #ffae73;
   width: 0;
   height: 2px;
   border-radius: 2px;

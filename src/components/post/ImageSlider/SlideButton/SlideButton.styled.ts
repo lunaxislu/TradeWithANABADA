@@ -45,8 +45,8 @@ export const SlideButton = styled.button<Button>`
   svg {
     opacity: 0;
     visibility: hidden;
-    width: 24px;
-    height: 36px;
+    width: 1.2rem;
+    height: 3.6rem;
   }
 
   &:hover svg {

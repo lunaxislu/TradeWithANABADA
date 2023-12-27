@@ -1,18 +1,15 @@
-import { useState } from 'react';
 import * as St from './ProductInfo.styled';
 const ProductInfo = () => {
-  const [inputState, setInputState] = useState({
-    product_name: '',
-    product_value: '',
-  });
   return (
     <St.Container>
       <St.InputWrapper>
-        <input type="text" name="product_name" placeholder="품명을 입력해주세요" required />
+        <input id="pr_name" type="text" name="product_name" required placeholder="상품명을 입력해주세요" />
+        <label htmlFor="pr_name">Name</label>
         <St.Span />
       </St.InputWrapper>
       <St.InputWrapper>
-        <input type="text" name="product_value" placeholder="가치를 말해주세요" required />
+        <input id="pr_value" type="text" name="product_value" placeholder="가치를 입력해주세요" required />
+        <label htmlFor="pr_value">Value</label>
         <St.Span />
       </St.InputWrapper>
     </St.Container>
