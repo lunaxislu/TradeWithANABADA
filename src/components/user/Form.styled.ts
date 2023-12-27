@@ -63,6 +63,7 @@ export const ButtonWrapper = styled.div<ButtonProps>`
   flex-direction: column;
 
   a {
+    margin-left: 10px;
     color: black;
     font-size: 12px;
     text-align: center;
@@ -79,10 +80,13 @@ export const ButtonWrapper = styled.div<ButtonProps>`
     background-color: ${(props) => (props.$active ? '#F5F7F8' : '#191919')};
   }
   div {
-    gap: 10px;
-    font-size: 12px;
     display: flex;
+    font-size: 12px;
     justify-content: center;
+
+    a:hover {
+      color: #be3144;
+    }
   }
 `;
 
@@ -90,6 +94,7 @@ export const SocialButtonWrapper = styled.div`
   gap: 50px;
   padding: 20px;
   display: flex;
+  align-items: center;
   justify-content: center;
 
   img {
@@ -112,7 +117,7 @@ export const CaptionWrapper = styled.div`
     height: 40px;
     padding: 10px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 15px;
     margin-top: 10px;
     text-align: center;
     background-color: #191919;
