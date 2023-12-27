@@ -1,5 +1,33 @@
 import styled from 'styled-components';
 
+export const Header = styled.header`
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 10rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #d9d9d9;
+
+  padding: 0 3rem;
+
+  & > h1 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 7rem;
+    font-weight: bold;
+
+    cursor: pointer;
+  }
+`;
+
 export const HeaderSearchCategoryArea = styled.div`
   display: flex;
   align-items: center;
