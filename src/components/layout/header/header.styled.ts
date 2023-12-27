@@ -55,7 +55,7 @@ export const SideBar = styled.nav<{ $isOpen: boolean }>`
   width: ${(props) => (props.$isOpen ? '30rem' : '0')};
   transition: width 0.5s ease-in-out;
   background: #027402;
-  border-right: 1px solid gray;
+  /* border-right: 1px solid gray; */
   overflow: hidden;
 
   white-space: nowrap;
@@ -80,5 +80,46 @@ export const CategoryLi = styled.li`
     width: 100%;
     font-size: 2rem;
     text-decoration: none;
+  }
+`;
+
+export const SearchInput = styled.form<{ $isOpen: boolean }>`
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  height: 5rem;
+  padding-left: 1rem;
+
+  & input {
+    border: none;
+    background: none;
+    outline: none;
+    margin-right: 1rem;
+
+    border-bottom: 1px solid black;
+    width: ${(props) => (props.$isOpen ? '30rem' : '0')};
+    transition: width 0.5s ease-in-out;
+    height: 100%;
+    overflow: hidden;
+    animation: ${(props) => (props.$isOpen ? 'openInput 0s 0s forwards' : 'closeInput 0s 0.5s forwards')};
+    font-size: 2.5rem;
+
+    @keyframes closeInput {
+      to {
+        height: 0;
+      }
+    }
+    @keyframes openInput {
+      to {
+        height: 100%;
+      }
+    }
+  }
+
+  & > button {
+    border: none;
+    background: none;
+    height: 100%;
+    cursor: pointer;
   }
 `;

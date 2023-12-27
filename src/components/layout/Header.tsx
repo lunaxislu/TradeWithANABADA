@@ -9,6 +9,7 @@ const Header = () => {
   const navigateToHome = () => {
     navigate('/');
   };
+
   return (
     <St.Header>
       <h1 onClick={navigateToHome}>ANABADA</h1>
