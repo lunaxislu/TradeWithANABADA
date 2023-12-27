@@ -34,10 +34,10 @@ export const SlideButton = styled.div`
   align-items: center;
   padding: 0 6rem;
   cursor: pointer;
-  &:nth-child(1) {
+  &:first-child {
     left: 0;
   }
-  &:nth-child(2) {
+  &:last-child {
     right: 0;
   }
 `;

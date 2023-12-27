@@ -1,9 +1,9 @@
-import MainSlideBanner from '../components/main/MainSlideBanner';
+import HomeSlideBanner from '../components/home/HomeSlideBanner';
 
 const Home = () => {
   return (
     <div>
-      <MainSlideBanner />
+      <HomeSlideBanner />
       <section>
         <h2>방금 등록된 상품</h2>
         <ul>
