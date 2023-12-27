@@ -13,14 +13,14 @@ type users = Record<string, string>;
  * @param values 이메일, 비밀번호, 닉네임
  */
 export const signupHandler = async (values: users) => {
-  const { email, password, nickname } = values;
+  const { email, password, name } = values;
   try {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
-          nickname,
+          full_name: name,
         },
       },
     });
@@ -84,4 +84,38 @@ export const getUserSession = async () => {
   const { data, error } = await supabase.auth.getSession();
   if (error) throw error;
   return data;
+};
+
+/**
+ * 비밀번호 변경 메일 보내기
+ * @param email 비밀번호 변경 메일받을 이메일
+ */
+export const resetPasswordHandler = async (values: users) => {
+  const { email } = values;
+  try {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'http://localhost:3000/auth/reset', // 비밀번호 찾기 페이지로 이동
+    });
+    if (!error) {
+      alert('메일이 전송되었습니다.');
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 비밀번호 변경
+ * @param password 변경할 비밀번호
+ */
+export const updatePasswordHandler = async (values: users) => {
+  const { password } = values;
+  console.log('password: ', password);
+  const { data, error } = await supabase.auth.updateUser({
+    password,
+  });
+  if (data) {
+    alert('비밀번호 변경이 완료되었습니다.');
+  }
+  if (error) alert('There was an error updating your password.');
 };
