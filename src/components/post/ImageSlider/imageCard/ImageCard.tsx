@@ -1,6 +1,6 @@
+import { ReactComponent as DeleteImg } from '../../../../styles/assets/deleteImg.svg';
 import { PropsWithSetState } from '../imageSlider/ImageSlider';
 import * as St from './ImageCard.styled';
-
 type PropsCardType = {
   url: string;
   imageIndex: number;
@@ -39,7 +39,9 @@ const ImageCard = ({
   return (
     <St.Card>
       <St.CardImg src={url} $imageIndex={imageIndex} $noTransition={noTransition} />
-      <St.DeleteBtn className="delete-button" onClick={deletePreviewImage(idx)} />
+      <St.DeleteBtn className="delete-button" onClick={deletePreviewImage(idx)}>
+        <DeleteImg />
+      </St.DeleteBtn>
     </St.Card>
   );
 };

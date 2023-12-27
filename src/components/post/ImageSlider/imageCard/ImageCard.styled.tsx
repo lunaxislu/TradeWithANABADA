@@ -26,9 +26,7 @@ export const CardImg = styled.img<CardImgType>`
   flex-shrink: 0;
   flex-grow: 0;
   translate: ${(props) => -100 * props.$imageIndex}%;
-  /* transition: translate 300ms ease-in-out; */
   transition: ${(props) => {
-    console.log(props.$noTransition);
     if (props.$noTransition) return `none !important`;
     else {
       return `translate 300ms ease-in-out !important`;
@@ -47,13 +45,16 @@ export const DeleteBtn = styled.button`
   line-height: 2;
   text-align: center;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.2);
-  color: #fff;
   cursor: pointer;
   opacity: 0;
   visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.1);
   &:hover {
     background-color: transparent;
-    color: #333;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
   }
 `;

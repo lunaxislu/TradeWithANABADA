@@ -12,10 +12,11 @@ export const ButtonContainer = styled.div`
     opacity: 0;
     top: 0;
     bottom: 0;
-    padding: 16px;
+    padding: 1.6rem;
     cursor: pointer;
     transition: background-color 100ms ease-in-out;
-
+    border: 0;
+    background-color: transparent;
     &:hover,
     &:focus-visible {
       background-color: rgba(0, 0, 0, 0.1);
@@ -40,4 +41,16 @@ export const SlideButton = styled.button<Button>`
       return css`block`;
     }
   }};
+
+  svg {
+    opacity: 0;
+    visibility: hidden;
+    width: 24px;
+    height: 36px;
+  }
+
+  &:hover svg {
+    opacity: 1;
+    visibility: visible;
+  }
 `;
