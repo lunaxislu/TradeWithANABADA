@@ -12,7 +12,7 @@ export const InputWrapper = styled.div`
   input {
     border: none;
     font-size: 1.2rem;
-    color: #222222;
+    color: #666;
     width: 100%;
     padding: 0.5rem;
     border-bottom: solid #ffae73 1px;
@@ -46,6 +46,7 @@ export const InputWrapper = styled.div`
 
   label {
     position: absolute;
+    cursor: pointer;
     color: #aaa;
     left: 10px;
     font-size: 1.8rem;
@@ -58,7 +59,7 @@ export const Span = styled.span`
   display: block;
   position: absolute;
   bottom: 0;
-  left: 0%; /* right로만 바꿔주면 오 - 왼 */
+  left: 0%;
   background-color: #ffae73;
   width: 0;
   height: 2px;
