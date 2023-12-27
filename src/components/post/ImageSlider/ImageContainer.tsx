@@ -1,11 +1,11 @@
-import { ChangeEvent, useState } from 'react';
-import ImageSlider from './ImageSlider';
-import * as St from './ImageSlider.styled';
+import { ChangeEvent, useRef, useState } from 'react';
+import * as St from './ImageContainer.styled';
+import ImageSlider from './imageSlider/ImageSlider';
 type EventObject = ChangeEvent<HTMLInputElement>;
 
-const ImageComponent = () => {
+const ImageContainer = () => {
   const [showImages, setShowImages] = useState<string[]>([]);
-
+  const inputFileRef = useRef<HTMLInputElement>(null);
   const previewImages = (e: EventObject) => {
     const imageList = e.target.files || [];
     let imagesUrl = [...showImages];
@@ -22,18 +22,17 @@ const ImageComponent = () => {
     // 이미지 Url은 최대 5개로 지정한 조건문입니다.
     if (imagesUrl.length > 5) imagesUrl.splice(0, 5);
     setShowImages(imagesUrl);
-  };
-
-  const deletePreviewImage = (id: number) => {
-    const editImages = showImages.filter((_, idx) => idx !== id);
+    if (inputFileRef.current) {
+      inputFileRef.current.value = '';
+    }
   };
 
   return (
     <St.Container>
       {showImages.length ? <ImageSlider showImages={showImages} setShowImages={setShowImages} /> : null}
-      <input type="file" onChange={previewImages} multiple />
+      <input type="file" onChange={previewImages} ref={inputFileRef} />
     </St.Container>
   );
 };
 
-export default ImageComponent;
+export default ImageContainer;
