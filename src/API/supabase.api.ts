@@ -120,18 +120,7 @@ export const updatePasswordHandler = async (values: users) => {
   if (error) alert('There was an error updating your password.');
 };
 
-
 // product 상품등록 함수입니다.
-export const addProductText = async (values: users) => {
-  const userId = 'asdf';
-  const createdAt = 'asdf';
-  const { data, error } = await supabase.from('products').insert([
-    {
-      userId,
-      createdAt,
-    },
-  ]);
-};
 
 export const addProductImage = async (file: File, uid: string, id: number) => {
   // 경로는 user_uid > post고유 id > createdAt > 이미지들
@@ -140,11 +129,6 @@ export const addProductImage = async (file: File, uid: string, id: number) => {
     console.log(data, error);
   }
 };
-
-// 상품 테이블 불러오기
-export const getProducts = async () => {
-  const { data, error } = await supabase.from('products').select('*');
-  console.log('data: ', data);
 
 /**
  * 상품 데이터 불러오기
