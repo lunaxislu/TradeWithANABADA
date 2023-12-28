@@ -4,18 +4,21 @@ import UserInfo from '../components/profile/UserInfo';
 
 const Profile = () => {
   return (
-    <Container>
-      <UserInfo />
-      <ProductList title={'likes'} />
-      <ProductList title={'products'} />
-    </Container>
+    <>
+      <Container>
+        <UserInfo />
+        <ProductList title={'likes'} />
+        <ProductList title={'products'} />
+      </Container>
+    </>
   );
 };
 
 const Container = styled.div`
   box-sizing: border-box;
-  margin: 3rem auto;
+  margin: 0 auto;
   padding: 3rem;
+  padding-top: 13rem;
   border: 0.2rem solid #dcdcdc;
   height: 100vh;
   width: 50rem;

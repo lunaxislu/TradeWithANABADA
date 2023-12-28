@@ -120,6 +120,7 @@ export const updatePasswordHandler = async (values: users) => {
   if (error) alert('There was an error updating your password.');
 };
 
+
 // product 상품등록 함수입니다.
 export const addProductText = async (values: users) => {
   const userId = 'asdf';
@@ -144,6 +145,18 @@ export const addProductImage = async (file: File, uid: string, id: number) => {
 export const getProducts = async () => {
   const { data, error } = await supabase.from('products').select('*');
   console.log('data: ', data);
+
+/**
+ * 상품 데이터 불러오기
+ * @param page 페이지 번호
+ * @returns 상품 목록
+ */
+export const getProducts = async (page: number) => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .range(page * 10 - 10, page * 10 - 1);
+
   if (error) throw error;
   return data;
 };
@@ -183,4 +196,48 @@ export const searchProducts = async (keyword: string) => {
   const mergedData = [...titleData, ...contentData];
 
   return mergedData;
+};
+
+// 최신 게시물 가져오기
+export const getLatestProducts = async () => {
+  const { data, error } = await supabase.rpc('get_latest_products');
+  if (error) throw error;
+  return data;
+};
+
+// 인기 게시물 가져오기 (like 수)
+export const getPopularProducts = async () => {
+  const { data, error } = await supabase.rpc('get_popular_products');
+  if (error) throw error;
+  return data;
+};
+
+// 유저 정보 변경하기
+export const updateUserData = async (nickname: string) => {
+  const { data, error } = await supabase.auth.updateUser({ data: { full_name: `${nickname}` } });
+};
+
+// 유저 프로필 사진 저장하기
+export const uploadProfileImage = async (uid: string, file: File) => {
+  try {
+    // const fileName = `${uid}/${file.name}`;
+    const fileName = `${uid}/img`;
+    const { data, error } = await supabase.storage.from(`profile-images`).upload(fileName, file);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getImageUrl = async (uid: string) => {
+  const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
+  return data;
+};
+
+export const deleteImage = async (uid: string) => {
+  const { data, error } = await supabase.storage.from(`profile-images`).remove([`${uid}/img`]);
+};
+
+export const downloadImage = async (uid: string): Promise<Blob | null> => {
+  const { data, error } = await supabase.storage.from(`profile-images`).download(`${uid}/img`);
+  return data;
 };

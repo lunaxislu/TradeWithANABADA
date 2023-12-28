@@ -14,9 +14,9 @@ const List = () => {
   ];
   return (
     <St.ListWrapper>
-      {sampleList.map((item) => {
+      {sampleList.map((item, index) => {
         return (
-          <St.ListBox>
+          <St.ListBox key={index}>
             <St.ListImage>
               <St.ListImageProduct src={process.env.PUBLIC_URL + '/profile.jpeg'} />
               <St.ListImageHeart src={process.env.PUBLIC_URL + '/favicon.ico'} />

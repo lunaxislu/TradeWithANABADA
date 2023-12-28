@@ -55,16 +55,19 @@ export interface Database {
           created_at: string;
           from_user_id: string;
           id: number;
+          to_user_id: string;
         };
         Insert: {
           created_at?: string;
           from_user_id: string;
           id?: number;
+          to_user_id: string;
         };
         Update: {
           created_at?: string;
           from_user_id?: string;
           id?: number;
+          to_user_id?: string;
         };
         Relationships: [
           {
@@ -79,19 +82,29 @@ export interface Database {
       hash_tag: {
         Row: {
           created_at: string;
+
           hash_tag: string[];
+
+
+
           id: number;
           post_id: number;
         };
         Insert: {
           created_at?: string;
+
           hash_tag: string[];
+
+
           id?: number;
           post_id: number;
         };
         Update: {
           created_at?: string;
+
           hash_tag: string[];
+
+
           id?: number;
           post_id?: number;
         };
@@ -146,17 +159,20 @@ export interface Database {
           content: string | null;
           createdAt: string;
           id: number;
-          price: number | null;
+          price: string;
           productImg: string | null;
           title: string | null;
           userId: string;
         };
         Insert: {
           content?: string | null;
+
           // 등록 할 때는 createdAt, id DB에서 생성되기 때문에 필요가 없습니다. 받아올 때만 필요합니다.
           createdAt?: string;
           id?: number;
           price?: string | null;
+
+
           productImg?: string | null;
           title?: string | null;
           userId: string;
@@ -165,7 +181,7 @@ export interface Database {
           content?: string | null;
           createdAt?: string;
           id?: number;
-          price?: number | null;
+          price?: string;
           productImg?: string | null;
           title?: string | null;
           userId?: string;
@@ -288,7 +304,32 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_latest_products: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          createdat: string;
+          price: string;
+          productimg: string;
+          userid: string;
+          like_count: number;
+        }[];
+      };
+      get_popular_products: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          createdat: string;
+          price: string;
+          productimg: string;
+          userid: string;
+          like_count: number;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;
