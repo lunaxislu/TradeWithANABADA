@@ -18,7 +18,7 @@ export const ListBox = styled.div`
   `};
 `;
 
-export const ListImage = styled.div`
+export const ListImage = styled.figure`
   position: relative;
 `;
 

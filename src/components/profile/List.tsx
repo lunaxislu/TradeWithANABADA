@@ -21,6 +21,7 @@ const List = () => {
               <St.ListImageProduct src={process.env.PUBLIC_URL + '/profile.jpeg'} />
               <St.ListImageHeart src={process.env.PUBLIC_URL + '/favicon.ico'} />
             </St.ListImage>
+
             <St.ListInfo>
               <St.ListTitle>{item.title}</St.ListTitle>
               <St.ListPriceandDate>
