@@ -3,21 +3,71 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export interface Database {
   public: {
     Tables: {
+      categories1: {
+        Row: {
+          created_at: string;
+          id: number;
+          name: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          name: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          name?: string;
+        };
+        Relationships: [];
+      };
+      categories2: {
+        Row: {
+          category1Id: number | null;
+          created_at: string;
+          id: number;
+          name: string;
+        };
+        Insert: {
+          category1Id?: number | null;
+          created_at?: string;
+          id?: number;
+          name: string;
+        };
+        Update: {
+          category1Id?: number | null;
+          created_at?: string;
+          id?: number;
+          name?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'categories2_category1Id_fkey';
+            columns: ['category1Id'];
+            isOneToOne: false;
+            referencedRelation: 'categories1';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       follow: {
         Row: {
           created_at: string;
           from_user_id: string;
           id: number;
+          to_user_id: string;
         };
         Insert: {
           created_at?: string;
           from_user_id: string;
           id?: number;
+          to_user_id: string;
         };
         Update: {
           created_at?: string;
           from_user_id?: string;
           id?: number;
+          to_user_id?: string;
         };
         Relationships: [
           {
@@ -32,31 +82,19 @@ export interface Database {
       hash_tag: {
         Row: {
           created_at: string;
-          hash_1: string | null;
-          hash_2: string | null;
-          hash_3: string | null;
-          hash_4: string | null;
-          hash_5: string | null;
+          hash_tag: string[] | null;
           id: number;
           post_id: number;
         };
         Insert: {
           created_at?: string;
-          hash_1?: string | null;
-          hash_2?: string | null;
-          hash_3?: string | null;
-          hash_4?: string | null;
-          hash_5?: string | null;
+          hash_tag?: string[] | null;
           id?: number;
           post_id: number;
         };
         Update: {
           created_at?: string;
-          hash_1?: string | null;
-          hash_2?: string | null;
-          hash_3?: string | null;
-          hash_4?: string | null;
-          hash_5?: string | null;
+          hash_tag?: string[] | null;
           id?: number;
           post_id?: number;
         };
@@ -65,7 +103,7 @@ export interface Database {
             foreignKeyName: 'hash_tag_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
-            referencedRelation: 'posts';
+            referencedRelation: 'products';
             referencedColumns: ['id'];
           },
         ];
@@ -94,7 +132,7 @@ export interface Database {
             foreignKeyName: 'likes_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
-            referencedRelation: 'posts';
+            referencedRelation: 'products';
             referencedColumns: ['id'];
           },
           {
@@ -106,81 +144,76 @@ export interface Database {
           },
         ];
       };
-      posts: {
+      products: {
         Row: {
           content: string | null;
-          created_at: string;
+          createdAt: string;
           id: number;
-          price: number | null;
-          product_img: string | null;
+          price: string;
+          productImg: string | null;
           title: string | null;
-          user_id: string;
+          userId: string;
         };
         Insert: {
           content?: string | null;
-          created_at: string;
+          createdAt: string;
           id: number;
-          price?: number | null;
-          product_img?: string | null;
+          price: string;
+          productImg?: string | null;
           title?: string | null;
-          user_id: string;
+          userId: string;
         };
         Update: {
           content?: string | null;
-          created_at?: string;
+          createdAt?: string;
           id?: number;
-          price?: number | null;
-          product_img?: string | null;
+          price?: string;
+          productImg?: string | null;
           title?: string | null;
-          user_id?: string;
+          userId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'posts_user_id_fkey';
-            columns: ['user_id'];
+            foreignKeyName: 'products_userId_fkey';
+            columns: ['userId'];
             isOneToOne: false;
             referencedRelation: 'users';
             referencedColumns: ['id'];
           },
         ];
       };
-      product_category: {
+      productsToCategories2: {
         Row: {
-          books: string | null;
-          clothes: string | null;
+          category2Id: number | null;
           created_at: string;
-          electronic: string | null;
-          gift_card: string | null;
           id: number;
-          pet_item: string | null;
-          post_id: number;
+          productId: number | null;
         };
         Insert: {
-          books?: string | null;
-          clothes?: string | null;
+          category2Id?: number | null;
           created_at?: string;
-          electronic?: string | null;
-          gift_card?: string | null;
           id?: number;
-          pet_item?: string | null;
-          post_id: number;
+          productId?: number | null;
         };
         Update: {
-          books?: string | null;
-          clothes?: string | null;
+          category2Id?: number | null;
           created_at?: string;
-          electronic?: string | null;
-          gift_card?: string | null;
           id?: number;
-          pet_item?: string | null;
-          post_id?: number;
+          productId?: number | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'product_category_post_id_fkey';
-            columns: ['post_id'];
+            foreignKeyName: 'productsToCategories2_category2Id_fkey';
+            columns: ['category2Id'];
             isOneToOne: false;
-            referencedRelation: 'posts';
+            referencedRelation: 'categories2';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'productsToCategories2_productId_fkey';
+            columns: ['productId'];
+            isOneToOne: false;
+            referencedRelation: 'products';
             referencedColumns: ['id'];
           },
         ];
@@ -226,24 +259,21 @@ export interface Database {
       users: {
         Row: {
           created_at: string;
-          email: string | null;
+          email: string;
           id: string;
           nickname: string | null;
-          password: string | null;
         };
         Insert: {
           created_at?: string;
-          email?: string | null;
+          email: string;
           id: string;
           nickname?: string | null;
-          password?: string | null;
         };
         Update: {
           created_at?: string;
-          email?: string | null;
+          email?: string;
           id?: string;
           nickname?: string | null;
-          password?: string | null;
         };
         Relationships: [
           {
@@ -260,7 +290,32 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_latest_products: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          createdat: string;
+          price: string;
+          productimg: string;
+          userid: string;
+          like_count: number;
+        }[];
+      };
+      get_popular_products: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          createdat: string;
+          price: string;
+          productimg: string;
+          userid: string;
+          like_count: number;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;

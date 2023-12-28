@@ -120,6 +120,71 @@ export const updatePasswordHandler = async (values: users) => {
   if (error) alert('There was an error updating your password.');
 };
 
+/**
+ * 상품 데이터 불러오기
+ * @param page 페이지 번호
+ * @returns 상품 목록
+ */
+export const getProducts = async (page: number) => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .range(page * 10 - 10, page * 10 - 1);
+  if (error) throw error;
+  return data;
+};
+
+/**
+ * 검색 기능
+ * @param keyword 검색어
+ * @returns 검색 결과
+ */
+export const searchProducts = async (keyword: string) => {
+  // 상품 title, content에서 keyword 검색, 예를 들어 keyword가 '테스트'라면 '테스'로도 검색됨
+  // const { data: titleData, error: titleError } = await supabase
+  //   .from('products')
+  //   .select('*')
+  //   .like('title', `${keyword}%`);
+  // const { data: contentData, error: contentError } = await supabase
+  //   .from('products')
+  //   .select('*')
+  //   .like('content', `${keyword}%`);
+
+  const { data: titleData, error: titleError } = await supabase
+    .from('products')
+    .select('*')
+    .textSearch('title', keyword, {
+      type: 'websearch',
+    });
+
+  const { data: contentData, error: contentError } = await supabase
+    .from('products')
+    .select('*')
+    .textSearch('content', keyword, {
+      type: 'websearch',
+    });
+
+  if (titleError || contentError) throw titleError || contentError;
+
+  const mergedData = [...titleData, ...contentData];
+
+  return mergedData;
+};
+
+// 최신 게시물 가져오기
+export const getLatestProducts = async () => {
+  const { data, error } = await supabase.rpc('get_latest_products');
+  if (error) throw error;
+  return data;
+};
+
+// 인기 게시물 가져오기 (like 수)
+export const getPopularProducts = async () => {
+  const { data, error } = await supabase.rpc('get_popular_products');
+  if (error) throw error;
+  return data;
+};
+
 // 유저 정보 변경하기
 export const updateUserData = async (nickname: string) => {
   const { data, error } = await supabase.auth.updateUser({ data: { full_name: `${nickname}` } });
