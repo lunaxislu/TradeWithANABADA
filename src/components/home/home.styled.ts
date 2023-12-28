@@ -43,3 +43,11 @@ export const SlideButton = styled.div`
     right: 0;
   }
 `;
+
+export const ProductListSection = styled.section``;
+export const ProductListArea = styled.div`
+  display: flex;
+  & > ul {
+    display: flex;
+  }
+`;

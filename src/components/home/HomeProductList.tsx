@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getLatestProducts, getPopularProducts } from '../../API/supabase.api';
+import * as St from './home.styled';
 
 type ProductListProps = {
   type: string;
@@ -10,7 +11,7 @@ type ProductData = {
   title: string;
   content: string;
   createdat: string;
-  price: number;
+  price: string;
   productimg: string;
   userid: string;
   like_count: number;
@@ -47,15 +48,17 @@ const HomeProductList = ({ type }: ProductListProps) => {
   }, []);
 
   return (
-    <section>
+    <St.ProductListSection>
       <h2>{productSectionInfos[type].title}</h2>
-      <ul>
-        {products?.map((item) => <li key={item.product_id}>{item.title}</li>)}
-        {/* <li>카드1</li>
+      <St.ProductListArea>
+        <ul>
+          {products?.map((item) => <li key={item.product_id}>{item.title}</li>)}
+          {/* <li>카드1</li>
         <li>카드2</li> */}
-      </ul>
-      <button> 더보기</button>
-    </section>
+        </ul>
+        <button>{productSectionInfos[type].title} 더보기</button>
+      </St.ProductListArea>
+    </St.ProductListSection>
   );
 };
 

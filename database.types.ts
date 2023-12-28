@@ -82,31 +82,19 @@ export interface Database {
       hash_tag: {
         Row: {
           created_at: string;
-          hash_1: string | null;
-          hash_2: string | null;
-          hash_3: string | null;
-          hash_4: string | null;
-          hash_5: string | null;
+          hash_tag: string[] | null;
           id: number;
           post_id: number;
         };
         Insert: {
           created_at?: string;
-          hash_1?: string | null;
-          hash_2?: string | null;
-          hash_3?: string | null;
-          hash_4?: string | null;
-          hash_5?: string | null;
+          hash_tag?: string[] | null;
           id?: number;
           post_id: number;
         };
         Update: {
           created_at?: string;
-          hash_1?: string | null;
-          hash_2?: string | null;
-          hash_3?: string | null;
-          hash_4?: string | null;
-          hash_5?: string | null;
+          hash_tag?: string[] | null;
           id?: number;
           post_id?: number;
         };
@@ -161,7 +149,7 @@ export interface Database {
           content: string | null;
           createdAt: string;
           id: number;
-          price: number | null;
+          price: string;
           productImg: string | null;
           title: string | null;
           userId: string;
@@ -170,7 +158,7 @@ export interface Database {
           content?: string | null;
           createdAt: string;
           id: number;
-          price?: number | null;
+          price: string;
           productImg?: string | null;
           title?: string | null;
           userId: string;
@@ -179,7 +167,7 @@ export interface Database {
           content?: string | null;
           createdAt?: string;
           id?: number;
-          price?: number | null;
+          price?: string;
           productImg?: string | null;
           title?: string | null;
           userId?: string;
@@ -309,7 +297,7 @@ export interface Database {
           title: string;
           content: string;
           createdat: string;
-          price: number;
+          price: string;
           productimg: string;
           userid: string;
           like_count: number;
@@ -322,7 +310,7 @@ export interface Database {
           title: string;
           content: string;
           createdat: string;
-          price: number;
+          price: string;
           productimg: string;
           userid: string;
           like_count: number;
