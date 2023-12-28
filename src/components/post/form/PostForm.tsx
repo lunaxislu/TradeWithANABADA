@@ -10,41 +10,60 @@ type PropsType = {
   imgFiles: File[];
 };
 
+type ParamForRegist = {
+  title: string;
+  content: string;
+  price: string;
+  tags: string[];
+  userId: string;
+  imgFiles: File[];
+};
+
 const PostForm = ({ imgFiles }: PropsType) => {
   const [tags, setTags] = useState<string[]>([]);
   const [userId, setUserId] = useState('');
-
   const registProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const product = {
       title: e.currentTarget['product_name'].value,
       content: e.currentTarget['product_text'].value,
       price: e.currentTarget['product_value'].value,
-      createdAt: Date.now(),
       tags,
       userId,
+      imgFiles,
     };
-    await insertProduct(e);
+    await insertProduct(product);
     console.log(product);
     console.log(imgFiles);
   };
 
-  const insertProduct = async (e: FormEvent<HTMLFormElement>) => {
+  const insertProduct = async (info: ParamForRegist) => {
     const { data, error } = await supabase
       .from('products')
       .insert([
         {
-          title: e.currentTarget['product_name'].value,
-          content: e.currentTarget['product_text'].value,
-          price: e.currentTarget['product_value'].value,
-          userId,
+          title: info.title,
+          content: info.content,
+          price: info.price,
+          userId: info.userId,
         },
       ])
       .select();
-    console.log(data);
-    console.log(error);
+
+    const post_id = data?.[0].id!;
+    await postImagesFromStorage(post_id, info.imgFiles);
+
+    if (error) {
+      throw console.log(error);
+    }
   };
 
+  const postImagesFromStorage = async (id: number, files: File[]) => {
+    if (files) {
+      const { data, error } = await supabase.storage.from('product-images').upload('asdf/as/asdfasdf/asdf', file);
+      console.log(data, error);
+    }
+  };
   useEffect(() => {
     getUserSession().then((userSession) => {
       if (userSession.session) {
