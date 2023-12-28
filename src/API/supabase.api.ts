@@ -119,3 +119,48 @@ export const updatePasswordHandler = async (values: users) => {
   }
   if (error) alert('There was an error updating your password.');
 };
+
+// 상품 테이블 불러오기
+export const getProducts = async () => {
+  const { data, error } = await supabase.from('products').select('*');
+  console.log('data: ', data);
+  if (error) throw error;
+  return data;
+};
+
+/**
+ * 검색 기능
+ * @param keyword 검색어
+ * @returns 검색 결과
+ */
+export const searchProducts = async (keyword: string) => {
+  // 상품 title, content에서 keyword 검색, 예를 들어 keyword가 '테스트'라면 '테스'로도 검색됨
+  // const { data: titleData, error: titleError } = await supabase
+  //   .from('products')
+  //   .select('*')
+  //   .like('title', `${keyword}%`);
+  // const { data: contentData, error: contentError } = await supabase
+  //   .from('products')
+  //   .select('*')
+  //   .like('content', `${keyword}%`);
+
+  const { data: titleData, error: titleError } = await supabase
+    .from('products')
+    .select('*')
+    .textSearch('title', keyword, {
+      type: 'websearch',
+    });
+
+  const { data: contentData, error: contentError } = await supabase
+    .from('products')
+    .select('*')
+    .textSearch('content', keyword, {
+      type: 'websearch',
+    });
+
+  if (titleError || contentError) throw titleError || contentError;
+
+  const mergedData = [...titleData, ...contentData];
+
+  return mergedData;
+};
