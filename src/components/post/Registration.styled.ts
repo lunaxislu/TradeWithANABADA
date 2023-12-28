@@ -6,6 +6,7 @@ export const Container = styled.main`
   display: grid;
   place-content: center center;
 `;
+
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -15,8 +16,6 @@ export const Wrapper = styled.div`
   height: 40.8rem;
   > div {
     width: 100%;
-  }
-  > :nth-child(1) {
   }
 
   > :nth-child(2) {

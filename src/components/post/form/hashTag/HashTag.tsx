@@ -34,7 +34,12 @@ const HashTag = () => {
     });
     setHashTag('');
   };
-
+  const onKeyDownRemoveTag = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === 'Backspace' && hashTag.trim().length === 0) {
+      const updateTags = tags.filter((_, idx) => tags.length - 1 !== idx);
+      setTags(updateTags);
+    }
+  };
   const removeHashTag = (id: number) => () => {
     const updateTags = tags.filter((_, idx) => idx !== id);
     setTags(updateTags);
@@ -59,6 +64,7 @@ const HashTag = () => {
           placeholder="#태그는 최대 4개입니다."
           onChange={changeHashInput}
           onKeyUp={createHashTag}
+          onKeyDown={onKeyDownRemoveTag}
         />
         <span></span>
       </St.HashTagWrapper>
