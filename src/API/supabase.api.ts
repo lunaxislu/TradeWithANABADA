@@ -119,3 +119,33 @@ export const updatePasswordHandler = async (values: users) => {
   }
   if (error) alert('There was an error updating your password.');
 };
+
+// 유저 정보 변경하기
+export const updateUserData = async (nickname: string) => {
+  const { data, error } = await supabase.auth.updateUser({ data: { full_name: `${nickname}` } });
+};
+
+// 유저 프로필 사진 저장하기
+export const uploadProfileImage = async (uid: string, file: File) => {
+  try {
+    // const fileName = `${uid}/${file.name}`;
+    const fileName = `${uid}/img`;
+    const { data, error } = await supabase.storage.from(`profile-images`).upload(fileName, file);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getImageUrl = async (uid: string) => {
+  const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
+  return data;
+};
+
+export const deleteImage = async (uid: string) => {
+  const { data, error } = await supabase.storage.from(`profile-images`).remove([`${uid}/img`]);
+};
+
+export const downloadImage = async (uid: string): Promise<Blob | null> => {
+  const { data, error } = await supabase.storage.from(`profile-images`).download(`${uid}/img`);
+  return data;
+};
