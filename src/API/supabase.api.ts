@@ -170,3 +170,17 @@ export const searchProducts = async (keyword: string) => {
 
   return mergedData;
 };
+
+// 최신 게시물 가져오기
+export const getLatestProducts = async () => {
+  const { data, error } = await supabase.rpc('get_latest_products');
+  if (error) throw error;
+  return data;
+};
+
+// 인기 게시물 가져오기 (like 수)
+export const getPopularProducts = async () => {
+  const { data, error } = await supabase.rpc('get_popular_products');
+  if (error) throw error;
+  return data;
+};

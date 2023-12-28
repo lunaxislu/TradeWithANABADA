@@ -55,16 +55,19 @@ export interface Database {
           created_at: string;
           from_user_id: string;
           id: number;
+          to_user_id: string;
         };
         Insert: {
           created_at?: string;
           from_user_id: string;
           id?: number;
+          to_user_id: string;
         };
         Update: {
           created_at?: string;
           from_user_id?: string;
           id?: number;
+          to_user_id?: string;
         };
         Relationships: [
           {
@@ -79,31 +82,19 @@ export interface Database {
       hash_tag: {
         Row: {
           created_at: string;
-          hash_1: string | null;
-          hash_2: string | null;
-          hash_3: string | null;
-          hash_4: string | null;
-          hash_5: string | null;
+          hash_tag: string[] | null;
           id: number;
           post_id: number;
         };
         Insert: {
           created_at?: string;
-          hash_1?: string | null;
-          hash_2?: string | null;
-          hash_3?: string | null;
-          hash_4?: string | null;
-          hash_5?: string | null;
+          hash_tag?: string[] | null;
           id?: number;
           post_id: number;
         };
         Update: {
           created_at?: string;
-          hash_1?: string | null;
-          hash_2?: string | null;
-          hash_3?: string | null;
-          hash_4?: string | null;
-          hash_5?: string | null;
+          hash_tag?: string[] | null;
           id?: number;
           post_id?: number;
         };
@@ -158,7 +149,7 @@ export interface Database {
           content: string | null;
           createdAt: string;
           id: number;
-          price: number | null;
+          price: string;
           productImg: string | null;
           title: string | null;
           userId: string;
@@ -167,7 +158,7 @@ export interface Database {
           content?: string | null;
           createdAt: string;
           id: number;
-          price?: number | null;
+          price: string;
           productImg?: string | null;
           title?: string | null;
           userId: string;
@@ -176,7 +167,7 @@ export interface Database {
           content?: string | null;
           createdAt?: string;
           id?: number;
-          price?: number | null;
+          price?: string;
           productImg?: string | null;
           title?: string | null;
           userId?: string;
@@ -299,7 +290,32 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_latest_products: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          createdat: string;
+          price: string;
+          productimg: string;
+          userid: string;
+          like_count: number;
+        }[];
+      };
+      get_popular_products: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          createdat: string;
+          price: string;
+          productimg: string;
+          userid: string;
+          like_count: number;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;

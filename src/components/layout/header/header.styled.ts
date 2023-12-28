@@ -14,6 +14,8 @@ export const Header = styled.header`
 
   padding: 0 3rem;
 
+  z-index: 20;
+
   & > h1 {
     position: absolute;
     left: 50%;
