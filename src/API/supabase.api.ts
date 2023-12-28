@@ -164,3 +164,29 @@ export const searchProducts = async (keyword: string) => {
 
   return mergedData;
 };
+
+// 최신 게시물 가져오기
+export const getLatestProducts = async () => {
+  const { data: latestProducts, error } = await supabase
+    .from('products')
+    .select(`*`)
+    .order('createdAt', { ascending: false })
+    .limit(4);
+
+  if (error) throw error;
+
+  return latestProducts;
+};
+
+// 인기 게시물 가져오기 (like 수)
+export const getPopularProducts = async () => {
+  const { data: latestProducts, error } = await supabase
+    .from('products')
+    .select(`*,likes`)
+    .order('createdAt', { ascending: false })
+    .limit(4);
+
+  if (error) throw error;
+
+  return latestProducts;
+};

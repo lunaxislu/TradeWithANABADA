@@ -5,9 +5,9 @@ const Home = () => {
   return (
     <div>
       <HomeSlideBanner />
-      <HomeProductList title="최신 등록 상품" />
-      <HomeProductList title="추천 등록 상품" />
-      <HomeProductList title="인기 등록 상품" />
+      <HomeProductList type="latest" />
+      <HomeProductList type="popular" />
+      {/* <HomeProductList type="recommend" /> */}
     </div>
   );
   // import { useEffect } from 'react';

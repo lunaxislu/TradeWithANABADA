@@ -1,16 +1,33 @@
+import { useEffect } from 'react';
+import { getLatestProducts } from '../../API/supabase.api';
+
 type ProductListProps = {
-  title: string;
+  type: string;
 };
 
-const HomeProductList = ({ title }: ProductListProps) => {
+const sectionMode = {
+  latest: { title: '최신상품', getProductHandler: getLatestProducts },
+  popular: { title: '최신상품', getProductHandler: getLatestProducts },
+  //   latest: { title: '최신상품', getProductHandler: getLatestProducts },
+};
+
+const HomeProductList = ({ type }: ProductListProps) => {
+  const getLatestData = async () => {
+    await getLatestProducts();
+  };
+
+  useEffect(() => {
+    getLatestData();
+  }, []);
+
   return (
     <section>
-      <h2>{title}</h2>
+      <h2></h2>
       <ul>
         <li>카드1</li>
         <li>카드2</li>
       </ul>
-      <button>{title} 더보기</button>
+      <button> 더보기</button>
     </section>
   );
 };
