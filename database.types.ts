@@ -55,16 +55,19 @@ export interface Database {
           created_at: string;
           from_user_id: string;
           id: number;
+          to_user_id: string;
         };
         Insert: {
           created_at?: string;
           from_user_id: string;
           id?: number;
+          to_user_id: string;
         };
         Update: {
           created_at?: string;
           from_user_id?: string;
           id?: number;
+          to_user_id?: string;
         };
         Relationships: [
           {
@@ -299,6 +302,19 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
+      get_latest_products: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          createdat: string;
+          price: number;
+          productimg: string;
+          userid: string;
+          like_count: number;
+        }[];
+      };
       get_popular_products: {
         Args: Record<PropertyKey, never>;
         Returns: {

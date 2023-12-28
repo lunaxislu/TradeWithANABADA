@@ -167,15 +167,9 @@ export const searchProducts = async (keyword: string) => {
 
 // 최신 게시물 가져오기
 export const getLatestProducts = async () => {
-  const { data: latestProducts, error } = await supabase
-    .from('products')
-    .select(`*`)
-    .order('createdAt', { ascending: false })
-    .limit(4);
-
+  const { data, error } = await supabase.rpc('get_latest_products');
   if (error) throw error;
-
-  return latestProducts;
+  return data;
 };
 
 // 인기 게시물 가져오기 (like 수)
