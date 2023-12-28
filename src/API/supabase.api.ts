@@ -119,3 +119,10 @@ export const updatePasswordHandler = async (values: users) => {
   }
   if (error) alert('There was an error updating your password.');
 };
+// 상품 테이블 불러오기
+export const getProducts = async () => {
+  const { data, error } = await supabase.from('product').select('*');
+  console.log('data: ', data);
+  if (error) throw error;
+  return data;
+};
