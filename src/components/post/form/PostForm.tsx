@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { getUserSession } from '../../../API/supabase.api';
+import { getUserSession, supabase } from '../../../API/supabase.api';
 import * as St from './PostForm.styled';
 import FormButton from './formButton/FormButton';
 import HashTag from './hashTag/HashTag';
@@ -14,16 +14,35 @@ const PostForm = ({ imgFiles }: PropsType) => {
   const [tags, setTags] = useState<string[]>([]);
   const [userId, setUserId] = useState('');
 
-  const registProduct = (e: FormEvent<HTMLFormElement>) => {
+  const registProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const product = {
       title: e.currentTarget['product_name'].value,
-      content: e.currentTarget['product_value'].value,
+      content: e.currentTarget['product_text'].value,
+      price: e.currentTarget['product_value'].value,
       createdAt: Date.now(),
       tags,
       userId,
     };
+    await insertProduct(e);
+    console.log(product);
     console.log(imgFiles);
+  };
+
+  const insertProduct = async (e: FormEvent<HTMLFormElement>) => {
+    const { data, error } = await supabase
+      .from('products')
+      .insert([
+        {
+          title: e.currentTarget['product_name'].value,
+          content: e.currentTarget['product_text'].value,
+          price: e.currentTarget['product_value'].value,
+          userId,
+        },
+      ])
+      .select();
+    console.log(data);
+    console.log(error);
   };
 
   useEffect(() => {

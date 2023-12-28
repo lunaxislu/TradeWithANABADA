@@ -165,10 +165,10 @@ export interface Database {
         };
         Insert: {
           content?: string | null;
-          createdAt: string;
-          // 임의로 최문길이 ? 했습니다.
+          // 등록 할 때는 createdAt, id DB에서 생성되기 때문에 필요가 없습니다. 받아올 때만 필요합니다.
+          createdAt?: string;
           id?: number;
-          price?: number | null;
+          price?: string | null;
           productImg?: string | null;
           title?: string | null;
           userId: string;
