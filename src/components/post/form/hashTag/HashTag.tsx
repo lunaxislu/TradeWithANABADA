@@ -1,8 +1,11 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import * as St from './HashTag.styled';
-const HashTag = () => {
+type PropsType = {
+  tags: string[];
+  setTags: React.Dispatch<React.SetStateAction<string[]>>;
+};
+const HashTag = ({ tags, setTags }: PropsType) => {
   const [hashTag, setHashTag] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
 
   const changeHashInput = (e: ChangeEvent<HTMLInputElement>) => {
     setHashTag(e.target.value);
@@ -30,7 +33,7 @@ const HashTag = () => {
     if (!newHashTag.length) return;
 
     setTags((pre) => {
-      return [...new Set([...pre, newHashTag])];
+      return [...new Set([...pre, `# ${newHashTag}`])];
     });
     setHashTag('');
   };
@@ -53,7 +56,7 @@ const HashTag = () => {
         {tags?.map((tag, idx) => {
           return (
             <div className="hash-tag" onClick={removeHashTag(idx)} key={tag}>
-              # {tag}
+              {tag}
             </div>
           );
         })}

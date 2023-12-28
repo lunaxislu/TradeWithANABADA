@@ -166,7 +166,8 @@ export interface Database {
         Insert: {
           content?: string | null;
           createdAt: string;
-          id: number;
+          // 임의로 최문길이 ? 했습니다.
+          id?: number;
           price?: number | null;
           productImg?: string | null;
           title?: string | null;

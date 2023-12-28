@@ -9,11 +9,11 @@ export const Container = styled.main`
 
 export const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 2rem;
 
-  width: 32.8rem;
-  height: 40.8rem;
+  width: 66.8rem;
+  min-height: 44.8rem;
   > div {
     width: 100%;
   }

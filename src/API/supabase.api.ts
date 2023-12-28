@@ -3,7 +3,7 @@ import { Database } from '../../database.types';
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL as string;
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY as string;
-const supabase = createClient<Database>(supabaseUrl, supabaseKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
 // TODO: 나중에 따로 분리
 type users = Record<string, string>;
@@ -66,7 +66,7 @@ export const logoutHandler = async () => {
 };
 
 /**
- * 유저 정보 가져오기
+ * 유저 정보 가져오기 - DB에 저장되어있는 user의 정보
  * @returns 유저 정보
  */
 export const getUserData = async () => {
@@ -77,7 +77,7 @@ export const getUserData = async () => {
 };
 
 /**
- * 유저 세션 가져오기
+ * 유저 세션 가져오기 - 웹페이지에 머무르는 user의 정보
  * @returns 유저 세션
  */
 export const getUserSession = async () => {
@@ -118,4 +118,24 @@ export const updatePasswordHandler = async (values: users) => {
     alert('비밀번호 변경이 완료되었습니다.');
   }
   if (error) alert('There was an error updating your password.');
+};
+
+// product 상품등록 함수입니다.
+export const addProductText = async (values: users) => {
+  const userId = 'asdf';
+  const createdAt = 'asdf';
+  const { data, error } = await supabase.from('products').insert([
+    {
+      userId,
+      createdAt,
+    },
+  ]);
+};
+
+export const addProductImage = async (file: File, uid: string, id: number) => {
+  // 경로는 user_uid > post고유 id > createdAt > 이미지들
+  if (file) {
+    const { data, error } = await supabase.storage.from('product-images').upload('asdf/as/asdfasdf/asdf', file);
+    console.log(data, error);
+  }
 };
