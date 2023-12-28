@@ -6,17 +6,16 @@ export const Container = styled.main`
   display: grid;
   place-content: center center;
 `;
+
 export const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 2rem;
 
-  width: 32.8rem;
-  height: 40.8rem;
+  width: 66.8rem;
+  min-height: 44.8rem;
   > div {
     width: 100%;
-  }
-  > :nth-child(1) {
   }
 
   > :nth-child(2) {

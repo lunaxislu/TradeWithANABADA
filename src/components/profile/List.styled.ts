@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 
 export const ListWrapper = styled.div`
+  width: 100%;
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 `;
 
 export const ListBox = styled.div`
-  width: 25%;
+  width: 48%;
   border: 0.2rem solid #dcdcdc;
   ${({ theme }) => theme.mediaQuery.sm`
-  width: 25%;
+  width: 23%;
   `}
   ${({ theme }) => theme.mediaQuery.lg`
   `};

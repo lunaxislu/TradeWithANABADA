@@ -8,9 +8,11 @@ type SetStateProps = React.Dispatch<React.SetStateAction<string[]>>;
 export type PropsWithSetState = {
   showImages: string[];
   setShowImages: SetStateProps;
+  setImgFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  imgFiles: File[];
 };
 
-const ImageSlider = ({ showImages, setShowImages }: PropsWithSetState) => {
+const ImageSlider = ({ showImages, setShowImages, setImgFiles, imgFiles }: PropsWithSetState) => {
   const [imageIndex, setImageIndex] = useState(0);
   const [noTransition, setNoTransition] = useState(false);
   // 다음 이미지 넘어가기 함수
@@ -43,6 +45,8 @@ const ImageSlider = ({ showImages, setShowImages }: PropsWithSetState) => {
             setImageIndex={setImageIndex}
             noTransition={noTransition}
             setNoTransition={setNoTransition}
+            setImgFiles={setImgFiles}
+            imgFiles={imgFiles}
           />
         ))}
       </div>

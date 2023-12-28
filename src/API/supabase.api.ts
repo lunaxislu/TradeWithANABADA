@@ -3,7 +3,7 @@ import { Database } from '../../database.types';
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL as string;
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY as string;
-const supabase = createClient<Database>(supabaseUrl, supabaseKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
 // TODO: 나중에 따로 분리
 type users = Record<string, string>;
@@ -66,7 +66,7 @@ export const logoutHandler = async () => {
 };
 
 /**
- * 유저 정보 가져오기
+ * 유저 정보 가져오기 - DB에 저장되어있는 user의 정보
  * @returns 유저 정보
  */
 export const getUserData = async () => {
@@ -77,7 +77,7 @@ export const getUserData = async () => {
 };
 
 /**
- * 유저 세션 가져오기
+ * 유저 세션 가져오기 - 웹페이지에 머무르는 user의 정보
  * @returns 유저 세션
  */
 export const getUserSession = async () => {
@@ -120,6 +120,32 @@ export const updatePasswordHandler = async (values: users) => {
   if (error) alert('There was an error updating your password.');
 };
 
+
+// product 상품등록 함수입니다.
+export const addProductText = async (values: users) => {
+  const userId = 'asdf';
+  const createdAt = 'asdf';
+  const { data, error } = await supabase.from('products').insert([
+    {
+      userId,
+      createdAt,
+    },
+  ]);
+};
+
+export const addProductImage = async (file: File, uid: string, id: number) => {
+  // 경로는 user_uid > post고유 id > createdAt > 이미지들
+  if (file) {
+    const { data, error } = await supabase.storage.from('product-images').upload('asdf/as/asdfasdf/asdf', file);
+    console.log(data, error);
+  }
+};
+
+// 상품 테이블 불러오기
+export const getProducts = async () => {
+  const { data, error } = await supabase.from('products').select('*');
+  console.log('data: ', data);
+
 /**
  * 상품 데이터 불러오기
  * @param page 페이지 번호
@@ -130,6 +156,7 @@ export const getProducts = async (page: number) => {
     .from('products')
     .select('*')
     .range(page * 10 - 10, page * 10 - 1);
+
   if (error) throw error;
   return data;
 };
@@ -182,5 +209,35 @@ export const getLatestProducts = async () => {
 export const getPopularProducts = async () => {
   const { data, error } = await supabase.rpc('get_popular_products');
   if (error) throw error;
+  return data;
+};
+
+// 유저 정보 변경하기
+export const updateUserData = async (nickname: string) => {
+  const { data, error } = await supabase.auth.updateUser({ data: { full_name: `${nickname}` } });
+};
+
+// 유저 프로필 사진 저장하기
+export const uploadProfileImage = async (uid: string, file: File) => {
+  try {
+    // const fileName = `${uid}/${file.name}`;
+    const fileName = `${uid}/img`;
+    const { data, error } = await supabase.storage.from(`profile-images`).upload(fileName, file);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getImageUrl = async (uid: string) => {
+  const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
+  return data;
+};
+
+export const deleteImage = async (uid: string) => {
+  const { data, error } = await supabase.storage.from(`profile-images`).remove([`${uid}/img`]);
+};
+
+export const downloadImage = async (uid: string): Promise<Blob | null> => {
+  const { data, error } = await supabase.storage.from(`profile-images`).download(`${uid}/img`);
   return data;
 };

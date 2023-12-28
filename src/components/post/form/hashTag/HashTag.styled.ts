@@ -25,6 +25,7 @@ export const HashTagWrapper = styled.div`
     font-weight: bold;
     padding: 0.6rem;
     margin-right: 1rem;
+    margin-bottom: 0.8rem;
     border-radius: 1rem;
     letter-spacing: 0.1px;
     background-color: #ffae73;

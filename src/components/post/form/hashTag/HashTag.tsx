@@ -1,8 +1,11 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import * as St from './HashTag.styled';
-const HashTag = () => {
+type PropsType = {
+  tags: string[];
+  setTags: React.Dispatch<React.SetStateAction<string[]>>;
+};
+const HashTag = ({ tags, setTags }: PropsType) => {
   const [hashTag, setHashTag] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
 
   const changeHashInput = (e: ChangeEvent<HTMLInputElement>) => {
     setHashTag(e.target.value);
@@ -30,11 +33,16 @@ const HashTag = () => {
     if (!newHashTag.length) return;
 
     setTags((pre) => {
-      return [...new Set([...pre, newHashTag])];
+      return [...new Set([...pre, `# ${newHashTag}`])];
     });
     setHashTag('');
   };
-
+  const onKeyDownRemoveTag = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === 'Backspace' && hashTag.trim().length === 0) {
+      const updateTags = tags.filter((_, idx) => tags.length - 1 !== idx);
+      setTags(updateTags);
+    }
+  };
   const removeHashTag = (id: number) => () => {
     const updateTags = tags.filter((_, idx) => idx !== id);
     setTags(updateTags);
@@ -48,7 +56,7 @@ const HashTag = () => {
         {tags?.map((tag, idx) => {
           return (
             <div className="hash-tag" onClick={removeHashTag(idx)} key={tag}>
-              # {tag}
+              {tag}
             </div>
           );
         })}
@@ -59,6 +67,7 @@ const HashTag = () => {
           placeholder="#태그는 최대 4개입니다."
           onChange={changeHashInput}
           onKeyUp={createHashTag}
+          onKeyDown={onKeyDownRemoveTag}
         />
         <span></span>
       </St.HashTagWrapper>
