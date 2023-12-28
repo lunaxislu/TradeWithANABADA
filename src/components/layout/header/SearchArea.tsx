@@ -28,7 +28,7 @@ const SearchArea = () => {
     }
 
     // TODO: navigate to detail.. useParams 구성 필요
-    // navigate(`/detail/${}`)
+    navigate(`/product/search?${inputRef.current.value}`);
   };
 
   return (
