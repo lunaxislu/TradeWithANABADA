@@ -7,7 +7,7 @@ export const Container = styled.div`
 `;
 export const FormButton = styled.button`
   display: block;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   width: 100%;
   padding: 1rem;
@@ -18,7 +18,7 @@ export const FormButton = styled.button`
   &:hover {
     border: 1px solid #ffae73;
     background-color: #ffae73;
-    transition: all 0.5s;
+    transition: background-color 0.5s;
     color: #fff;
   }
 `;
