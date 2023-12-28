@@ -24,7 +24,7 @@ const ProductLoader = () => {
   }, [decodedSearch]);
 
   return (
-    <>
+    <div>
       <div>해당 페이지는 검색한 키워드의 상품들이 보입니다.</div>
       {state?.map((item) => (
         <div key={item.id}>
@@ -34,7 +34,7 @@ const ProductLoader = () => {
           <div>{item.price}</div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
