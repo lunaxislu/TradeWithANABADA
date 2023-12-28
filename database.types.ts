@@ -82,19 +82,29 @@ export interface Database {
       hash_tag: {
         Row: {
           created_at: string;
-          hash_tag: string[] | null;
+
+          hash_tag: string[];
+
+
+
           id: number;
           post_id: number;
         };
         Insert: {
           created_at?: string;
-          hash_tag?: string[] | null;
+
+          hash_tag: string[];
+
+
           id?: number;
           post_id: number;
         };
         Update: {
           created_at?: string;
-          hash_tag?: string[] | null;
+
+          hash_tag: string[];
+
+
           id?: number;
           post_id?: number;
         };
@@ -156,9 +166,13 @@ export interface Database {
         };
         Insert: {
           content?: string | null;
-          createdAt: string;
-          id: number;
-          price: string;
+
+          // 등록 할 때는 createdAt, id DB에서 생성되기 때문에 필요가 없습니다. 받아올 때만 필요합니다.
+          createdAt?: string;
+          id?: number;
+          price?: string | null;
+
+
           productImg?: string | null;
           title?: string | null;
           userId: string;

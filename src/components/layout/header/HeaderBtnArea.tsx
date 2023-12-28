@@ -18,8 +18,6 @@ const HeaderBtnArea = () => {
 
   const checkUserSession = async () => {
     const userSession = await getUserSession();
-    console.log(userSession);
-    console.log(!!userSession.session);
     setIsLogin(!!userSession.session);
   };
 

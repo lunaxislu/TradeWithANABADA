@@ -19,6 +19,8 @@ const ImageCard = ({
   setImageIndex,
   setNoTransition,
   noTransition,
+  setImgFiles,
+  imgFiles,
 }: PropsCardType) => {
   // previewImage 삭제 버튼입니다.
   const deletePreviewImage = (id: number) => () => {
@@ -33,6 +35,8 @@ const ImageCard = ({
     });
     setNoTransition(true);
     setShowImages(editImages);
+    const updateImgFiles = imgFiles.filter((_, idx) => idx !== id);
+    setImgFiles(updateImgFiles);
     setTimeout(() => setNoTransition(false), 500);
   };
 
