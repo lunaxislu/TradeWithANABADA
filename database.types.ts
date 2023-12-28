@@ -299,7 +299,19 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_popular_products: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          createdat: string;
+          price: number;
+          productimg: string;
+          userid: string;
+          like_count: number;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;

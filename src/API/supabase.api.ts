@@ -180,13 +180,7 @@ export const getLatestProducts = async () => {
 
 // 인기 게시물 가져오기 (like 수)
 export const getPopularProducts = async () => {
-  const { data: latestProducts, error } = await supabase
-    .from('products')
-    .select(`*,likes`)
-    .order('createdAt', { ascending: false })
-    .limit(4);
-
+  const { data, error } = await supabase.rpc('get_popular_products');
   if (error) throw error;
-
-  return latestProducts;
+  return data;
 };
