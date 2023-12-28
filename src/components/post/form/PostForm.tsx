@@ -7,6 +7,9 @@ import HashTag from './hashTag/HashTag';
 import ProductInfo from './productInfo/ProductInfo';
 import ProductText from './productText/ProductText';
 
+/**
+ * 코드 리팩토링 필요
+ */
 type PropsType = {
   imgFiles: File[];
 };
