@@ -79,31 +79,19 @@ export interface Database {
       hash_tag: {
         Row: {
           created_at: string;
-          hash_1: string | null;
-          hash_2: string | null;
-          hash_3: string | null;
-          hash_4: string | null;
-          hash_5: string | null;
+          hash_tag: string[];
           id: number;
           post_id: number;
         };
         Insert: {
           created_at?: string;
-          hash_1?: string | null;
-          hash_2?: string | null;
-          hash_3?: string | null;
-          hash_4?: string | null;
-          hash_5?: string | null;
+          hash_tag: string[];
           id?: number;
           post_id: number;
         };
         Update: {
           created_at?: string;
-          hash_1?: string | null;
-          hash_2?: string | null;
-          hash_3?: string | null;
-          hash_4?: string | null;
-          hash_5?: string | null;
+          hash_tag: string[];
           id?: number;
           post_id?: number;
         };
