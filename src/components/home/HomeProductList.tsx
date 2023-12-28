@@ -7,7 +7,7 @@ type ProductListProps = {
   type: string;
 };
 
-export type ProductData = {
+type ProductData = {
   product_id: number;
   title: string;
   content: string;
