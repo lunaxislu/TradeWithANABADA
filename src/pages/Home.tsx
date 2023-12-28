@@ -1,35 +1,41 @@
+import HomeProductList from '../components/home/HomeProductList';
 import HomeSlideBanner from '../components/home/HomeSlideBanner';
 
 const Home = () => {
   return (
     <div>
       <HomeSlideBanner />
-      <section>
-        <h2>방금 등록된 상품</h2>
-        <ul>
-          <li>카드1</li>
-          <li>카드2</li>
-        </ul>
-        <button>최신 등록 물품 더보기</button>
-      </section>
-      <section>
-        <h2>추천 등록 상품</h2>
-        <ul>
-          <li>카드1</li>
-          <li>카드2</li>
-        </ul>
-        <button>추천 등록 상품 더보기</button>
-      </section>
-      <section>
-        <h2>인기 등록 물품</h2>
-        <ul>
-          <li>카드1</li>
-          <li>카드2</li>
-        </ul>
-        <button>인기 등록 물품 더보기</button>
-      </section>
+      <HomeProductList title="최신 등록 상품" />
+      <HomeProductList title="추천 등록 상품" />
+      <HomeProductList title="인기 등록 상품" />
     </div>
   );
+  // import { useEffect } from 'react';
+  // import { getUserData, getUserSession } from '../API/supabase.api';
+  // import { useAuth } from '../hooks/userHook/useAuth';
+
+  // const Home = () => {
+  //   // 로그인 세션 테스트 코드
+  //   const { logout } = useAuth();
+  //   useEffect(() => {
+  //     const getUserInfo = async () => {
+  //       const s = await getUserData();
+  //       console.log('getUserInfo: ', s);
+  //     };
+  //     const getUserToken = async () => {
+  //       const s = await getUserSession();
+  //       console.log('getUserToken: ', s);
+  //     };
+  //     getUserInfo();
+  //     getUserToken();
+  //   }, []);
+
+  //   return (
+  //     <>
+  //       <h1>Home</h1>
+  //       <button onClick={() => logout()}>로그아웃</button>
+  //     </>
+  //   );
 };
 
 export default Home;

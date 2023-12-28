@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { ReactComponent as Left } from '../../styles/assets/LeftButton.svg';
+import { ReactComponent as Right } from '../../styles/assets/RightButton.svg';
 import * as St from './home.styled';
 
 const slideInfo = ['red', 'black', 'white', 'green', 'gray'];
@@ -68,8 +70,12 @@ const HomeSlideBanner = () => {
         </St.SlideItems>
       </St.SlideViewer>
 
-      <St.SlideButton onClick={prevButtonHandler}>이전</St.SlideButton>
-      <St.SlideButton onClick={nextButtonHandler}>다음</St.SlideButton>
+      <St.SlideButton onClick={prevButtonHandler}>
+        <Left />
+      </St.SlideButton>
+      <St.SlideButton onClick={nextButtonHandler}>
+        <Right />
+      </St.SlideButton>
     </St.SlideContainer>
   );
 };

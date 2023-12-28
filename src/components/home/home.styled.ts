@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const SlideContainer = styled.div`
   position: relative;
+
+  z-index: 0;
 `;
 
 export const SlideViewer = styled.div`

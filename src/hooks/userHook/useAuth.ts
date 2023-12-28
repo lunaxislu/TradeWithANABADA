@@ -36,7 +36,7 @@ export const useAuth = () => {
     mutationFn: logoutHandler,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.LOGOUT] });
-      navigate('/auth/login');
+      navigate('/');
     },
   });
 
