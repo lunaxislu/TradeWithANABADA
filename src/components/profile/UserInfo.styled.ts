@@ -65,10 +65,21 @@ export const Nickname = styled.div`
     cursor: pointer;
   }
 `;
+export const UploadImg = styled.label`
+  text-align: center;
+  padding-top: 1.4rem;
+  font-size: 1.3rem;
+  border: none;
+  background-color: #dcdcdc;
+  margin: 0 auto;
+  width: 80%;
+  height: 4rem;
+  cursor: pointer;
+`;
 export const ProfileEdit = styled.button`
   border: none;
   background-color: #dcdcdc;
-  margin: 2rem auto;
+  margin: 1rem auto;
   width: 80%;
   height: 4rem;
   cursor: pointer;
