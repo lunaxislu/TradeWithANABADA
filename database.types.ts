@@ -150,16 +150,16 @@ export interface Database {
           createdAt: string;
           id: number;
           price: string;
-          productImg: string | null;
+          productImg: string[] | null;
           title: string | null;
           userId: string;
         };
         Insert: {
           content?: string | null;
-          createdAt: string;
-          id: number;
+          createdAt?: string;
+          id?: number;
           price: string;
-          productImg?: string | null;
+          productImg?: string[] | null;
           title?: string | null;
           userId: string;
         };
@@ -168,7 +168,7 @@ export interface Database {
           createdAt?: string;
           id?: number;
           price?: string;
-          productImg?: string | null;
+          productImg?: string[] | null;
           title?: string | null;
           userId?: string;
         };
@@ -298,7 +298,7 @@ export interface Database {
           content: string;
           createdat: string;
           price: string;
-          productimg: string;
+          productimg: string[];
           userid: string;
           like_count: number;
         }[];
@@ -311,7 +311,7 @@ export interface Database {
           content: string;
           createdat: string;
           price: string;
-          productimg: string;
+          productimg: string[];
           userid: string;
           like_count: number;
         }[];
