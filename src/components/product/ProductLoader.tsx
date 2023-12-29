@@ -6,7 +6,7 @@ import { ReactComponent as Heart } from '../../styles/assets/heart.svg';
 import * as St from './ProductLoader.styled';
 
 const ProductLoader = () => {
-  const [searchParams, setSearchParams] = useSearchParams('');
+  const [searchParams] = useSearchParams('');
   const search = searchParams.get('search');
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const { data: products, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteProducts(search || '');
@@ -21,21 +21,19 @@ const ProductLoader = () => {
   return (
     <>
       <St.Container>
-        <St.TitleWrapper>
-          <span>검색 결과: {search}</span>
-        </St.TitleWrapper>
+        <St.TitleWrapper>{<span>{`${search}에 대한 결과`}</span>}</St.TitleWrapper>
 
         <St.ProductWrapper>
           <St.List>
             {products?.pages.map((page, i) => {
-              if (page.length === 0) return null;
+              if (page?.length === 0) return null;
 
               return (
                 <>
-                  {page?.map((product, i) => (
+                  {page.map((product, i) => (
                     // key 수정 필요
                     <li key={i}>
-                      {product.productImg ? <img src={product.productImg[0]} alt="" /> : <img src="" alt="" />}
+                      {product.productimg ? <img src={product.productimg[0]} alt="" /> : <img src="" alt="" />}
                       <St.HeartBox>
                         <Heart />
                         <span>1</span>
