@@ -304,6 +304,9 @@ export const getPopularProducts = async (limitNum: number) => {
 export const updateUserData = async (nickname: string) => {
   const { data, error } = await supabase.auth.updateUser({ data: { full_name: `${nickname}` } });
 };
+export const updateTableNickname = async (uid: string, nickname: string) => {
+  const { error } = await supabase.from('users').update({ nickname: nickname }).eq('id', uid);
+};
 
 // 유저 프로필 사진 업로드하기
 export const uploadProfileImage = async (uid: string, file: File) => {
@@ -311,13 +314,20 @@ export const uploadProfileImage = async (uid: string, file: File) => {
     // const fileName = `${uid}/${file.name}`;
     const fileName = `${uid}/img`;
     const { data, error } = await supabase.storage.from(`profile-images`).upload(fileName, file);
+    // console.log(data && data.fullPath);
   } catch (error) {
     console.log(error);
   }
 };
+// INSERT : 유저 프로필 사진을 테이블에 insert
+export const insertProfileImg = async (uid: string, url: string) => {
+  const { error } = await supabase.from('users').update({ avatar_img: url }).eq('id', uid);
+};
+
 // 유저 프로필 사진 url 받아오기
-export const getImageUrl = async (uid: string) => {
-  const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
+export const downloadUrl = async (uid: string) => {
+  // const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
+  const { data } = supabase.storage.from(`profile-images`).getPublicUrl(`${uid}/img`);
   return data;
 };
 // 유저 프로필 사진 삭제하기

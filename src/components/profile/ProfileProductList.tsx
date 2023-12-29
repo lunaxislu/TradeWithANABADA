@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getLatestProducts, getPopularProducts } from '../../API/supabase.api';
 import { ProductData } from '../home/HomeProductList';
 import ProductCard from '../ui/productCard/ProductCard';
 import * as St from './Profile.styled';
+import ProfileBtn from './ProfileBtn';
 
 type ProductListProps = {
   type: string;
@@ -25,14 +27,16 @@ const productSectionInfos: Record<string, ProductSectionInfoType> = {
 };
 const ProfileProductList = ({ type, uid }: ProductListProps) => {
   const [products, setProducts] = useState<ProductData[]>();
+  console.log(uid);
 
   const getProductsData = async () => {
     const data = await productSectionInfos[type].getProductHandler(4);
-    // const filteredData = data.filter((item) => {
-    //   return item.userid === uid;
-    // });
-    // console.log(filteredData);
-    // setProducts(data);
+    console.log(data);
+    const filteredData = data.filter((item) => {
+      return item.user_id === uid;
+    });
+    console.log(filteredData);
+    setProducts(data);
   };
 
   useEffect(() => {
@@ -40,11 +44,12 @@ const ProfileProductList = ({ type, uid }: ProductListProps) => {
   }, []);
   return (
     <St.ProductListSection>
+      {products?.map((item) => <ProfileBtn item={item.user_id} />)}
       {/* <List /> */}
       <div>
         <h2>{productSectionInfos[type].title}</h2>
 
-        {/* <Link to={''}>{productSectionInfos[type].title} 더보기</Link> */}
+        <Link to={''}>누군가의 페이지로 가기</Link>
       </div>
       <St.ProductListArea>
         <ul>{products?.map((product) => <ProductCard key={product.product_id} productInfo={product} />)}</ul>

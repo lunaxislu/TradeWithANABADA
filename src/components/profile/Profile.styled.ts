@@ -99,7 +99,14 @@ export const ProfileEdit = styled.button`
   height: 4rem;
   cursor: pointer;
 `;
-
+export const ProfileReview = styled.button`
+  border: none;
+  background-color: #dcdcdc;
+  margin: 1rem auto;
+  width: 80%;
+  height: 4rem;
+  cursor: pointer;
+`;
 export const ReviewBox = styled.div`
   padding: 1rem;
   border: 0.2rem solid #dcdcdc;

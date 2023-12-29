@@ -1,14 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
-import { deleteImage, getImageUrl, getUserSession, updateUserData, uploadProfileImage } from '../../API/supabase.api';
+import {
+  deleteImage,
+  downloadUrl,
+  getUserSession,
+  insertProfileImg,
+  updateTableNickname,
+  updateUserData,
+  uploadProfileImage,
+} from '../../API/supabase.api';
 import defaultImg from '../../styles/assets/user.svg';
 import * as St from './Profile.styled';
 
 type UidProps = {
   uid: string;
+  params: string | undefined;
 };
 
-const UpdateProfile = ({ uid }: UidProps) => {
-
+const UpdateProfile = ({ uid, params }: UidProps) => {
   const [edit, setEdit] = useState(false);
   const [nickname, setNickname] = useState('');
   const [img, setImg] = useState<File | undefined>(undefined);
@@ -40,15 +48,18 @@ const UpdateProfile = ({ uid }: UidProps) => {
         alert('변경 완료되었습니다.');
         setEdit(!edit);
         updateUserData(nickname);
+        updateTableNickname(userUid, nickname);
       }
     }
   };
 
   const downloadImgUrl = async (userUid: string) => {
-    const getImgUrl = await getImageUrl(userUid);
+    const getImgUrl = await downloadUrl(userUid);
     if (getImgUrl) {
+      console.log(getImgUrl.publicUrl);
       if (imgRef.current) {
-        imgRef.current.src = getImgUrl?.signedUrl;
+        imgRef.current.src = getImgUrl?.publicUrl;
+        await insertProfileImg(uid, getImgUrl.publicUrl);
       }
     }
   };
@@ -99,7 +110,11 @@ const UpdateProfile = ({ uid }: UidProps) => {
               />
             </>
           ) : null}
-          <St.ProfileEdit>{edit ? '프로필 변경 완료' : '프로필 변경하기'}</St.ProfileEdit>
+          {uid === params ? (
+            <St.ProfileEdit>{edit ? '프로필 변경 완료' : '프로필 변경하기'}</St.ProfileEdit>
+          ) : (
+            <St.ProfileReview></St.ProfileReview>
+          )}
         </St.ProfileInfo>{' '}
       </form>
     </>
