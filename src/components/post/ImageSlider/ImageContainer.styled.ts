@@ -1,11 +1,18 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
   height: 100%;
-  .slide-wrapper {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
+  > :nth-child(1) {
+    img {
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      height: 100%;
+    }
+  }
+  > #file {
+    display: none;
   }
 `;

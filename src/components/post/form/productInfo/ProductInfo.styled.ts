@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  > :nth-child(1) {
+    margin-top: 2.3rem;
+  }
   > :nth-child(2) {
-    margin-top: 1.3rem;
+    margin-top: 3.3rem;
   }
 `;
 

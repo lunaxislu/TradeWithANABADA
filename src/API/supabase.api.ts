@@ -156,6 +156,8 @@ export const insertProduct = async (info: ParamForRegist) => {
   if (error) {
     throw console.log(error);
   }
+  console.log(data);
+  return data;
 };
 
 /**
