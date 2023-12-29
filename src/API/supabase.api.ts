@@ -47,6 +47,21 @@ export const loginHandler = async (values: users) => {
 };
 
 /**
+ * 유저 정보 저장
+ * @param values 이메일, 아이디, 가입일, 닉네임
+ * @returns data
+ */
+export const saveUser = async (values: users) => {
+  const { email, id, created_at, full_name } = values;
+  const { data, error } = await supabase
+    .from('users')
+    .insert([{ email, id, created_at, nickname: full_name }])
+    .select();
+  if (error) throw error;
+  return data;
+};
+
+/**
  * 소셜 로그인
  * @param provider 구글, 카카오
  */
