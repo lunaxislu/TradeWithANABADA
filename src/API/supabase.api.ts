@@ -156,6 +156,8 @@ export const insertProduct = async (info: ParamForRegist) => {
   if (error) {
     throw console.log(error);
   }
+  console.log(data);
+  return data;
 };
 
 /**
@@ -208,7 +210,7 @@ const insertImageStorage = async (id: number, files: File[], date: string, uuid:
   const { data, error } = await supabase
     .from('products')
     .update({
-      productImg: urls,
+      productimg: urls,
     })
     .eq('id', id) // product_id를 찾는 eq입니다.
     .select();
@@ -236,16 +238,6 @@ export const getProducts = async (page: number) => {
  * @returns 검색 결과
  */
 export const searchProducts = async (page: number, keyword: string) => {
-  // 상품 title, content에서 keyword 검색, 예를 들어 keyword가 '테스트'라면 '테스'로도 검색됨
-  // const { data: titleData, error: titleError } = await supabase
-  //   .from('products')
-  //   .select('*')
-  //   .like('title', `${keyword}%`);
-  // const { data: contentData, error: contentError } = await supabase
-  //   .from('products')
-  //   .select('*')
-  //   .like('content', `${keyword}%`);
-
   const { data: titleData, error: titleError } = await supabase
     .from('products')
     .select('*')
@@ -271,12 +263,19 @@ export const searchProducts = async (page: number, keyword: string) => {
 
 // 최신 게시물 가져오기 (메인)
 export const getLatestProducts = async (limitNum: number) => {
-  if (!!limitNum) {
-    const { data, error } = await supabase.rpc('get_latest_products').limit(limitNum);
-    if (error) throw error;
-    return data;
+  const newNum = limitNum === 0 ? 4 : limitNum;
+
+  if (limitNum === 0) {
+    if (newNum === 4) {
+      const { data, error } = await supabase.rpc('get_latest_products').limit(newNum);
+      if (error) throw error;
+
+      return data;
+    } else {
+      return [];
+    }
   } else {
-    const { data, error } = await supabase.rpc('get_latest_products');
+    const { data, error } = await supabase.rpc('get_latest_products').range(newNum * 10 - 10, newNum * 10 - 1);
     if (error) throw error;
     return data;
   }
@@ -284,12 +283,18 @@ export const getLatestProducts = async (limitNum: number) => {
 
 // 인기 게시물 가져오기 (like 수)
 export const getPopularProducts = async (limitNum: number) => {
-  if (!!limitNum) {
-    const { data, error } = await supabase.rpc('get_popular_products').limit(limitNum);
-    if (error) throw error;
-    return data;
+  const newNum = limitNum === 0 ? 4 : limitNum;
+
+  if (limitNum === 0) {
+    if (newNum) {
+      const { data, error } = await supabase.rpc('get_popular_products').limit(newNum);
+      if (error) throw error;
+      return data;
+    } else {
+      return [];
+    }
   } else {
-    const { data, error } = await supabase.rpc('get_popular_products');
+    const { data, error } = await supabase.rpc('get_popular_products').range(newNum * 10 - 10, newNum * 10 - 1);
     if (error) throw error;
     return data;
   }
