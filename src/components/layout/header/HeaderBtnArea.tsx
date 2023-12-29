@@ -9,6 +9,7 @@ const HeaderBtnArea = () => {
   const navigate = useNavigate();
 
   const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [uid, setUid] = useState('');
 
   const { logout } = useAuth();
 
@@ -19,6 +20,10 @@ const HeaderBtnArea = () => {
   const checkUserSession = async () => {
     const userSession = await getUserSession();
     setIsLogin(!!userSession.session);
+    if (userSession !== null && userSession.session && userSession.session.user) {
+      const userUid = userSession.session?.user.id;
+      setUid(userUid);
+    }
   };
 
   useEffect(() => {
@@ -37,7 +42,7 @@ const HeaderBtnArea = () => {
       text: '내정보',
       isLogin: true,
       clickHandler: () => {
-        headerNavigateHandler('profile');
+        headerNavigateHandler(`profile/${uid}`);
       },
     },
     {

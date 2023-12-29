@@ -47,6 +47,21 @@ export const loginHandler = async (values: users) => {
 };
 
 /**
+ * 유저 정보 저장
+ * @param values 이메일, 아이디, 가입일, 닉네임
+ * @returns data
+ */
+export const saveUser = async (values: users) => {
+  const { email, id, created_at, full_name } = values;
+  const { data, error } = await supabase
+    .from('users')
+    .insert([{ email, id, created_at, nickname: full_name }])
+    .select();
+  if (error) throw error;
+  return data;
+};
+
+/**
  * 소셜 로그인
  * @param provider 구글, 카카오
  */
@@ -302,23 +317,33 @@ export const getPopularProducts = async (limitNum: number) => {
 export const updateUserData = async (nickname: string) => {
   const { data, error } = await supabase.auth.updateUser({ data: { full_name: `${nickname}` } });
 };
+export const updateTableNickname = async (uid: string, nickname: string) => {
+  const { error } = await supabase.from('users').update({ nickname: nickname }).eq('id', uid);
+};
 
-// 유저 프로필 사진 저장하기
+// 유저 프로필 사진 업로드하기
 export const uploadProfileImage = async (uid: string, file: File) => {
   try {
     // const fileName = `${uid}/${file.name}`;
     const fileName = `${uid}/img`;
     const { data, error } = await supabase.storage.from(`profile-images`).upload(fileName, file);
+    // console.log(data && data.fullPath);
   } catch (error) {
     console.log(error);
   }
 };
-
-export const getImageUrl = async (uid: string) => {
-  const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
-  return data;
+// INSERT : 유저 프로필 사진을 테이블에 insert
+export const insertProfileImg = async (uid: string, url: string) => {
+  const { error } = await supabase.from('users').update({ avatar_img: url }).eq('id', uid);
 };
 
+// 유저 프로필 사진 url 받아오기
+export const downloadUrl = async (uid: string) => {
+  // const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
+  const { data } = supabase.storage.from(`profile-images`).getPublicUrl(`${uid}/img`);
+  return data;
+};
+// 유저 프로필 사진 삭제하기
 export const deleteImage = async (uid: string) => {
   const { data, error } = await supabase.storage.from(`profile-images`).remove([`${uid}/img`]);
 };
@@ -342,9 +367,7 @@ export const getUserPoint = async (uid: string) => {
 
 export const findLike = async (user_id: string, post_id: number) => {
   if (user_id && post_id) {
-    console.log(user_id, post_id);
     const { data } = await supabase.from('likes').select().eq('user_id', user_id).eq('post_id', post_id);
-    console.log(data);
     return data;
   }
 };
@@ -355,8 +378,6 @@ export const cancelLike = async (post_id: number) => {
 };
 
 export const registLike = async (user_id: string, post_id: number) => {
-  console.log(user_id, post_id);
   const { data, error } = await supabase.from('likes').insert([{ post_id, user_id }]).select();
-  console.log(data);
-  console.log('등록완료');
+  console.log('찜하기 완료');
 };
