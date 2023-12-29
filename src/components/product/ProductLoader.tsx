@@ -1,13 +1,15 @@
 import { useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useInfiniteProducts } from '../../hooks/uiHook/useInfiniteProducts';
 import { useInfiniteScroll } from '../../hooks/uiHook/useInfiniteScroll';
+import { ReactComponent as Heart } from '../../styles/assets/heart.svg';
+import * as St from './ProductLoader.styled';
 
 const ProductLoader = () => {
-  const { search } = useLocation();
-  const decodedSearch = decodeURIComponent(search).replaceAll('?', '');
+  const [searchParams, setSearchParams] = useSearchParams('');
+  const search = searchParams.get('search');
   const loadMoreRef = useRef<HTMLDivElement>(null);
-  const { data: products, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteProducts(decodedSearch);
+  const { data: products, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteProducts(search || '');
 
   useInfiniteScroll({
     target: loadMoreRef,
