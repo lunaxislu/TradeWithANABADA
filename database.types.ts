@@ -100,19 +100,22 @@ export interface Database {
           chat_id: number | null
           created_at: string
           id: number
-          user_id: string | null
+          user1_id: string
+          user2_id: string
         }
         Insert: {
           chat_id?: number | null
           created_at?: string
           id?: number
-          user_id?: string | null
+          user1_id: string
+          user2_id: string
         }
         Update: {
           chat_id?: number | null
           created_at?: string
           id?: number
-          user_id?: string | null
+          user1_id?: string
+          user2_id?: string
         }
         Relationships: [
           {
@@ -123,8 +126,15 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "chat_user_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "chat_user_user1_id_fkey"
+            columns: ["user1_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_user_user2_id_fkey"
+            columns: ["user2_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -281,42 +291,6 @@ export interface Database {
           }
         ]
       }
-      productsToCategories2: {
-        Row: {
-          category2_id: number | null
-          created_at: string
-          id: number
-          product_id: number | null
-        }
-        Insert: {
-          category2_id?: number | null
-          created_at?: string
-          id?: number
-          product_id?: number | null
-        }
-        Update: {
-          category2_id?: number | null
-          created_at?: string
-          id?: number
-          product_id?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "productsToCategories2_category2_id_fkey"
-            columns: ["category2_id"]
-            isOneToOne: false
-            referencedRelation: "categories2"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "productsToCategories2_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       review: {
         Row: {
           created_at: string
@@ -357,6 +331,7 @@ export interface Database {
       }
       users: {
         Row: {
+          avatar_img: string | null
           created_at: string
           email: string
           id: string
@@ -364,6 +339,7 @@ export interface Database {
           point: number | null
         }
         Insert: {
+          avatar_img?: string | null
           created_at?: string
           email: string
           id: string
@@ -371,6 +347,7 @@ export interface Database {
           point?: number | null
         }
         Update: {
+          avatar_img?: string | null
           created_at?: string
           email?: string
           id?: string
@@ -422,6 +399,18 @@ export interface Database {
           hash_tags: string[]
           category1_name: string
           category2_name: string
+        }[]
+      }
+      get_user_channel: {
+        Args: {
+          input_user_id: string
+        }
+        Returns: {
+          chat_id: number
+          chat_created_at: string
+          user1_id: string
+          user2_id: string
+          messages: Json[]
         }[]
       }
     }
