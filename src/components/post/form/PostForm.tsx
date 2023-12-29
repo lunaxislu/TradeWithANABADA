@@ -55,14 +55,26 @@ const PostForm = ({ imgFiles }: PropsType) => {
     // post_id && createdAt를 가져와서 storage의 고유 경로로 사용합니다.
     const post_id = data?.[0].id!;
     const date = data?.[0].createdAt!;
-    await postImagesFromStorage(post_id, info.imgFiles, date);
+    await insertHashTag(post_id, info.tags);
+    await insertImageStorage(post_id, info.imgFiles, date);
 
     if (error) {
       throw console.log(error);
     }
   };
+  const insertHashTag = async (post_id: number, hash_tag: string[]) => {
+    const { data } = await supabase
+      .from('hash_tag')
+      .insert([
+        {
+          post_id,
+          hash_tag,
+        },
+      ])
+      .select();
+  };
 
-  const postImagesFromStorage = async (id: number, files: File[], date: string) => {
+  const insertImageStorage = async (id: number, files: File[], date: string) => {
     // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
     const uploadImage = files.map(async (file) => {
       // nano id를 사용해서 이미지 고유 이름으로 넣습니다.
