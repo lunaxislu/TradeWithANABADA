@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const HomeWrapper = styled.div`
+  width: 100rem;
+  margin: auto;
+`;
 export const SlideContainer = styled.div`
   position: relative;
 
@@ -44,10 +48,27 @@ export const SlideButton = styled.div`
   }
 `;
 
-export const ProductListSection = styled.section``;
+export const ProductListSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > h2 {
+    align-self: flex-start;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  & > button {
+    position: absolute;
+  }
+`;
+
 export const ProductListArea = styled.div`
   display: flex;
+  width: 100%;
+
   & > ul {
+    width: 100%;
     display: flex;
+    justify-content: space-between;
   }
 `;

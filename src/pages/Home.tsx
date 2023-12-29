@@ -1,13 +1,16 @@
 import HomeProductList from '../components/home/HomeProductList';
 import HomeSlideBanner from '../components/home/HomeSlideBanner';
+import * as St from '../components/home/home.styled';
 
 const Home = () => {
   return (
-    <div>
+    <>
       <HomeSlideBanner />
-      <HomeProductList type="latest" />
-      <HomeProductList type="popular" />
-    </div>
+      <St.HomeWrapper>
+        <HomeProductList type="latest" />
+        <HomeProductList type="popular" />
+      </St.HomeWrapper>
+    </>
   );
 };
 
