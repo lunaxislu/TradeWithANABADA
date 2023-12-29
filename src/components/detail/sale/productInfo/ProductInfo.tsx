@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserPoint } from '../../../../API/supabase.api';
 import { displayCreateAt } from '../../../../utils/date';
+import Button from '../ButtonGroup/Button';
 import { ProductInfoType } from '../Sale';
 import * as St from './ProductInfo.styled';
 type PropsType = {
@@ -15,13 +16,10 @@ type UserStateType = {
   point: number | null;
 };
 const ProductInfo = ({ userData, productInfo }: PropsType) => {
-  console.log(userData);
-  console.log(productInfo);
   const [userState, setUserState] = useState<null | UserStateType>(null);
 
   useEffect(() => {
     getUserPoint(productInfo.user_id).then((result) => {
-      console.log(result);
       if (result && result[0]) {
         setUserState(result[0]);
       }
@@ -31,6 +29,7 @@ const ProductInfo = ({ userData, productInfo }: PropsType) => {
 
   return (
     <St.Container>
+      {/* 상품 제목과 상품의 가치를 등록한 유저가 측정내용입니다.  */}
       <St.ProductText>
         <St.CreatedDate>{displayCreateAt(productInfo.created_at)}</St.CreatedDate>
         <div className="text-wrapper">
@@ -42,6 +41,8 @@ const ProductInfo = ({ userData, productInfo }: PropsType) => {
           <div>{productInfo.price}</div>
         </div>
       </St.ProductText>
+
+      {/* 상품등록한 user의 profile 입니다. */}
       <St.User>
         <div className="user-wrapper">
           <div className="user-info">
@@ -56,19 +57,19 @@ const ProductInfo = ({ userData, productInfo }: PropsType) => {
           <Link to={`/profile/${productInfo.user_id}`}>상세페이지로 이동</Link>
         </div>
       </St.User>
+
+      {/* 교환하고싶은 태그 모음입니다. */}
       <St.HashTag>
         <h4>희망 교환 품목</h4>
         <div className="tag-wrapper">
           {productInfo.hash_tags.map((tag, idx) => {
-            return <span>{tag}</span>;
+            return <span key={tag}>{tag}</span>;
           })}
         </div>
       </St.HashTag>
 
-      <St.ButtonContainer>
-        <button>찜하기</button>
-        <button>Talk 보내기</button>
-      </St.ButtonContainer>
+      {/* 좋아요와 대화하기 버튼 모음입니다. */}
+      <Button post_id={productInfo.product_id} user_id={userData.id} />
     </St.Container>
   );
 };

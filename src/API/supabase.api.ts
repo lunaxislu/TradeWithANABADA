@@ -329,7 +329,7 @@ export const downloadImage = async (uid: string): Promise<Blob | null> => {
 };
 
 /**
- * user의 point 등급을 가져오는 함수입니다.
+ * user의 point& nickname 가져오는 함수입니다.
  * @param [{}] 형태로 가져옵니다.
  */
 
@@ -338,4 +338,25 @@ export const getUserPoint = async (uid: string) => {
   if (data) {
     return data;
   }
+};
+
+export const findLike = async (user_id: string, post_id: number) => {
+  if (user_id && post_id) {
+    console.log(user_id, post_id);
+    const { data } = await supabase.from('likes').select().eq('user_id', user_id).eq('post_id', post_id);
+    console.log(data);
+    return data;
+  }
+};
+
+export const cancelLike = async (post_id: number) => {
+  const { error } = await supabase.from('likes').delete().eq('post_id', post_id);
+  console.log('삭제완료');
+};
+
+export const registLike = async (user_id: string, post_id: number) => {
+  console.log(user_id, post_id);
+  const { data, error } = await supabase.from('likes').insert([{ post_id, user_id }]).select();
+  console.log(data);
+  console.log('등록완료');
 };

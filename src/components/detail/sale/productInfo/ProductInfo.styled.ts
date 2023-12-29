@@ -31,13 +31,13 @@ export const ProductText = styled.div`
     }
 
     .product-value {
-      margin-top: 2rem;
+      margin-top: 2.6rem;
     }
   }
 `;
 
 export const User = styled.div`
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding-top: 2rem;
   border-top: 1px solid #aaa;
 
@@ -73,7 +73,7 @@ export const User = styled.div`
   }
 
   .user-name {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #666;
   }
@@ -96,12 +96,14 @@ export const HashTag = styled.div`
   }
 
   .tag-wrapper {
+    display: flex;
+    gap: 0.8rem;
     margin-top: 1.4rem;
 
     span {
       display: inline-block;
       border-radius: 1.2rem;
-      padding: 0.6rem 1.2rem;
+      padding: 0.6rem 0.8rem;
       color: #fff;
     }
     > :nth-child(1) {
@@ -119,8 +121,4 @@ export const HashTag = styled.div`
       background-color: #edc272;
     }
   }
-`;
-
-export const ButtonContainer = styled.div`
-  margin-top: 2.4rem;
 `;

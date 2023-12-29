@@ -26,7 +26,7 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
   useEffect(() => {
     getUserSession()
       .then((data) => {
-        setUserData(data.session?.user.user_metadata!);
+        setUserData(data.session?.user!);
       })
       .catch((error) => {
         console.log(error);
