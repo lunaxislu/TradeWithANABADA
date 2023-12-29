@@ -241,8 +241,7 @@ export const getProducts = async (page: number) => {
  */
 const searchInColumn = async (page: number, keyword: string, column: string) => {
   const { data, error } = await supabase
-    .from('products')
-    .select('*')
+    .rpc('get_latest_products')
     .textSearch(column, keyword, {
       type: 'websearch',
     })

@@ -12,7 +12,7 @@ export const TitleWrapper = styled.div`
   display: flex;
   width: 100%;
   padding: 2rem;
-  margin-left: 5rem;
+  flex-direction: row;
 
   span {
     font-size: 2.5rem;
@@ -20,16 +20,12 @@ export const TitleWrapper = styled.div`
   }
 `;
 
-export const ProductWrapper = styled.div`
-  display: flex;
-`;
-
 export const List = styled.ul`
-  gap: 2rem;
+  gap: 3rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  /* justify-content: center; // * */
+  justify-content: center;
 
   li {
     gap: 10px;
@@ -58,7 +54,7 @@ export const List = styled.ul`
 
 export const HeartBox = styled.section`
   gap: 0.5rem;
-  top: -14rem;
+  top: -15rem;
   right: 2rem;
   display: flex;
   position: absolute;
