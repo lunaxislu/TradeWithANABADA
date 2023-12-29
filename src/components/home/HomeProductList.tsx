@@ -50,9 +50,11 @@ const HomeProductList = ({ type }: ProductListProps) => {
 
   return (
     <St.ProductListSection>
-      <h2>{productSectionInfos[type].title}</h2>
-      {/* TODO: latest or popular > product page로 이동 */}
-      <Link to={''}>{productSectionInfos[type].title} 더보기</Link>
+      <div>
+        <h2>{productSectionInfos[type].title}</h2>
+        {/* TODO: latest or popular > product page로 이동 */}
+        <Link to={''}>{productSectionInfos[type].title} 더보기</Link>
+      </div>
       <St.ProductListArea>
         <ul>{products?.map((product) => <ProductCard key={product.product_id} productInfo={product} />)}</ul>
       </St.ProductListArea>
