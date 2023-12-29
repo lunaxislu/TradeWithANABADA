@@ -223,10 +223,7 @@ const insertImageStorage = async (id: number, files: File[], date: string, uuid:
  * @returns 상품 목록
  */
 export const getProducts = async (page: number) => {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .range(page * 10 - 10, page * 10 - 1);
+  const { data, error } = await supabase.from('products').select('*');
 
   if (error) throw error;
   return data;
@@ -237,7 +234,7 @@ export const getProducts = async (page: number) => {
  * @param keyword 검색어
  * @returns 검색 결과
  */
-export const searchProducts = async (keyword: string) => {
+export const searchProducts = async (page: number, keyword: string) => {
   // 상품 title, content에서 keyword 검색, 예를 들어 keyword가 '테스트'라면 '테스'로도 검색됨
   // const { data: titleData, error: titleError } = await supabase
   //   .from('products')
@@ -253,14 +250,16 @@ export const searchProducts = async (keyword: string) => {
     .select('*')
     .textSearch('title', keyword, {
       type: 'websearch',
-    });
+    })
+    .range(page * 10 - 10, page * 10 - 1);
 
   const { data: contentData, error: contentError } = await supabase
     .from('products')
     .select('*')
     .textSearch('content', keyword, {
       type: 'websearch',
-    });
+    })
+    .range(page * 10 - 10, page * 10 - 1);
 
   if (titleError || contentError) throw titleError || contentError;
 
