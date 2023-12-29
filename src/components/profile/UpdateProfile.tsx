@@ -3,6 +3,7 @@ import {
   deleteImage,
   downloadUrl,
   getUserSession,
+  imgPublicUrl,
   insertProfileImg,
   updateTableNickname,
   updateUserData,
@@ -47,20 +48,20 @@ const UpdateProfile = ({ uid, params }: UidProps) => {
         }
         alert('변경 완료되었습니다.');
         setEdit(!edit);
-        updateUserData(nickname);
-        updateTableNickname(userUid, nickname);
+        updateUserData(nickname); // auth 닉네임 변경
+        updateTableNickname(userUid, nickname); // users 테이블 nickname 변경
       }
     }
   };
 
   const downloadImgUrl = async (userUid: string) => {
     const getImgUrl = await downloadUrl(userUid);
-    if (getImgUrl) {
-      console.log(getImgUrl.publicUrl);
+    const getImgPublicUrl = await imgPublicUrl(userUid);
+    if (getImgUrl && getImgPublicUrl) {
       if (imgRef.current) {
-        imgRef.current.src = getImgUrl?.publicUrl;
-        await insertProfileImg(uid, getImgUrl.publicUrl);
+        imgRef.current.src = getImgUrl?.signedUrl;
       }
+      await insertProfileImg(uid, getImgPublicUrl.publicUrl);
     }
   };
 

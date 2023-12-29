@@ -27,15 +27,15 @@ const productSectionInfos: Record<string, ProductSectionInfoType> = {
 };
 const ProfileProductList = ({ type, uid }: ProductListProps) => {
   const [products, setProducts] = useState<ProductData[]>();
-  console.log(uid);
+  // console.log(uid);
 
   const getProductsData = async () => {
     const data = await productSectionInfos[type].getProductHandler(4);
-    console.log(data);
+    // console.log(data);
     const filteredData = data.filter((item) => {
       return item.user_id === uid;
     });
-    console.log(filteredData);
+    // console.log(filteredData);
     setProducts(data);
   };
 
@@ -44,7 +44,7 @@ const ProfileProductList = ({ type, uid }: ProductListProps) => {
   }, []);
   return (
     <St.ProductListSection>
-      {products?.map((item) => <ProfileBtn item={item.user_id} />)}
+      {products?.map((item, index) => <ProfileBtn key={index} item={item.user_id} />)}
       {/* <List /> */}
       <div>
         <h2>{productSectionInfos[type].title}</h2>

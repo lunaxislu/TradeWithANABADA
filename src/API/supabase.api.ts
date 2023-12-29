@@ -337,9 +337,14 @@ export const insertProfileImg = async (uid: string, url: string) => {
   const { error } = await supabase.from('users').update({ avatar_img: url }).eq('id', uid);
 };
 
-// 유저 프로필 사진 url 받아오기
+// 유저 프로필 사진 url 받아오기 (profile페이지 전용)
 export const downloadUrl = async (uid: string) => {
-  // const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
+  const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
+
+  return data;
+};
+// 프로필 사진 publicUrl 받아오기 (users 테이블에 넣어주는 용도)
+export const imgPublicUrl = async (uid: string) => {
   const { data } = supabase.storage.from(`profile-images`).getPublicUrl(`${uid}/img`);
   return data;
 };
