@@ -19,7 +19,7 @@ const ProductCard = ({ productInfo }: ProductCardProps) => {
     <St.CardContainer onClick={goToProductDetail}>
       <St.CardImage>
         {/* TODO: Product 정보의 썸네일 가져오기 */}
-        <img src={productInfo.productimg?.[0]} />
+        <img src={productInfo.product_img?.[0]} />
         {/* <img src={process.env.PUBLIC_URL + '/profile.jpeg'} /> */}
 
         <St.HeartSection>
@@ -28,7 +28,7 @@ const ProductCard = ({ productInfo }: ProductCardProps) => {
         </St.HeartSection>
       </St.CardImage>
 
-      <ProductCardInfo createAt={productInfo.createdat} price={productInfo.price} title={productInfo.title} />
+      <ProductCardInfo createAt={productInfo.created_at} price={productInfo.price} title={productInfo.title} />
     </St.CardContainer>
   );
 };

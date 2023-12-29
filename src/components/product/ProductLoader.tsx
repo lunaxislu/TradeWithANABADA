@@ -33,7 +33,7 @@ const ProductLoader = () => {
                   {page.map((product, i) => (
                     // key 수정 필요
                     <li key={i}>
-                      {product.productimg ? <img src={product.productimg[0]} alt="" /> : <img src="" alt="" />}
+                      {product.product_img ? <img src={product.product_img[0]} alt="" /> : <img src="" alt="" />}
                       <St.HeartBox>
                         <Heart />
                         <span>1</span>

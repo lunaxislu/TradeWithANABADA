@@ -142,13 +142,13 @@ export const insertProduct = async (info: ParamForRegist) => {
         title: info.title,
         content: info.content,
         price: info.price,
-        userId: info.userId,
+        user_id: info.userId,
       },
     ])
     .select();
   // post_id && createdAt를 가져와서 storage의 고유 경로로 사용합니다.
   const post_id = data?.[0].id!;
-  const date = data?.[0].createdAt!;
+  const date = data?.[0].created_at!;
 
   await insertHashTag(post_id, info.tags);
   await insertImageStorage(post_id, info.imgFiles, date, info.userId);
@@ -210,7 +210,7 @@ const insertImageStorage = async (id: number, files: File[], date: string, uuid:
   const { data, error } = await supabase
     .from('products')
     .update({
-      productimg: urls,
+      product_img: urls,
     })
     .eq('id', id) // product_id를 찾는 eq입니다.
     .select();

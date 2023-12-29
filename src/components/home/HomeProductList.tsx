@@ -12,12 +12,14 @@ export type ProductData = {
   product_id: number;
   title: string;
   content: string;
-  createdat: string;
+  created_at: string;
   price: string;
-  productimg: string[];
-  userid: string;
+  product_img: string[];
+  user_id: string;
   like_count: number;
   hash_tags: string[];
+  category1_name: string;
+  category2_name: string;
 };
 
 type ProductSectionInfoType = {
