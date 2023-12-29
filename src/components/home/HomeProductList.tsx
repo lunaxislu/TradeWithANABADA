@@ -40,7 +40,7 @@ const HomeProductList = ({ type }: ProductListProps) => {
   const [products, setProducts] = useState<ProductData[]>();
 
   const getProductsData = async () => {
-    const data = await productSectionInfos[type].getProductHandler(4);
+    const data = await productSectionInfos[type].getProductHandler(0);
     setProducts(data);
   };
 
@@ -52,8 +52,7 @@ const HomeProductList = ({ type }: ProductListProps) => {
     <St.ProductListSection>
       <div>
         <h2>{productSectionInfos[type].title}</h2>
-        {/* TODO: latest or popular > product page로 이동 */}
-        <Link to={''}>{productSectionInfos[type].title} 더보기</Link>
+        <Link to={`/product?search=${productSectionInfos[type].title}`}>{productSectionInfos[type].title} 더보기</Link>
       </div>
       <St.ProductListArea>
         <ul>{products?.map((product) => <ProductCard key={product.product_id} productInfo={product} />)}</ul>

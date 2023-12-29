@@ -26,9 +26,8 @@ const SearchArea = () => {
       alert('값을 입력해주세요');
       return;
     }
-
     // TODO: navigate to detail.. useParams 구성 필요
-    navigate(`/product/search?${inputRef.current.value}`);
+    navigate(`/product?search=${inputRef.current.value}`);
   };
 
   return (
