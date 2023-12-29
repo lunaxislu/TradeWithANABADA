@@ -7,14 +7,14 @@ import ProductInfo from './productInfo/ProductInfo';
 // ProductInfo Component에서 사용도 합니다.
 export type ProductInfoType = {
   content: string;
-  createdat: string;
+  created_at: string;
   hash_tags: string[];
   like_count: number;
   price: string;
   product_id: number;
-  productimg: string[];
+  product_img: string[];
   title: string;
-  userid: string;
+  user_id: string;
 };
 type PropsType = {
   productInfo: ProductInfoType;
@@ -36,7 +36,7 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
   return (
     <St.Container>
       <div className="product-info">
-        <ImgCard imgUrl={productInfo.productimg} />
+        <ImgCard imgUrl={productInfo.product_img} />
         <ProductInfo userData={userData} productInfo={productInfo} />
       </div>
 

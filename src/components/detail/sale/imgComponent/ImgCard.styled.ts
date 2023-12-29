@@ -9,10 +9,9 @@ export const Container = styled.div`
 
   .big-img_card {
     height: 80%;
-    padding: 1.6rem;
-    border: 1px solid #aaa;
-    border-radius: 12px;
+
     img {
+      border-radius: 12px;
       aspect-ratio: 4/3;
       height: 100%;
     }
