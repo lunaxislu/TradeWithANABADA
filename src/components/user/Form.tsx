@@ -1,10 +1,13 @@
+import { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { resetPasswordHandler, signInWithProvider } from '../../API/supabase.api';
+import { getUserData, resetPasswordHandler, saveUser, signInWithProvider } from '../../API/supabase.api';
 import { useAuth } from '../../hooks/userHook/useAuth';
 import { useInput } from '../../hooks/userHook/useInput';
 import { ReactComponent as Google } from '../../styles/assets/google.svg';
 import { ReactComponent as Kakao } from '../../styles/assets/kakao.svg';
 import * as St from './Form.styled';
+
+type Users = Record<string, string>;
 
 /**
  * TODO: 리팩토링 필요합니다.
@@ -21,6 +24,30 @@ const Form = () => {
     passwordCheck: '',
     name: '',
   });
+  const [info, setInfo] = useState<Users>();
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      if (params.auth === 'login') {
+        const token = await getUserData();
+        if (token) {
+          const info = {
+            id: token.id,
+            email: token.email,
+            created_at: new Date().toISOString(),
+            full_name: token.user_metadata.full_name,
+          };
+          setInfo(info as Users);
+          return info;
+        } else {
+          return [];
+        }
+      } else {
+        return [];
+      }
+    };
+    getUserInfo();
+  }, [params.auth]);
 
   return (
     <St.FormWrapper>
@@ -53,6 +80,7 @@ const Form = () => {
                       e.preventDefault();
                       reset();
                       login(value);
+                      saveUser(info as Users);
                     }}
                   >
                     로그인
