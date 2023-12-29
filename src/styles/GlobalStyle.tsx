@@ -19,6 +19,9 @@ img {
       width: 100%;
       vertical-align:top;
 }
+a,button{
+      all: unset;
+}
 
 `;
 

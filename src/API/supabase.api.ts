@@ -144,7 +144,7 @@ type ParamForRegist = {
   content: string;
   price: string;
   tags: string[];
-  userId: string;
+  user_id: string;
   imgFiles: File[];
 };
 
@@ -157,7 +157,7 @@ export const insertProduct = async (info: ParamForRegist) => {
         title: info.title,
         content: info.content,
         price: info.price,
-        user_id: info.userId,
+        user_id: info.user_id,
       },
     ])
     .select();
@@ -166,7 +166,7 @@ export const insertProduct = async (info: ParamForRegist) => {
   const date = data?.[0].created_at!;
 
   await insertHashTag(post_id, info.tags);
-  await insertImageStorage(post_id, info.imgFiles, date, info.userId);
+  await insertImageStorage(post_id, info.imgFiles, date, info.user_id);
 
   if (error) {
     throw console.log(error);
@@ -346,4 +346,38 @@ export const downloadUrl = async (uid: string) => {
 // 유저 프로필 사진 삭제하기
 export const deleteImage = async (uid: string) => {
   const { data, error } = await supabase.storage.from(`profile-images`).remove([`${uid}/img`]);
+};
+
+export const downloadImage = async (uid: string): Promise<Blob | null> => {
+  const { data, error } = await supabase.storage.from(`profile-images`).download(`${uid}/img`);
+  return data;
+};
+
+/**
+ * user의 point& nickname 가져오는 함수입니다.
+ * @param [{}] 형태로 가져옵니다.
+ */
+
+export const getUserPoint = async (uid: string) => {
+  const { data } = await supabase.from('users').select('point,nickname').eq('id', uid);
+  if (data) {
+    return data;
+  }
+};
+
+export const findLike = async (user_id: string, post_id: number) => {
+  if (user_id && post_id) {
+    const { data } = await supabase.from('likes').select().eq('user_id', user_id).eq('post_id', post_id);
+    return data;
+  }
+};
+
+export const cancelLike = async (post_id: number) => {
+  const { error } = await supabase.from('likes').delete().eq('post_id', post_id);
+  console.log('삭제완료');
+};
+
+export const registLike = async (user_id: string, post_id: number) => {
+  const { data, error } = await supabase.from('likes').insert([{ post_id, user_id }]).select();
+  console.log('찜하기 완료');
 };

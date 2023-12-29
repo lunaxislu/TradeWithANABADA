@@ -5,8 +5,6 @@ type PropsType = {
   imageIndex: number;
 };
 const ImageCard = ({ showImages, imageIndex }: PropsType) => {
-  console.log('array', showImages);
-  console.log('index', imageIndex);
   return (
     <St.Container>
       {showImages.length > 0 && <img src={showImages[imageIndex]} alt="preview 이미지입니다." />}
