@@ -16,6 +16,7 @@ export type ProductData = {
   productimg: string[];
   userid: string;
   like_count: number;
+  hash_tags: string[];
 };
 
 type ProductSectionInfoType = {
@@ -42,8 +43,6 @@ const HomeProductList = ({ type }: ProductListProps) => {
     setProducts(data);
   };
 
-  console.log(products);
-
   useEffect(() => {
     getProductsData();
   }, []);
@@ -51,9 +50,9 @@ const HomeProductList = ({ type }: ProductListProps) => {
   return (
     <St.ProductListSection>
       <h2>{productSectionInfos[type].title}</h2>
+      <button>{productSectionInfos[type].title} 더보기</button>
       <St.ProductListArea>
         <ul>{products?.map((product) => <ProductCard key={product.product_id} productInfo={product} />)}</ul>
-        <button>{productSectionInfos[type].title} 더보기</button>
       </St.ProductListArea>
     </St.ProductListSection>
   );

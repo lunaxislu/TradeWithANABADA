@@ -132,6 +132,7 @@ type ParamForRegist = {
   userId: string;
   imgFiles: File[];
 };
+
 export const insertProduct = async (info: ParamForRegist) => {
   // post Table에 우선 text들을 저장 합니다.
   const { data, error } = await supabase

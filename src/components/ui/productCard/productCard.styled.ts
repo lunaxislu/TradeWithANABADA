@@ -20,7 +20,7 @@ export const CardImage = styled.section`
   height: 21rem;
   & > img {
     width: 100%;
-    height: 100%;
+    height: 21rem;
     object-fit: cover;
   }
 `;
