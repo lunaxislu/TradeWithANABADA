@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getLatestProducts, getPopularProducts } from '../../API/supabase.api';
 import ProductCard from '../ui/productCard/ProductCard';
 import * as St from './home.styled';
@@ -21,7 +22,7 @@ export type ProductData = {
 
 type ProductSectionInfoType = {
   title: string;
-  getProductHandler: () => Promise<ProductData[]>;
+  getProductHandler: (arg1: number) => Promise<ProductData[]>;
 };
 
 const productSectionInfos: Record<string, ProductSectionInfoType> = {
@@ -39,7 +40,7 @@ const HomeProductList = ({ type }: ProductListProps) => {
   const [products, setProducts] = useState<ProductData[]>();
 
   const getProductsData = async () => {
-    const data = await productSectionInfos[type].getProductHandler();
+    const data = await productSectionInfos[type].getProductHandler(4);
     setProducts(data);
   };
 
@@ -49,8 +50,11 @@ const HomeProductList = ({ type }: ProductListProps) => {
 
   return (
     <St.ProductListSection>
-      <h2>{productSectionInfos[type].title}</h2>
-      <button>{productSectionInfos[type].title} 더보기</button>
+      <div>
+        <h2>{productSectionInfos[type].title}</h2>
+        {/* TODO: latest or popular > product page로 이동 */}
+        <Link to={''}>{productSectionInfos[type].title} 더보기</Link>
+      </div>
       <St.ProductListArea>
         <ul>{products?.map((product) => <ProductCard key={product.product_id} productInfo={product} />)}</ul>
       </St.ProductListArea>
