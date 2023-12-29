@@ -4,7 +4,7 @@ import { searchProducts } from '../../API/supabase.api';
 export const useInfiniteProducts = (keyword: string) => {
   return useInfiniteQuery({
     initialPageParam: 1,
-    queryKey: ['products'],
+    queryKey: ['products', keyword],
     queryFn: async ({ pageParam = 1 }) => await searchProducts(pageParam, keyword),
     getNextPageParam: (lastPage, allPage) => {
       if (lastPage.length === 0) {

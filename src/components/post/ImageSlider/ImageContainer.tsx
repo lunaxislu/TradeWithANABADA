@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import * as St from './ImageContainer.styled';
-import ImageSlider from './imageSlider/ImageSlider';
+import ImageCard from './imageCard/ImageCard';
+import ImageInput from './imageInput/ImageInput';
 
 type EventObject = ChangeEvent<HTMLInputElement>;
 
@@ -11,6 +12,7 @@ type PropsType = {
 
 const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
   const [showImages, setShowImages] = useState<string[]>([]);
+  const [imageIndex, setImageIndex] = useState(0);
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const previewImages = (e: EventObject) => {
@@ -32,6 +34,13 @@ const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
 
     setImgFiles((prev) => [...prev, e.target.files![0]]);
   };
+  const deletePreviewImage = (id: number) => {
+    const editImages = showImages.filter((_, idx) => idx !== id);
+    const updateImgFiles = imgFiles.filter((_, idx) => idx !== id);
+    setImageIndex(updateImgFiles.length - 1);
+    setShowImages(editImages);
+    setImgFiles(updateImgFiles);
+  };
   // 이미지가 등록되면 input file을 초기화 시켜줍니다.
   useEffect(() => {
     if (inputFileRef.current) {
@@ -41,15 +50,16 @@ const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
 
   return (
     <St.Container>
-      {showImages.length ? (
-        <ImageSlider
-          showImages={showImages}
-          setShowImages={setShowImages}
-          setImgFiles={setImgFiles}
-          imgFiles={imgFiles}
-        />
-      ) : null}
-      <input type="file" onChange={previewImages} multiple ref={inputFileRef} />
+      <ImageCard showImages={showImages} imageIndex={imageIndex} />
+
+      <ImageInput
+        showImages={showImages}
+        setImageIndex={setImageIndex}
+        deletePreviewImage={deletePreviewImage}
+        imageIndex={imageIndex}
+      />
+
+      <input id="file" type="file" onChange={previewImages} multiple ref={inputFileRef} />
     </St.Container>
   );
 };

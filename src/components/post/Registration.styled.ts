@@ -12,14 +12,15 @@ export const Wrapper = styled.div`
   /* flex-direction: column; */
   gap: 2rem;
 
-  width: 66.8rem;
-  min-height: 44.8rem;
+  width: 78.8rem;
+  height: 50.8rem;
   > div {
     width: 100%;
   }
 
   > :nth-child(2) {
-    padding: 2.8rem 1.6rem;
+    width: 60%;
+    padding: 2.8rem 2.6rem;
     border-radius: 1rem;
     border: 2px solid #ffae73;
   }
