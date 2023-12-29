@@ -29,7 +29,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "prettier . --write --config=.prettierrc.js"
+    "prettier": "prettier . --write --config=.prettierrc.js",
+    "supabase-type": "supabase gen types typescript --project-id vianpfkkmxarfiifomax > database.types.ts"
   },
   "eslintConfig": {
     "extends": [
