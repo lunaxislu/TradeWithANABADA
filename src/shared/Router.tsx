@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import ChatContainer from '../components/chat/ChatContainer';
 import Layout from '../components/layout/Layout';
 import { Auth, Detail, Home, Post, Product, Profile } from '../pages';
 const Router = () => {
@@ -13,6 +14,7 @@ const Router = () => {
           <Route path="/product/:id" element={<Product />} />
           <Route path="/write" element={<Post />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/chatTest" element={<ChatContainer />} />
         </Route>
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
