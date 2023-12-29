@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { deleteImage, getImageUrl, getUserSession, updateUserData, uploadProfileImage } from '../../API/supabase.api';
 import defaultImg from '../../styles/assets/user.svg';
-import * as St from './UserInfo.styled';
+import * as St from './Profile.styled';
 
-const UpdateProfile = () => {
+type UidProps = {
+  uid: string;
+};
+
+const UpdateProfile = ({ uid }: UidProps) => {
+
   const [edit, setEdit] = useState(false);
   const [nickname, setNickname] = useState('');
   const [img, setImg] = useState<File | undefined>(undefined);

@@ -300,7 +300,7 @@ export const updateUserData = async (nickname: string) => {
   const { data, error } = await supabase.auth.updateUser({ data: { full_name: `${nickname}` } });
 };
 
-// 유저 프로필 사진 저장하기
+// 유저 프로필 사진 업로드하기
 export const uploadProfileImage = async (uid: string, file: File) => {
   try {
     // const fileName = `${uid}/${file.name}`;
@@ -310,12 +310,12 @@ export const uploadProfileImage = async (uid: string, file: File) => {
     console.log(error);
   }
 };
-
+// 유저 프로필 사진 url 받아오기
 export const getImageUrl = async (uid: string) => {
   const { data, error } = await supabase.storage.from(`profile-images`).createSignedUrl(`${uid}/img`, 60);
   return data;
 };
-
+// 유저 프로필 사진 삭제하기
 export const deleteImage = async (uid: string) => {
   const { data, error } = await supabase.storage.from(`profile-images`).remove([`${uid}/img`]);
 };

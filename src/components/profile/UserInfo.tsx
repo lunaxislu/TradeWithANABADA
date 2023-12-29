@@ -1,11 +1,15 @@
+import * as St from './Profile.styled';
 import UploadProfile from './UpdateProfile';
-import * as St from './UserInfo.styled';
 
-const UserInfo = () => {
+type UidProps = {
+  uid: string;
+};
+
+const UserInfo = ({ uid }: UidProps) => {
   return (
     <St.ProfileReviewWrapper>
       <St.ProfileBox>
-        <UploadProfile />
+        <UploadProfile uid={uid} />
       </St.ProfileBox>
       <St.ReviewBox>
         <p>나의 거래 후기</p>
