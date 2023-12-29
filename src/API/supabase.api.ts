@@ -306,8 +306,3 @@ export const getImageUrl = async (uid: string) => {
 export const deleteImage = async (uid: string) => {
   const { data, error } = await supabase.storage.from(`profile-images`).remove([`${uid}/img`]);
 };
-
-export const downloadImage = async (uid: string): Promise<Blob | null> => {
-  const { data, error } = await supabase.storage.from(`profile-images`).download(`${uid}/img`);
-  return data;
-};

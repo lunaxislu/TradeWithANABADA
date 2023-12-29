@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { deleteImage, downloadImage, getUserSession, updateUserData, uploadProfileImage } from '../../API/supabase.api';
+import { deleteImage, getImageUrl, getUserSession, updateUserData, uploadProfileImage } from '../../API/supabase.api';
+import defaultImg from '../../styles/assets/user.svg';
 import * as St from './UserInfo.styled';
 
 const UpdateProfile = () => {
@@ -13,12 +14,12 @@ const UpdateProfile = () => {
     if (session !== null) {
       const userMetadata = session?.user.user_metadata.full_name;
       const userUid = session?.user.id;
-      downloadImgUrl(userUid);
       // 이미지 변경
       if (img) {
         await deleteImage(userUid);
         await uploadProfileImage(userUid, img);
       }
+      await downloadImgUrl(userUid);
       // 닉네임 변경
       if (nickname === '') {
         setNickname(userMetadata);
@@ -31,19 +32,18 @@ const UpdateProfile = () => {
             return;
           }
         }
+        alert('변경 완료되었습니다.');
         setEdit(!edit);
         updateUserData(nickname);
-        alert('변경 완료되었습니다.');
       }
     }
   };
 
   const downloadImgUrl = async (userUid: string) => {
-    const downloadImg = await downloadImage(userUid);
-    if (downloadImg) {
-      const imgUrl = URL.createObjectURL(downloadImg);
+    const getImgUrl = await getImageUrl(userUid);
+    if (getImgUrl) {
       if (imgRef.current) {
-        imgRef.current.src = imgUrl;
+        imgRef.current.src = getImgUrl?.signedUrl;
       }
     }
   };
@@ -71,7 +71,7 @@ const UpdateProfile = () => {
   return (
     <>
       <St.ProfileImg>
-        <img ref={imgRef} alt="profileImg" />
+        <img ref={imgRef} src={defaultImg} alt="profileImg" />
       </St.ProfileImg>
       <form onSubmit={(e) => onSubmitHandler(e)}>
         <St.ProfileInfo>
