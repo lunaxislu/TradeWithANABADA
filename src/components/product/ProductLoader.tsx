@@ -19,48 +19,46 @@ const ProductLoader = () => {
   });
 
   return (
-    <div>
-      {products?.pages.map((page, i) => {
-        if (page.length === 0) return null;
+    <>
+      <St.Container>
+        <St.TitleWrapper>
+          <span>검색 결과: {search}</span>
+        </St.TitleWrapper>
 
-        return (
-          // 인라인 스타일링은 추후에 styled-components로 변경
-          <div
-            style={{
-              height: '500px',
-              border: '1px solid black',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-            key={i}
-          >
-            {page?.map((product) => {
+        <St.ProductWrapper>
+          <St.List>
+            {products?.pages.map((page, i) => {
+              if (page.length === 0) return null;
+
               return (
-                <div
-                  key={product.id}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '100%',
-                  }}
-                >
-                  <div>{product.title}</div>
-                  <div>{product.content}</div>
-                  <div>{product.price}</div>
-                </div>
+                <>
+                  {page?.map((product, i) => (
+                    // key 수정 필요
+                    <li key={i}>
+                      {product.productImg ? <img src={product.productImg[0]} alt="" /> : <img src="" alt="" />}
+                      <St.HeartBox>
+                        <Heart />
+                        <span>1</span>
+                      </St.HeartBox>
+                      <div>
+                        <p>{product.title}</p>
+                        <p>{product.content}</p>
+                        <p>{product.price}</p>
+                      </div>
+                    </li>
+                  ))}
+                </>
               );
             })}
-          </div>
-        );
-      })}
+          </St.List>
+        </St.ProductWrapper>
+      </St.Container>
 
       {isFetchingNextPage && <p>로딩 중...</p>}
 
       {/* observer Araa */}
       {hasNextPage && <div ref={loadMoreRef}></div>}
-    </div>
+    </>
   );
 };
 
