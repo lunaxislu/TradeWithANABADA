@@ -21,6 +21,7 @@ const Button = ({ post_id, user_id }: PropsType) => {
       }
     });
     userIdRef.current = user_id;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user_id]);
   console.log(user_id);
   console.log('likeRef', likeRef);
@@ -39,6 +40,7 @@ const Button = ({ post_id, user_id }: PropsType) => {
         cancelLike(post_id);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
