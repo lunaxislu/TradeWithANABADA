@@ -16,7 +16,6 @@ export type ProductInfoType = {
   title: string;
   userid: string;
 };
-
 type PropsType = {
   productInfo: ProductInfoType;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
