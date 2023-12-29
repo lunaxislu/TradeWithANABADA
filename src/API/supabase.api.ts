@@ -171,7 +171,7 @@ export const insertProduct = async (info: ParamForRegist) => {
   if (error) {
     throw console.log(error);
   }
-  console.log(data);
+
   return data;
 };
 
@@ -354,12 +354,12 @@ export const downloadImage = async (uid: string): Promise<Blob | null> => {
 };
 
 /**
- * user의 point& nickname 가져오는 함수입니다.
+ * product를 등록한 user의 point& nickname & avatar_img 가져오는 함수입니다.
  * @param [{}] 형태로 가져옵니다.
  */
 
-export const getUserPoint = async (uid: string) => {
-  const { data } = await supabase.from('users').select('point,nickname').eq('id', uid);
+export const getUserInfoInProduct = async (uid: string) => {
+  const { data } = await supabase.from('users').select('point,nickname,avatar_img').eq('id', uid);
   if (data) {
     return data;
   }
