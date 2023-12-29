@@ -1,39 +1,63 @@
-import { useEffect } from 'react';
+import { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { searchProducts } from '../../API/supabase.api';
-
-type Product = {
-  id: string;
-  title: string;
-  content: string;
-  price: number;
-  productImg: string;
-};
+import { useInfiniteProducts } from '../../hooks/uiHook/useInfiniteProducts';
+import { useInfiniteScroll } from '../../hooks/uiHook/useInfiniteScroll';
 
 const ProductLoader = () => {
   const { search } = useLocation();
-  const { state }: { state: Product[] } = useLocation();
   const decodedSearch = decodeURIComponent(search).replaceAll('?', '');
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const { data: products, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteProducts(decodedSearch);
 
-  useEffect(() => {
-    const searchData = async () => {
-      const result = await searchProducts(decodedSearch);
-      return result;
-    };
-    searchData();
-  }, [decodedSearch]);
+  useInfiniteScroll({
+    target: loadMoreRef,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
   return (
     <div>
-      <div>해당 페이지는 검색한 키워드의 상품들이 보입니다.</div>
-      {state?.map((item) => (
-        <div key={item.id}>
-          {/* <img src={item.productImg} alt=""/> */}
-          <div>{item.title}</div>
-          <div>{item.content}</div>
-          <div>{item.price}</div>
-        </div>
-      ))}
+      {products?.pages.map((page, i) => {
+        if (page.length === 0) return null;
+
+        return (
+          // 인라인 스타일링은 추후에 styled-components로 변경
+          <div
+            style={{
+              height: '500px',
+              border: '1px solid black',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            key={i}
+          >
+            {page?.map((product) => {
+              return (
+                <div
+                  key={product.id}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                  }}
+                >
+                  <div>{product.title}</div>
+                  <div>{product.content}</div>
+                  <div>{product.price}</div>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+
+      {isFetchingNextPage && <p>로딩 중...</p>}
+
+      {/* observer Araa */}
+      {hasNextPage && <div ref={loadMoreRef}></div>}
     </div>
   );
 };
