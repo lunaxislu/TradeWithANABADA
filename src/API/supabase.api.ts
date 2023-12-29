@@ -234,31 +234,29 @@ export const getProducts = async (page: number) => {
 
 /**
  * 검색 기능
+ * @param page 페이지 번호
  * @param keyword 검색어
+ * @param column 검색할 칼럼명
  * @returns 검색 결과
  */
+const searchInColumn = async (page: number, keyword: string, column: string) => {
+  const { data, error } = await supabase
+    .rpc('get_latest_products')
+    .textSearch(column, keyword, {
+      type: 'websearch',
+    })
+    .range(page * 10 - 10, page * 10 - 1);
+
+  if (error) throw error;
+
+  return data;
+};
+
 export const searchProducts = async (page: number, keyword: string) => {
-  const { data: titleData, error: titleError } = await supabase
-    .from('products')
-    .select('*')
-    .textSearch('title', keyword, {
-      type: 'websearch',
-    })
-    .range(page * 10 - 10, page * 10 - 1);
+  const titleData = await searchInColumn(page, keyword, 'title');
+  const contentData = await searchInColumn(page, keyword, 'content');
 
-  const { data: contentData, error: contentError } = await supabase
-    .from('products')
-    .select('*')
-    .textSearch('content', keyword, {
-      type: 'websearch',
-    })
-    .range(page * 10 - 10, page * 10 - 1);
-
-  if (titleError || contentError) throw titleError || contentError;
-
-  const mergedData = [...titleData, ...contentData];
-
-  return mergedData;
+  return [...titleData, ...contentData];
 };
 
 // 최신 게시물 가져오기 (메인)
