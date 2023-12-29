@@ -401,13 +401,16 @@ export interface Database {
           category2_name: string
         }[]
       }
-      migrate_users: {
-        Args: Record<PropertyKey, never>
+      get_user_channel: {
+        Args: {
+          input_user_id: string
+        }
         Returns: {
-          email: string
-          id: string
-          created_at: string
-          nickname: string
+          chat_id: number
+          chat_created_at: string
+          user1_id: string
+          user2_id: string
+          messages: Json[]
         }[]
       }
     }
