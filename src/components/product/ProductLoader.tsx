@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useInfiniteProducts } from '../../hooks/uiHook/useInfiniteProducts';
 import { useInfiniteScroll } from '../../hooks/uiHook/useInfiniteScroll';
@@ -21,35 +21,40 @@ const ProductLoader = () => {
   return (
     <>
       <St.Container>
-        <St.TitleWrapper>{<span>{`${search}에 대한 결과`}</span>}</St.TitleWrapper>
+        <St.TitleWrapper>
+          <span>{`${search}에 대한 결과`}</span>
+        </St.TitleWrapper>
 
-        <St.ProductWrapper>
+        <div>
           <St.List>
             {products?.pages.map((page, i) => {
               if (page?.length === 0) return null;
 
               return (
-                <>
-                  {page.map((product, i) => (
+                <React.Fragment key={i}>
+                  {page.map((item, i) => (
                     // key 수정 필요
                     <li key={i}>
-                      {product.product_img ? <img src={product.product_img[0]} alt="" /> : <img src="" alt="" />}
+                      {item.product_img ? <img src={item.product_img[0]} alt="" /> : <img src="" alt="" />}
                       <St.HeartBox>
                         <Heart />
-                        <span>1</span>
+                        <span>{item.like_count}</span>
                       </St.HeartBox>
-                      <div>
-                        <p>{product.title}</p>
-                        <p>{product.content}</p>
-                        <p>{product.price}</p>
-                      </div>
+                      <St.Content>
+                        <p>{item.title}</p>
+                        <p>{item.content}</p>
+                        <div>
+                          <p>{item.price}</p>
+                          <p>원의 가치</p>
+                        </div>
+                      </St.Content>
                     </li>
                   ))}
-                </>
+                </React.Fragment>
               );
             })}
           </St.List>
-        </St.ProductWrapper>
+        </div>
       </St.Container>
 
       {isFetchingNextPage && <p>로딩 중...</p>}
