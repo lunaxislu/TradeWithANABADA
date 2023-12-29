@@ -52,13 +52,25 @@ export const ProductListSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  & > h2 {
+  margin-top: 3rem;
+  & > div:first-child {
+    display: flex;
+    align-items: end;
     align-self: flex-start;
+    margin-bottom: 1rem;
+  }
+  & h2 {
     font-size: 2rem;
     font-weight: bold;
+    margin-right: 2rem;
   }
-  & > button {
-    position: absolute;
+  & a {
+    text-decoration: none;
+    color: gray;
+    font-size: 1.3rem;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 

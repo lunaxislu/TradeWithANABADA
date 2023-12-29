@@ -156,6 +156,8 @@ export const insertProduct = async (info: ParamForRegist) => {
   if (error) {
     throw console.log(error);
   }
+  console.log(data);
+  return data;
 };
 
 /**
@@ -269,18 +271,30 @@ export const searchProducts = async (page: number, keyword: string) => {
   return mergedData;
 };
 
-// 최신 게시물 가져오기
-export const getLatestProducts = async () => {
-  const { data, error } = await supabase.rpc('get_latest_products');
-  if (error) throw error;
-  return data;
+// 최신 게시물 가져오기 (메인)
+export const getLatestProducts = async (limitNum: number) => {
+  if (!!limitNum) {
+    const { data, error } = await supabase.rpc('get_latest_products').limit(limitNum);
+    if (error) throw error;
+    return data;
+  } else {
+    const { data, error } = await supabase.rpc('get_latest_products');
+    if (error) throw error;
+    return data;
+  }
 };
 
 // 인기 게시물 가져오기 (like 수)
-export const getPopularProducts = async () => {
-  const { data, error } = await supabase.rpc('get_popular_products');
-  if (error) throw error;
-  return data;
+export const getPopularProducts = async (limitNum: number) => {
+  if (!!limitNum) {
+    const { data, error } = await supabase.rpc('get_popular_products').limit(limitNum);
+    if (error) throw error;
+    return data;
+  } else {
+    const { data, error } = await supabase.rpc('get_popular_products');
+    if (error) throw error;
+    return data;
+  }
 };
 
 // 유저 정보 변경하기

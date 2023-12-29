@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { getUserSession, insertProduct } from '../../../API/supabase.api';
 import * as St from './PostForm.styled';
 import FormButton from './formButton/FormButton';
@@ -14,6 +15,7 @@ type PropsType = {
 };
 
 const PostForm = ({ imgFiles }: PropsType) => {
+  const navigate = useNavigate();
   const [tags, setTags] = useState<string[]>([]);
   const [userId, setUserId] = useState('');
   const registProduct = async (e: FormEvent<HTMLFormElement>) => {
@@ -26,7 +28,9 @@ const PostForm = ({ imgFiles }: PropsType) => {
       userId,
       imgFiles,
     };
-    await insertProduct(product);
+    const result = await insertProduct(product);
+
+    navigate(`/detail/:${result[0].id}`);
   };
 
   // 사용자의 고유 아이디 uid를 가져옵니다.
