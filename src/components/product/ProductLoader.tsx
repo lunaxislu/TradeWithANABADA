@@ -41,11 +41,14 @@ const ProductLoader = () => {
                         <Heart />
                         <span>{item.like_count}</span>
                       </St.HeartBox>
-                      <div>
+                      <St.Content>
                         <p>{item.title}</p>
                         <p>{item.content}</p>
-                        <p>{item.price}</p>
-                      </div>
+                        <div>
+                          <p>{item.price}</p>
+                          <p>원의 가치</p>
+                        </div>
+                      </St.Content>
                     </li>
                   ))}
                 </React.Fragment>
