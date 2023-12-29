@@ -9,7 +9,7 @@ export const ButtonContainer = styled.div`
 
   button {
     text-align: center;
-    width: 130px;
+    width: 18rem;
     height: 4rem;
     font-size: 1.2rem;
     border: 1px solid #aaa;
