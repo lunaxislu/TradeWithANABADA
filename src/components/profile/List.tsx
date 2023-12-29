@@ -1,4 +1,4 @@
-import * as St from './List.styled';
+import * as St from './Profile.styled';
 
 type sampleTypes = {
   title: string;

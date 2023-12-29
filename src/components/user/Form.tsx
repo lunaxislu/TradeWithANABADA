@@ -10,8 +10,7 @@ import * as St from './Form.styled';
 type Users = Record<string, string>;
 
 /**
- * TODO: 리팩토링 필요합니다.
- * @description 회원가입, 로그인, 비밀번호 메일 전송, 비밀번호 변경 따로 분리하지 않고 하나의 컴포넌트로 구현했습니다.
+ * @description TODO: 리팩토링 필요합니다.
  * @returns 회원가입, 로그인, 비밀번호 메일 전송, 비밀번호 변경 Form
  */
 const Form = () => {

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useInfiniteProducts } from '../../hooks/uiHook/useInfiniteProducts';
 import { useInfiniteScroll } from '../../hooks/uiHook/useInfiniteScroll';
 import { ReactComponent as Heart } from '../../styles/assets/heart.svg';
+import { displayCreateAt } from '../../utils/date';
 import * as St from './ProductLoader.styled';
 
 const ProductLoader = () => {
@@ -32,24 +33,27 @@ const ProductLoader = () => {
 
               return (
                 <React.Fragment key={i}>
-                  {page.map((item, i) => (
-                    // key 수정 필요
-                    <li key={i}>
-                      {item.product_img ? <img src={item.product_img[0]} alt="" /> : <img src="" alt="" />}
-                      <St.HeartBox>
-                        <Heart />
-                        <span>{item.like_count}</span>
-                      </St.HeartBox>
-                      <St.Content>
-                        <p>{item.title}</p>
-                        <p>{item.content}</p>
-                        <div>
-                          <p>{item.price}</p>
-                          <p>원의 가치</p>
-                        </div>
-                      </St.Content>
-                    </li>
-                  ))}
+                  {page.map((item, i) => {
+                    const date = displayCreateAt(item.created_at);
+                    return (
+                      <li key={i}>
+                        {item.product_img ? <img src={item.product_img[0]} alt="" /> : <img src="" alt="" />}
+                        <St.HeartBox>
+                          <Heart />
+                          <span>{item.like_count}</span>
+                        </St.HeartBox>
+                        <St.Date>{date}</St.Date>
+                        <St.Content>
+                          <p>{item.title}</p>
+                          <p>{item.content}</p>
+                          <div>
+                            <p>{item.price}</p>
+                            <p>원의 가치</p>
+                          </div>
+                        </St.Content>
+                      </li>
+                    );
+                  })}
                 </React.Fragment>
               );
             })}

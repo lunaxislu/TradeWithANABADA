@@ -1,8 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
-import { deleteImage, downloadImage, getUserSession, updateUserData, uploadProfileImage } from '../../API/supabase.api';
-import * as St from './UserInfo.styled';
+import {
+  deleteImage,
+  downloadUrl,
+  getUserSession,
+  insertProfileImg,
+  updateTableNickname,
+  updateUserData,
+  uploadProfileImage,
+} from '../../API/supabase.api';
+import defaultImg from '../../styles/assets/user.svg';
+import * as St from './Profile.styled';
 
-const UpdateProfile = () => {
+type UidProps = {
+  uid: string;
+  params: string | undefined;
+};
+
+const UpdateProfile = ({ uid, params }: UidProps) => {
   const [edit, setEdit] = useState(false);
   const [nickname, setNickname] = useState('');
   const [img, setImg] = useState<File | undefined>(undefined);
@@ -13,12 +27,12 @@ const UpdateProfile = () => {
     if (session !== null) {
       const userMetadata = session?.user.user_metadata.full_name;
       const userUid = session?.user.id;
-      downloadImgUrl(userUid);
       // 이미지 변경
       if (img) {
         await deleteImage(userUid);
         await uploadProfileImage(userUid, img);
       }
+      await downloadImgUrl(userUid);
       // 닉네임 변경
       if (nickname === '') {
         setNickname(userMetadata);
@@ -31,19 +45,21 @@ const UpdateProfile = () => {
             return;
           }
         }
+        alert('변경 완료되었습니다.');
         setEdit(!edit);
         updateUserData(nickname);
-        alert('변경 완료되었습니다.');
+        updateTableNickname(userUid, nickname);
       }
     }
   };
 
   const downloadImgUrl = async (userUid: string) => {
-    const downloadImg = await downloadImage(userUid);
-    if (downloadImg) {
-      const imgUrl = URL.createObjectURL(downloadImg);
+    const getImgUrl = await downloadUrl(userUid);
+    if (getImgUrl) {
+      console.log(getImgUrl.publicUrl);
       if (imgRef.current) {
-        imgRef.current.src = imgUrl;
+        imgRef.current.src = getImgUrl?.publicUrl;
+        await insertProfileImg(uid, getImgUrl.publicUrl);
       }
     }
   };
@@ -71,7 +87,7 @@ const UpdateProfile = () => {
   return (
     <>
       <St.ProfileImg>
-        <img ref={imgRef} alt="profileImg" />
+        <img ref={imgRef} src={defaultImg} alt="profileImg" />
       </St.ProfileImg>
       <form onSubmit={(e) => onSubmitHandler(e)}>
         <St.ProfileInfo>
@@ -94,7 +110,11 @@ const UpdateProfile = () => {
               />
             </>
           ) : null}
-          <St.ProfileEdit>{edit ? '프로필 변경 완료' : '프로필 변경하기'}</St.ProfileEdit>
+          {uid === params ? (
+            <St.ProfileEdit>{edit ? '프로필 변경 완료' : '프로필 변경하기'}</St.ProfileEdit>
+          ) : (
+            <St.ProfileReview></St.ProfileReview>
+          )}
         </St.ProfileInfo>{' '}
       </form>
     </>

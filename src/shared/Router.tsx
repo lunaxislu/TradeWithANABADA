@@ -13,7 +13,7 @@ const Router = () => {
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/product/" element={<Product />} />
           <Route path="/write" element={<Post />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/chatTest" element={<ChatContainer />} />
         </Route>
         <Route path="*" element={<Navigate replace to="/" />} />

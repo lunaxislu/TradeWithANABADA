@@ -1,10 +1,7 @@
-import { useLocation } from 'react-router-dom';
+import Goods from '../components/detail/Goods';
 
 const Detail = () => {
-  const location = useLocation();
-  console.log(location.state);
-
-  return <div></div>;
+  return <Goods />;
 };
 
 export default Detail;
