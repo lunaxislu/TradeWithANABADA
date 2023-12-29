@@ -52,6 +52,7 @@ export const ProductListSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 3rem;
   & > h2 {
     align-self: flex-start;
     font-size: 2rem;
