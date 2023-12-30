@@ -7,7 +7,6 @@ type TalkChannelCardProps = {
   setCurrentChannel: React.Dispatch<React.SetStateAction<number>>;
 };
 const TalkChannelCard = ({ channel, setCurrentChannel }: TalkChannelCardProps) => {
-  console.log(channel.user1_id, channel.user2_id);
   return (
     <St.TalkChannelCardItem
       key={channel.chat_id}

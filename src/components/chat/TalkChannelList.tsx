@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ChannelInfo, getCurrentUserChatChannel, getUserSession } from '../../API/supabase.api';
+import { ChannelInfo, getCurrentUserChatChannel, getUserSession, supabase } from '../../API/supabase.api';
 import TalkChannelCard from './TalkChannelCard';
 import * as St from './chat.styled';
 
@@ -9,16 +9,42 @@ type TalkCannelListProps = {
 
 const TalkChannelList = ({ setCurrentChannel }: TalkCannelListProps) => {
   const [channels, setChannels] = useState<ChannelInfo[] | []>([]);
-  // 전체 채널 가져오기
-  const getAllChannel = async () => {
+
+  const update = async () => {
     const currentUser = await getUserSession();
     const data = await getCurrentUserChatChannel(currentUser.session?.user.id!);
     setChannels(data);
   };
-
   // 최초 mount 시 유저의 모든 채널 가져오기
   useEffect(() => {
-    getAllChannel();
+    const getCurrentUser = async () => {
+      const currentUser = await getUserSession();
+      const data = await getCurrentUserChatChannel(currentUser.session?.user.id!);
+      setChannels(data);
+      const userChannels = data.map((channel) => channel.chat_id);
+      console.log(userChannels);
+
+      userChannels.forEach((id) => {
+        supabase
+          .channel(`${id}`)
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'chat_messages',
+              filter: `chat_id=eq.${id}`,
+            },
+            (payload) => {
+              update();
+            },
+          )
+          .subscribe();
+      });
+      console.log(supabase.getChannels());
+    };
+
+    getCurrentUser();
   }, []);
 
   return (
