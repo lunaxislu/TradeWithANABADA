@@ -1,3 +1,4 @@
+import { FileObject } from '@supabase/storage-js';
 import { createClient } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import { Database } from '../../database.types';
@@ -145,7 +146,7 @@ type ParamForRegist = {
   price: string;
   tags: string[];
   user_id: string;
-  imgFiles: File[];
+  imgFiles: (File | Blob)[];
 };
 
 export const insertProduct = async (info: ParamForRegist) => {
@@ -203,7 +204,7 @@ const insertHashTag = async (post_id: number, hash_tag: string[]) => {
  * @param date
  * @param uuid
  */
-const insertImageStorage = async (id: number, files: File[], date: string, uuid: string) => {
+const insertImageStorage = async (id: number, files: (File | Blob)[], date: string, uuid: string) => {
   // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
   const uploadImage = files.map(async (file) => {
     // nano id를 사용해서 이미지 고유 이름으로 넣습니다.
@@ -397,9 +398,6 @@ type ProductInfoType = {
   user_id: string;
 };
 
-type FileTyep = {
-  [key: string]: any;
-};
 export const listToBlob = async (info: ProductInfoType) => {
   const lists = await getImageFileList(info);
   if (lists !== undefined) {
@@ -407,7 +405,7 @@ export const listToBlob = async (info: ProductInfoType) => {
     return blobs;
   }
 };
-const downloadImageFiles = async (lists: FileTyep[], info: ProductInfoType) => {
+const downloadImageFiles = async (lists: FileObject[], info: ProductInfoType) => {
   const promiseBlob = lists.map(async (list) => {
     const { data, error } = await supabase.storage
       .from('product-images')
@@ -425,3 +423,7 @@ const getImageFileList = async (info: ProductInfoType) => {
     return data;
   }
 };
+
+/**
+ * category 불러오기
+ */

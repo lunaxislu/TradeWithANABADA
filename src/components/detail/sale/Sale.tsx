@@ -1,7 +1,7 @@
 import { UserMetadata } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import { getUserSession } from '../../../API/supabase.api';
-import EditButton from './ButtonGroup/EditButton/EditButton';
+import EditButton from '../ButtonGroup/EditButton/EditButton';
 import * as St from './Sale.styled';
 import ImgCard from './imgComponent/ImgCard';
 import ProductInfo from './product/ProductInfo';

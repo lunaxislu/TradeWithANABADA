@@ -1,6 +1,6 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { listToBlob } from '../../../../API/supabase.api';
-import { ProductInfoType } from '../../sale/Sale';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { listToBlob } from '../../../../../API/supabase.api';
+import { ProductInfoType } from '../../../sale/Sale';
 import BigImgCard from './BigImgCard/BigImgCard';
 import * as St from './EditImg.styled';
 import SmImgCard from './SmImgCard/SmImgCard';
@@ -50,7 +50,6 @@ const EditImg = ({ imgFiles, setImgFiles, productInfo }: PropsType) => {
   }, []);
 
   useEffect(() => {
-    console.log('asssssssssss');
     if (productInfo) {
       listToBlob(productInfo).then((result) => {
         if (result?.length) {
@@ -66,7 +65,6 @@ const EditImg = ({ imgFiles, setImgFiles, productInfo }: PropsType) => {
     //   }
     // }
   }, []);
-  console.log(imgFiles);
 
   return (
     <St.Container>
@@ -83,4 +81,4 @@ const EditImg = ({ imgFiles, setImgFiles, productInfo }: PropsType) => {
   );
 };
 
-export default EditImg;
+export default React.memo(EditImg);

@@ -10,7 +10,11 @@ const Goods = () => {
 
   return (
     <St.Container>
-      {isEdit ? <EditSale productInfo={state} /> : <Sale productInfo={state} setIsEdit={setIsEdit} isEdit={isEdit} />}
+      {isEdit ? (
+        <EditSale productInfo={state} setIsEdit={setIsEdit} isEdit={isEdit} />
+      ) : (
+        <Sale productInfo={state} setIsEdit={setIsEdit} isEdit={isEdit} />
+      )}
     </St.Container>
   );
 };

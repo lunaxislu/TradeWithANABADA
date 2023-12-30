@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { cancelLike, findLike, registLike } from '../../../../../API/supabase.api';
-import { ReactComponent as Heart } from '../../../../../styles/assets/heart.svg';
-import { ReactComponent as Like } from '../../../../../styles/assets/unlike.svg';
+import { cancelLike, findLike, registLike } from '../../../../API/supabase.api';
+import { ReactComponent as Heart } from '../../../../styles/assets/heart.svg';
+import { ReactComponent as Like } from '../../../../styles/assets/unlike.svg';
 import * as St from './LikeTalkButton.styled';
 type PropsType = {
   post_id: number;
