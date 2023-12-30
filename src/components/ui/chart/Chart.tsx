@@ -16,7 +16,7 @@ type ReviewType = {
   user_id: string | null;
 }[];
 
-export const LineChart = () => {
+export const ReviewChart = () => {
   const [reviews, setReviews] = useState<ReviewType>();
   const reviewData = reviews
     ? reviews.map((review) => ({
@@ -82,7 +82,6 @@ export const LineChart = () => {
   return (
     <St.ReviewWrapper>
       <div>
-        <h3>거래한 고객분이 리뷰를 달아주셨어요 👍</h3>
         <Bar options={options} data={data} />
       </div>
     </St.ReviewWrapper>

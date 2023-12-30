@@ -28,8 +28,8 @@ const Profile = () => {
     <>
       <St.ProfileWrapper>
         <UserInfo uid={uid} params={params.id} />
-        <ProfileProductList type="likes" uid={uid} />
-        <ProfileProductList type="sales" uid={uid} />
+        {/* 프로필 아래 목록 표시 컴포넌트 */}
+        <ProfileProductList />
       </St.ProfileWrapper>
     </>
   );
