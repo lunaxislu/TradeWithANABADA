@@ -57,6 +57,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: number;
+          visible: boolean;
         };
         Insert: {
           author_id?: string | null;
@@ -64,6 +65,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
+          visible?: boolean;
         };
         Update: {
           author_id?: string | null;
@@ -71,6 +73,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
+          visible?: boolean;
         };
         Relationships: [
           {
@@ -410,6 +413,7 @@ export interface Database {
           current_chat_id: number;
           content: string;
           author_id: string;
+          visible: boolean;
         }[];
       };
       get_latest_products: {
@@ -454,7 +458,15 @@ export interface Database {
           user1_id: string;
           user2_id: string;
           messages: Json[];
+          invisible_count: number;
         }[];
+      };
+      update_visible: {
+        Args: {
+          input_user_id: string;
+          input_chat_id: number;
+        };
+        Returns: undefined;
       };
     };
     Enums: {
