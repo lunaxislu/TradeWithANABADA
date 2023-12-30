@@ -39,6 +39,7 @@ export const TalkListContainer = styled.div`
 `;
 
 export const TalkChannelCardItem = styled.li`
+  position: relative;
   padding: 2rem 1rem;
   display: flex;
   cursor: pointer;
@@ -68,4 +69,13 @@ export const TalkChannelCardItem = styled.li`
       justify-content: space-between;
     }
   }
+`;
+
+export const InvisibleMessage = styled.span`
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-weight: bold;
+  color: red;
+  font-size: 1.5rem;
 `;

@@ -30,6 +30,7 @@ const TalkChannelCard = ({ channel, setCurrentChannel }: TalkChannelCardProps) =
           <span>{displayCreateAt(channel.messages[0].message_created_at)}</span>
         </div>
       </div>
+      {!!channel.invisible_count && <St.InvisibleMessage>{channel.invisible_count}</St.InvisibleMessage>}
     </St.TalkChannelCardItem>
   );
 };

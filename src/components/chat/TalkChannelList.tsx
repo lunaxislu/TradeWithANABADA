@@ -5,15 +5,22 @@ import * as St from './chat.styled';
 
 type TalkCannelListProps = {
   setCurrentChannel: React.Dispatch<React.SetStateAction<number>>;
+  setInvisible: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const TalkChannelList = ({ setCurrentChannel }: TalkCannelListProps) => {
+const TalkChannelList = ({ setCurrentChannel, setInvisible }: TalkCannelListProps) => {
   const [channels, setChannels] = useState<ChannelInfo[] | []>([]);
 
   const update = async () => {
     const currentUser = await getUserSession();
     const data = await getCurrentUserChatChannel(currentUser.session?.user.id!);
     console.log(data);
+
+    // 읽지 않은 메시지 수 보이기
+    let totalInvisibleNum = 0;
+    data.forEach((item) => (totalInvisibleNum += item.invisible_count));
+    setInvisible(totalInvisibleNum);
+
     setChannels(data);
   };
   // 최초 mount 시 유저의 모든 채널 가져오기
@@ -22,6 +29,12 @@ const TalkChannelList = ({ setCurrentChannel }: TalkCannelListProps) => {
       const currentUser = await getUserSession();
       const data = await getCurrentUserChatChannel(currentUser.session?.user.id!);
       setChannels(data);
+
+      // 읽지 않은 메시지 수 보이기
+      let totalInvisibleNum = 0;
+      data.forEach((item) => (totalInvisibleNum += item.invisible_count));
+      setInvisible(totalInvisibleNum);
+
       const userChannels = data.map((channel) => channel.chat_id);
       console.log(userChannels);
 
@@ -31,7 +44,7 @@ const TalkChannelList = ({ setCurrentChannel }: TalkCannelListProps) => {
           .on(
             'postgres_changes',
             {
-              event: 'INSERT',
+              event: '*',
               schema: 'public',
               table: 'chat_messages',
               filter: `chat_id=eq.${id}`,
