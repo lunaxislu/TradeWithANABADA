@@ -11,7 +11,7 @@ import UserInfo from '../components/profile/UserInfo';
 
 const Profile = () => {
   const params = useParams();
-  console.log('휘파람쓰', params);
+  // console.log('휘파람쓰', params);
 
   const [uid, setUid] = useState('');
   const checkUserSession = async () => {
