@@ -25,7 +25,7 @@ const PostForm = ({ imgFiles }: PropsType) => {
       content: e.currentTarget['product_text'].value,
       price: e.currentTarget['product_value'].value,
       tags,
-      userId,
+      user_id: userId,
       imgFiles,
     };
     const result = await insertProduct(product);

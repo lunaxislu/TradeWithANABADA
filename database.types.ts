@@ -369,6 +369,18 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      get_channel_messages: {
+        Args: {
+          input_channel_id: number
+        }
+        Returns: {
+          message_id: number
+          message_created_at: string
+          current_chat_id: number
+          content: string
+          author_id: string
+        }[]
+      }
       get_latest_products: {
         Args: Record<PropertyKey, never>
         Returns: {
