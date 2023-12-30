@@ -20,8 +20,8 @@ export const ProfileReviewWrapper = styled.div`
   margin: 0 auto;
   ${({ theme }) => theme.mediaQuery.sm`
     gap: 3rem;
-        display: flex;
-        justify-content: center;
+    display: flex;
+    justify-content: center;
   `}
 `;
 export const ProfileBox = styled.div`
@@ -35,7 +35,7 @@ export const ProfileBox = styled.div`
   `}
   ${({ theme }) => theme.mediaQuery.lg`
       width : 45rem;
-      height: 22.5rem;
+      height: 24.5rem;
   `};
 `;
 export const ProfileImg = styled.div`
@@ -108,9 +108,12 @@ export const ProfileReview = styled.button`
   cursor: pointer;
 `;
 export const ReviewBox = styled.div`
+  width: 100%;
   padding: 1rem;
   border: 0.2rem solid #dcdcdc;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   ${({ theme }) => theme.mediaQuery.sm`
       width : 35rem;
   `}
@@ -119,10 +122,14 @@ export const ReviewBox = styled.div`
   `}
   & p {
     font-size: 2rem;
+    font-weight: bold;
   }
 `;
 export const ProductListSection = styled.div`
+  gap: 40rem;
   margin-top: 5rem;
+  flex-direction: row;
+
   & p {
     font-size: 2rem;
     margin-bottom: 1rem;
@@ -140,59 +147,112 @@ export const ProductListArea = styled.div`
   }
 `;
 
-export const ListWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-`;
-
-export const ListBox = styled.div`
-  width: 48%;
-  border: 0.2rem solid #dcdcdc;
-  ${({ theme }) => theme.mediaQuery.sm`
-  width: 23%;
-  `}
-  ${({ theme }) => theme.mediaQuery.lg`
-  `};
-`;
-
-export const ListImage = styled.figure`
-  position: relative;
-`;
-
-export const ListImageProduct = styled.img``;
-
-export const ListImageHeart = styled.img`
-  width: 2rem;
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  ${({ theme }) => theme.mediaQuery.lg`
-    width: 2.5rem;
-  `};
-`;
-
-export const ListInfo = styled.div`
-  padding: 0.8rem;
-  line-height: 2.5rem;
-`;
-
-export const ListPriceandDate = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
+// 예성 추가
 export const ListTitle = styled.div`
-  font-size: 1.5rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  font-size: 2rem;
+  align-items: center;
+  flex-direction: row;
+  background-color: beige;
+  justify-content: center;
+
+  div:nth-of-type(1) {
+    background-color: #7bd3ea;
+  }
+  div:nth-of-type(2) {
+    background-color: #f2afef;
+  }
+
+  div {
+    width: 100%;
+    padding: 2rem;
+    cursor: pointer;
+    text-align: center;
+
+    &:hover {
+      background-color: white;
+    }
+  }
+`;
+export const ListWrapper = styled.div`
+  height: 80rem;
+  overflow: scroll;
+  margin-top: 2rem;
+
+  ul {
+    gap: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-direction: column;
+
+    li {
+      padding: 2rem;
+      border: 0.2rem solid #dcdcdc;
+      span {
+        font-size: 1.5rem;
+        float: right;
+      }
+
+      // 부모
+      div:nth-of-type(1) {
+        /* gap: 2rem; */
+        display: flex;
+      }
+    }
+  }
 `;
 
-export const ListPrice = styled.div`
-  font-size: 1.5rem;
+export const ListImage = styled.div`
+  img {
+    width: 18rem;
+    height: 18rem;
+  }
 `;
 
-export const ListDate = styled.div``;
+export const PostsWrapper = styled.div`
+  width: 70%;
+  padding: 2rem 0 0 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+
+  div {
+    p:nth-of-type(1) {
+      padding: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border-radius: 0.7rem;
+      background-color: #c3e2c2;
+    }
+    p:nth-of-type(2) {
+      padding: 0.5rem;
+    }
+  }
+`;
+
+export const PriceWrapper = styled.div`
+  width: 7%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  span {
+    text-align: center;
+  }
+
+  button {
+    padding-left: 1.2rem;
+    border: 0.1rem solid black;
+
+    &:hover {
+      color: white;
+      background-color: #e31c5f;
+    }
+  }
+
+  div {
+    font-size: 1.5rem;
+    flex-direction: row;
+  }
+`;

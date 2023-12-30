@@ -1,11 +1,12 @@
 import { UserMetadata } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getUserPoint } from '../../../../API/supabase.api';
+import { getUserInfoInProduct } from '../../../../API/supabase.api';
 import { displayCreateAt } from '../../../../utils/date';
 import Button from '../../ButtonGroup/LikeAndTalkButton/LikeTalkButton';
 import { ProductInfoType } from '../Sale';
 import * as St from './ProductInfo.styled';
+
 type PropsType = {
   userData: UserMetadata;
   productInfo: ProductInfoType;
@@ -14,19 +15,20 @@ type PropsType = {
 type UserStateType = {
   nickname: string | null;
   point: number | null;
+  avatar_img: string | null;
 };
 const ProductInfo = ({ userData, productInfo }: PropsType) => {
   const [userState, setUserState] = useState<null | UserStateType>(null);
 
   useEffect(() => {
-    getUserPoint(productInfo.user_id).then((result) => {
+    getUserInfoInProduct(productInfo.user_id).then((result) => {
       if (result && result[0]) {
         setUserState(result[0]);
       }
     });
     return () => {};
   }, []);
-
+  console.log(userState);
   return (
     <St.Container>
       {/* 상품 제목과 상품의 가치를 등록한 유저가 측정내용입니다.  */}
@@ -46,11 +48,12 @@ const ProductInfo = ({ userData, productInfo }: PropsType) => {
       <St.User>
         <div className="user-wrapper">
           <div className="user-info">
-            <img src={userData.avatar_url} alt="" />
+            <img src={userState?.avatar_img!} alt="" />
+
             <div className="user-profile">
               <div className="user-name">{userState?.nickname}</div>
               <div className="user-point">
-                {userState?.point ? `${userState.point}입니다.` : '힘내세요 등급올려야 자본주의에서 살아남죠'}
+                {userState?.point ? `${userState.point}입니다.` : '힘내세요 등급올려야 자본주의에서 살아남죠!'}
               </div>
             </div>
           </div>

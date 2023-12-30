@@ -20,6 +20,7 @@ export const Container = styled.div`
   .sl-img_container {
     display: flex;
     gap: 1rem;
+    justify-content: center;
   }
 `;
 

@@ -1,59 +1,80 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getLatestProducts, getPopularProducts } from '../../API/supabase.api';
-import { ProductData } from '../home/HomeProductList';
-import ProductCard from '../ui/productCard/ProductCard';
+import { Tables } from '../../../database.types';
+import { getUserData, getZzimList } from '../../API/supabase.api';
+import { displayCreateAt } from '../../utils/date';
+import { Button } from '../ui/Button';
 import * as St from './Profile.styled';
-import ProfileBtn from './ProfileBtn';
 
-type ProductListProps = {
-  type: string;
-  uid: string;
-};
+const ProfileProductList = () => {
+  const [products, setProducts] = useState<Tables<'likes'>[]>();
 
-type ProductSectionInfoType = {
-  title: string;
-  getProductHandler: (arg1: number) => Promise<ProductData[]>;
-};
-const productSectionInfos: Record<string, ProductSectionInfoType> = {
-  likes: {
-    title: '나의 찜 목록',
-    getProductHandler: getPopularProducts,
-  },
-  sales: {
-    title: '나의 판매 목록',
-    getProductHandler: getLatestProducts,
-  },
-};
-const ProfileProductList = ({ type, uid }: ProductListProps) => {
-  const [products, setProducts] = useState<ProductData[]>();
-  console.log(uid);
-
-  const getProductsData = async () => {
-    const data = await productSectionInfos[type].getProductHandler(4);
-    console.log(data);
-    const filteredData = data.filter((item) => {
-      return item.user_id === uid;
-    });
-    console.log(filteredData);
-    setProducts(data);
+  const showZzimList = async () => {
+    const u = await getUserData();
+    if (u) {
+      const list = await getZzimList(u.id);
+      setProducts(list);
+    }
   };
 
+  // 판매 목록 보여주기
+  const showSalesList = () => {};
+  // 상품 삭제
+  const deleteProduct = () => {};
+  // 상품으로 이동
+  const moveToProduct = () => {};
+
   useEffect(() => {
-    getProductsData();
+    // 찜 목록 보여주기
+    showZzimList();
   }, []);
+
   return (
     <St.ProductListSection>
-      {products?.map((item) => <ProfileBtn item={item.user_id} />)}
-      {/* <List /> */}
-      <div>
-        <h2>{productSectionInfos[type].title}</h2>
+      <St.ListTitle>
+        <div onClick={showZzimList}>찜 목록</div>
+        <div onClick={showSalesList}>판매 목록</div>
+      </St.ListTitle>
 
-        <Link to={''}>누군가의 페이지로 가기</Link>
-      </div>
-      <St.ProductListArea>
-        <ul>{products?.map((product) => <ProductCard key={product.product_id} productInfo={product} />)}</ul>
-      </St.ProductListArea>
+      {/* 리스트 영역 */}
+      <St.ListWrapper>
+        <ul>
+          {products
+            ?.map((p) => p.products)
+            .flat()
+            .map((item, i) => {
+              const date = displayCreateAt(item.created_at!);
+              return (
+                <li key={item.id} onClick={moveToProduct}>
+                  <div>
+                    <St.ListImage>
+                      {item.product_img && item.product_img.length > 0 ? (
+                        <img src={item.product_img[0]} alt="" />
+                      ) : (
+                        <img src="" alt="" />
+                      )}
+                    </St.ListImage>
+
+                    <St.PostsWrapper>
+                      <p>제목: {item.title}</p>
+                      <p>내용: {item.content}</p>
+                      <div>
+                        <p>10,000</p>
+                        <p>원의 가치</p>
+                      </div>
+                    </St.PostsWrapper>
+
+                    <St.PriceWrapper>
+                      <span>{date}</span>
+                      <Button color="primary" onClick={deleteProduct}>
+                        삭제
+                      </Button>
+                    </St.PriceWrapper>
+                  </div>
+                </li>
+              );
+            })}
+        </ul>
+      </St.ListWrapper>
     </St.ProductListSection>
   );
 };
