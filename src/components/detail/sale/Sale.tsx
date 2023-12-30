@@ -40,9 +40,14 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
         <ProductInfo userData={userData} productInfo={productInfo} />
       </div>
 
-      <div>asdf</div>
+      <St.TextContainer>
+        <h2 className="title">상품 설명</h2>
+        <St.TextWrapper>{productInfo.content}</St.TextWrapper>
+      </St.TextContainer>
 
-      {/* {state.userid === userId && <St.EditButton>{isEdit ? '수정완료' : '수정하기'}</St.EditButton>}; */}
+      {/* 
+      {state.userid === userId && <St.EditButton>{isEdit ? '수정완료' : '수정하기'}</St.EditButton>}; 
+      */}
     </St.Container>
   );
 };

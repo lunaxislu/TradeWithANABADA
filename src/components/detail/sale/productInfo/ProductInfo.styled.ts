@@ -21,7 +21,7 @@ export const ProductText = styled.div`
     .product-title,
     .product-value {
       font-size: 2.6rem;
-      color: #666;
+      color: #333;
       font-weight: bold;
     }
     div {
@@ -79,7 +79,7 @@ export const User = styled.div`
   .user-name {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #666;
+    color: #333;
   }
 
   .user-point {
@@ -97,15 +97,15 @@ export const HashTag = styled.div`
   margin-top: 4.4rem;
 
   h4 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    color: #666;
+    color: #333;
   }
 
   .tag-wrapper {
     display: flex;
     gap: 0.8rem;
-    margin-top: 1.4rem;
+    margin-top: 1.8rem;
 
     span {
       display: inline-block;
