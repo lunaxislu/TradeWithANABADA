@@ -46,13 +46,6 @@ const HeaderBtnArea = () => {
       },
     },
     {
-      text: 'Talk',
-      isLogin: true,
-      clickHandler: () => {
-        headerNavigateHandler('');
-      },
-    },
-    {
       text: '로그아웃',
       isLogin: true,
       clickHandler: logout,
