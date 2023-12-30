@@ -7,21 +7,65 @@ export const TalkContainer = styled.div`
   transform: translate(-100%, -100%);
   width: 30rem;
   height: 50rem;
-  background-color: red;
+  background-color: beige;
   border-radius: 10px;
-  z-index: 0;
+  padding: 2rem 1rem;
 `;
 
-export const LiveTalkContainer = styled.div<{ $isVisible: boolean }>`
-  position: absolute;
-  z-index: ${(props) => (props.$isVisible ? 1 : -1)};
-  opacity: ${(props) => (props.$isVisible ? 1 : 0)};
-  transition: 0.5s ease-in-out;
-  top: 0;
-  left: 0%;
-  transform: translate(-100%, -100%);
-  width: 30rem;
-  height: 50rem;
-  background-color: green;
-  border-radius: 10px;
+export const TalkListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  & > h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  & > span {
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+  }
+
+  & > ul {
+    margin-top: 1rem;
+    background: white;
+    height: 100%;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+`;
+
+export const TalkChannelCardItem = styled.li`
+  padding: 2rem 1rem;
+  display: flex;
+  cursor: pointer;
+  &:hover {
+    background: gray;
+  }
+  & > figure {
+    margin-right: 1rem;
+    & > img {
+      height: 5rem;
+      width: 5rem;
+      object-fit: cover;
+    }
+  }
+  & > div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    & h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    & div:last-child {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 `;
