@@ -13,6 +13,7 @@ const Button = ({ post_id, user_id }: PropsType) => {
   const likeRef = useRef(isLike);
   const userIdRef = useRef(user_id);
   const likeIdRef = useRef<number | null>(null);
+  const validRef = useRef(false);
   useEffect(() => {
     findLike(user_id, post_id).then((result) => {
       if (result?.[0]) {
@@ -21,6 +22,7 @@ const Button = ({ post_id, user_id }: PropsType) => {
       }
     });
     userIdRef.current = user_id;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user_id]);
 
@@ -28,6 +30,8 @@ const Button = ({ post_id, user_id }: PropsType) => {
   // useState의 초기값만 cleanup function에는 들어가게 된다.
   useEffect(() => {
     return () => {
+      // validRef를 준 이유는 좋아요가 있는 상태에서 수정하기로 컴포넌트 전환되면 없는 상태가 되고 좋아요가 없으면 그 반대가 되므로 넣어줬습니다.
+      if (!validRef.current) return;
       if (likeRef.current && likeIdRef.current === null) {
         registLike(userIdRef.current, post_id);
       } else if (!likeRef.current && likeIdRef.current) {
@@ -42,6 +46,7 @@ const Button = ({ post_id, user_id }: PropsType) => {
       <St.LikeButton
         $like={isLike}
         onClick={() => {
+          validRef.current = true;
           likeRef.current = !isLike;
           setIsLike(!isLike);
         }}

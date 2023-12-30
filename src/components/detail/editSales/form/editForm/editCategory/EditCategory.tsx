@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCategory, getSubCategory } from '../../../../../../API/supabase.api';
+import { getMainCategory, getSubCategory } from '../../../../../../API/supabase.api';
 import * as St from './EditCategory.styled';
 
 type MainCategoryType = {
@@ -12,25 +12,27 @@ const EditCategory = () => {
   const [category, setCategory] = useState<MainCategoryType>([]);
   const [subCategory, setSubCategory] = useState<{ name: string }[]>([]);
 
-  const [idx, setIdx] = useState('');
-
+  const [mainIndex, setMainIndex] = useState('');
+  const [subIndex, setSubIndex] = useState('');
   useEffect(() => {
-    getCategory().then((result) => {
+    getMainCategory().then((result) => {
       setCategory(result!);
     });
   }, []);
   useEffect(() => {
-    getSubCategory(parseInt(idx)).then((result) => {
+    if (!mainIndex) return;
+    getSubCategory(parseInt(mainIndex)).then((result) => {
       setSubCategory(result!);
     });
-  }, [idx]);
+  }, [mainIndex]);
+
   return (
     <St.Container>
       <select
         name="category_1"
         id="category_1"
         onChange={(e) => {
-          setIdx(e.currentTarget.value);
+          setMainIndex(e.currentTarget.value);
         }}
       >
         <option value="">선택하기</option>
@@ -43,12 +45,18 @@ const EditCategory = () => {
         })}
       </select>
 
-      {idx && (
-        <select name="category_2" id="category_2" value={idx}>
+      {mainIndex && (
+        <select
+          name="category_2"
+          id="category_2"
+          onChange={(e) => {
+            setSubIndex(e.currentTarget.value);
+          }}
+        >
           <option value="">선택하기</option>
 
-          {subCategory?.map((subOption) => {
-            return <option value={subOption.name}>{subOption.name}</option>;
+          {subCategory?.map((subOption, idx) => {
+            return <option value={idx + 1}>{subOption.name}</option>;
           })}
         </select>
       )}
