@@ -37,7 +37,11 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
     await deleteProduct(productInfo);
     navigate('/');
   };
-
+  const deleteGoods = async () => {
+    await deleteImageFromStorage(productInfo);
+    await deleteProduct(productInfo);
+    navigate('/');
+  };
   // 사용자의 고유 아이디 uid를 가져옵니다.
   useEffect(() => {
     getUserSession().then(async (userSession) => {
@@ -54,7 +58,7 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
         <St.Form onSubmit={editProduct}>
           <EditForm tags={tags} setTags={setTags} productInfo={productInfo} />
           <St.ButtonGroup>
-            <button className="delete-button" type="button" onClick={(e) => e.stopPropagation()}>
+            <button className="delete-button" type="button" onClick={deleteGoods}>
               삭제하기
             </button>
             <button className="edit-button">수정완료</button>
