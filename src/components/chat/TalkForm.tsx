@@ -13,16 +13,13 @@ const TalkForm = ({ currentChannel, setCurrentChannel }: TalkFormProps) => {
   //  메세지 보내기
   const sendMessageHandler = async () => {
     const currentUser = await getUserSession();
-    await supabase
-      .from('chat_messages')
-      .insert([
-        {
-          chat_id: currentChannel,
-          content: inputRef.current?.value,
-          author_id: currentUser.session?.user.id,
-        },
-      ])
-      .select();
+    await supabase.from('chat_messages').insert([
+      {
+        chat_id: currentChannel,
+        content: inputRef.current?.value,
+        author_id: currentUser.session?.user.id,
+      },
+    ]);
   };
 
   // 이전 메세지 가져오기
@@ -51,7 +48,7 @@ const TalkForm = ({ currentChannel, setCurrentChannel }: TalkFormProps) => {
           filter: `chat_id=eq.${currentChannel}`,
         },
         (payload) => {
-          console.log(payload);
+          console.log('트리거 세부');
           const newData = {
             current_chat_id: payload.new.chat_id,
             message_id: payload.new.id,

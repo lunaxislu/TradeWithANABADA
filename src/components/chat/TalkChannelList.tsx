@@ -13,6 +13,7 @@ const TalkChannelList = ({ setCurrentChannel }: TalkCannelListProps) => {
   const update = async () => {
     const currentUser = await getUserSession();
     const data = await getCurrentUserChatChannel(currentUser.session?.user.id!);
+    console.log(data);
     setChannels(data);
   };
   // 최초 mount 시 유저의 모든 채널 가져오기
@@ -36,6 +37,7 @@ const TalkChannelList = ({ setCurrentChannel }: TalkCannelListProps) => {
               filter: `chat_id=eq.${id}`,
             },
             (payload) => {
+              console.log(payload);
               update();
             },
           )

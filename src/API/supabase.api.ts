@@ -397,6 +397,7 @@ export type ChannelInfo = {
   user1_id: string;
   user2_id: string;
   messages: Omit<ChatMessage, 'current_chat_id'>[];
+  invisible_count: number;
 };
 
 // 현재 유저 정보에 따른 채팅방 가져오기
