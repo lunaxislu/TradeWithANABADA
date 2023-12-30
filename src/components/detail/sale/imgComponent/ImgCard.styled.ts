@@ -8,7 +8,7 @@ export const Container = styled.div`
   height: 100%;
 
   .big-img_card {
-    height: 80%;
+    height: 85%;
 
     img {
       border-radius: 12px;
