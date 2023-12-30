@@ -79,3 +79,22 @@ export const InvisibleMessage = styled.span`
   color: red;
   font-size: 1.5rem;
 `;
+
+export const TalkMessageContainer = styled.section`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+
+  & ul {
+    margin: 3rem 0;
+    height: 35rem;
+    overflow-y: scroll;
+    background: white;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+`;
+
+export const TalkMessage = styled.li``;
