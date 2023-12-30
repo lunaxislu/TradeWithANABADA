@@ -41,6 +41,7 @@ const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
     setShowImages(editImages);
     setImgFiles(updateImgFiles);
   };
+
   // 이미지가 등록되면 input file을 초기화 시켜줍니다.
   useEffect(() => {
     if (inputFileRef.current) {

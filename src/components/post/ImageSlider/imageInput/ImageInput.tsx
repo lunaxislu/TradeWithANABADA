@@ -1,6 +1,7 @@
 import React from 'react';
 import * as St from './ImageInput.styled';
 type SetStateProps = React.Dispatch<React.SetStateAction<number>>;
+
 type PropsType = {
   showImages: string[];
   setImageIndex: SetStateProps;

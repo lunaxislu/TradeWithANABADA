@@ -11,9 +11,8 @@ export const Container = styled.div`
   }
 `;
 
-export const EditButton = styled.button``;
-
 export const TextContainer = styled.div`
+  position: relative;
   margin-top: 4rem;
   padding: 2.6rem 2.8rem;
   border: 2px solid #666;
