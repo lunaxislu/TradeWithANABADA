@@ -8,7 +8,7 @@ const EditSale = ({ productInfo }: { productInfo: ProductInfoType }) => {
   /**
    * useState any타입 바꿔야지...
    */
-  const [imgFiles, setImgFiles] = useState<any>([]);
+  const [imgFiles, setImgFiles] = useState<(Blob | File)[]>([]);
   return (
     <St.Container>
       <St.Wrapper>

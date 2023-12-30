@@ -383,7 +383,7 @@ export const registLike = async (user_id: string, post_id: number) => {
 };
 
 /**
- * product Edit 할 때 사용하는 함수
+ * product Edit 할 때 사용하는 함수들과 타입입니다.
  */
 type ProductInfoType = {
   content: string;

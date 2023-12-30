@@ -7,8 +7,8 @@ import SmImgCard from './SmImgCard/SmImgCard';
 
 type EventObject = ChangeEvent<HTMLInputElement>;
 type PropsType = {
-  imgFiles: any[];
-  setImgFiles: React.Dispatch<React.SetStateAction<any[]>>;
+  imgFiles: (Blob | File)[];
+  setImgFiles: React.Dispatch<React.SetStateAction<(Blob | File)[]>>;
   productInfo: ProductInfoType;
 };
 
@@ -53,8 +53,8 @@ const EditImg = ({ imgFiles, setImgFiles, productInfo }: PropsType) => {
     console.log('asssssssssss');
     if (productInfo) {
       listToBlob(productInfo).then((result) => {
-        if (result) {
-          setImgFiles(result);
+        if (result?.length) {
+          setImgFiles(result as Blob[]);
         }
       });
     }
@@ -66,6 +66,8 @@ const EditImg = ({ imgFiles, setImgFiles, productInfo }: PropsType) => {
     //   }
     // }
   }, []);
+  console.log(imgFiles);
+
   return (
     <St.Container>
       <BigImgCard showImages={showImages} imageIndex={imageIndex} />
