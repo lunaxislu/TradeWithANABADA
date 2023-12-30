@@ -19,26 +19,27 @@ export const ProductText = styled.div`
     margin-top: 1rem;
     .product-title,
     .product-value {
-      font-size: 2rem;
-      color: #666;
+      font-size: 2.6rem;
+      color: #333;
       font-weight: bold;
     }
     div {
       padding-top: 0.6rem;
       color: #333;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       margin-top: 0.8rem;
     }
 
     .product-value {
+      margin-top: 2.6rem;
       margin-top: 2.6rem;
     }
   }
 `;
 
 export const User = styled.div`
-  margin-top: 1rem;
-  padding-top: 2rem;
+  margin-top: 3.6rem;
+  padding-top: 3.6rem;
   border-top: 1px solid #aaa;
 
   .user-wrapper {
@@ -46,6 +47,7 @@ export const User = styled.div`
     border: 1px solid #aaa;
     border-radius: 12px;
     a {
+      // 상세페이지로 이동하는 Link태그 CSS입니다.
       padding: 1rem;
       margin-top: 1rem;
       text-align: center;
@@ -67,8 +69,8 @@ export const User = styled.div`
 
     img {
       border-radius: 50%;
-      width: 4rem;
-      height: 4rem;
+      width: 6rem;
+      height: 6rem;
     }
   }
 
@@ -79,7 +81,7 @@ export const User = styled.div`
   }
 
   .user-point {
-    margin-top: 0.4rem;
+    margin-top: 0.6rem;
     color: orange;
     word-break: keep-all;
     line-height: 1.3;
@@ -87,10 +89,10 @@ export const User = styled.div`
 `;
 
 export const HashTag = styled.div`
-  margin-top: 2.4rem;
+  margin-top: 4.4rem;
 
   h4 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: bold;
     color: #666;
   }
@@ -102,8 +104,9 @@ export const HashTag = styled.div`
 
     span {
       display: inline-block;
-      border-radius: 1.2rem;
-      padding: 0.6rem 0.8rem;
+      font-size: 1.2rem;
+      border-radius: 1.8rem;
+      padding: 1rem 1.4rem;
       color: #fff;
     }
     > :nth-child(1) {

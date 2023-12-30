@@ -21,6 +21,7 @@ const PostForm = ({ imgFiles }: PropsType) => {
   const registProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const product = {
+      category2_id: parseInt(e.currentTarget['category_2'].value),
       title: e.currentTarget['product_name'].value,
       content: e.currentTarget['product_text'].value,
       price: e.currentTarget['product_value'].value,

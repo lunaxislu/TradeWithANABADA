@@ -9,6 +9,9 @@ export const ButtonContainer = styled.div`
 
   button {
     text-align: center;
+    width: 18.6rem;
+    height: 4.8rem;
+    font-size: 1.6rem;
     width: 18rem;
     height: 4rem;
     font-size: 1.2rem;
