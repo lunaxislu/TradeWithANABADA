@@ -461,7 +461,6 @@ const getImageFileList = async (info: ProductInfoType) => {
 };
 export const updateTableRow = async (preInfo: ProductInfoType, currentInfo: ProductInfoType) => {
   await supabase.from('likes').update({ post_id: currentInfo.product_id }).eq('post_id', preInfo.product_id);
-  await supabase.from('');
 };
 export const deleteProduct = async (info: ProductInfoType) => {
   await supabase.from('products').delete().eq('id', info.product_id);

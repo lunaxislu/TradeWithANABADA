@@ -44,7 +44,7 @@ const EditCategory = () => {
       </select>
 
       {idx && (
-        <select name="category_2" id="category_2">
+        <select name="category_2" id="category_2" value={idx}>
           <option value="">선택하기</option>
 
           {subCategory?.map((subOption) => {

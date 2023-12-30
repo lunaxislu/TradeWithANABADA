@@ -21,6 +21,7 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
       tags,
       user_id: userData.user,
       imgFiles,
+      category2_id: e.currentTarget['category_2'].value,
     };
     e.currentTarget['product_name'].value = '';
     e.currentTarget['product_text'].value = '';
