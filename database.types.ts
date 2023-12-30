@@ -57,6 +57,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: number;
+          visible: boolean;
         };
         Insert: {
           author_id?: string | null;
@@ -64,6 +65,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
+          visible?: boolean;
         };
         Update: {
           author_id?: string | null;
@@ -71,6 +73,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
+          visible?: boolean;
         };
         Relationships: [
           {
@@ -323,6 +326,42 @@ export interface Database {
           },
         ];
       };
+      sales: {
+        Row: {
+          created_at: string;
+          id: number;
+          product_id: number | null;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          product_id?: number | null;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          product_id?: number | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'sales_product_id_fkey';
+            columns: ['product_id'];
+            isOneToOne: false;
+            referencedRelation: 'products';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'sales_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       users: {
         Row: {
           avatar_img: string | null;
@@ -373,6 +412,7 @@ export interface Database {
           current_chat_id: number;
           content: string;
           author_id: string;
+          visible: boolean;
         }[];
       };
       get_latest_products: {
@@ -417,7 +457,15 @@ export interface Database {
           user1_id: string;
           user2_id: string;
           messages: Json[];
+          invisible_count: number;
         }[];
+      };
+      update_visible: {
+        Args: {
+          input_user_id: string;
+          input_chat_id: number;
+        };
+        Returns: undefined;
       };
     };
     Enums: {

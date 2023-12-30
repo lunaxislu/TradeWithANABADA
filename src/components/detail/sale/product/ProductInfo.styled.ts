@@ -13,21 +13,20 @@ export const CreatedDate = styled.span`
   right: 0;
 `;
 
-// 상품명 , 상품가치 UI css 입니다.
 export const ProductText = styled.div`
   position: relative;
   .text-wrapper {
-    margin-top: 2.4rem;
+    margin-top: 1rem;
     .product-title,
     .product-value {
-      font-size: 2.6rem;
-      color: #333;
+      font-size: 2rem;
+      color: #666;
       font-weight: bold;
     }
     div {
       padding-top: 0.6rem;
       color: #333;
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       margin-top: 0.8rem;
     }
 
@@ -37,19 +36,16 @@ export const ProductText = styled.div`
   }
 `;
 
-// 상품등록한 user 프로필등의 UI를 보여주는곳을 처리하는 CSS 입니다.
 export const User = styled.div`
-  margin-top: 3.6rem;
-  padding-top: 3.6rem;
+  margin-top: 1rem;
+  padding-top: 2rem;
   border-top: 1px solid #aaa;
 
   .user-wrapper {
     padding: 2.4rem 1.4rem;
     border: 1px solid #aaa;
     border-radius: 12px;
-
     a {
-      // 상세페이지로 이동하는 Link태그 CSS입니다.
       padding: 1rem;
       margin-top: 1rem;
       text-align: center;
@@ -71,47 +67,43 @@ export const User = styled.div`
 
     img {
       border-radius: 50%;
-      width: 6rem;
-      height: 6rem;
+      width: 4rem;
+      height: 4rem;
     }
   }
 
   .user-name {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: bold;
-    color: #333;
+    color: #666;
   }
 
   .user-point {
-    margin-top: 0.6rem;
+    margin-top: 0.4rem;
     color: orange;
-    font-weight: bold;
-    font-size: 1.2rem;
-    line-height: 1.3;
     word-break: keep-all;
+    line-height: 1.3;
   }
 `;
 
-// 희망 교환 품목 UI CSS 처리입니다.
 export const HashTag = styled.div`
-  margin-top: 4.4rem;
+  margin-top: 2.4rem;
 
   h4 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: bold;
-    color: #333;
+    color: #666;
   }
 
   .tag-wrapper {
     display: flex;
     gap: 0.8rem;
-    margin-top: 1.8rem;
+    margin-top: 1.4rem;
 
     span {
       display: inline-block;
-      font-size: 1.2rem;
-      border-radius: 1.8rem;
-      padding: 1rem 1.4rem;
+      border-radius: 1.2rem;
+      padding: 0.6rem 0.8rem;
       color: #fff;
     }
     > :nth-child(1) {

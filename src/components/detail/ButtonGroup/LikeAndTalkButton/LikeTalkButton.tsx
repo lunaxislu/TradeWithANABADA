@@ -24,8 +24,6 @@ const Button = ({ post_id, user_id }: PropsType) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user_id]);
 
-  //  unmount 상태에서 clean up function에 useState를 사용하려면 ref 사용하자
-  // useState의 초기값만 cleanup function에는 들어가게 된다.
   useEffect(() => {
     return () => {
       if (likeRef.current && likeIdRef.current === null) {

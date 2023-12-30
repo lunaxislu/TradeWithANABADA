@@ -8,7 +8,7 @@ export const Container = styled.div`
   height: 100%;
 
   .big-img_card {
-    height: 85%;
+    height: 86%;
 
     img {
       border-radius: 12px;
@@ -20,6 +20,7 @@ export const Container = styled.div`
   .sl-img_container {
     display: flex;
     gap: 1rem;
+    justify-content: center;
   }
 `;
 
