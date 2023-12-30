@@ -1,26 +1,35 @@
 import styled from 'styled-components';
 
-// ProductInfo button 모음
+// ProductInfo button- 찜하기 & Talk 하기 버튼 CSS
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
 
-  margin-top: 2.4rem;
+  margin-top: 4.4rem;
 
   button {
     text-align: center;
-    width: 130px;
-    height: 4rem;
-    font-size: 1.2rem;
+    width: 18.6rem;
+    height: 4.8rem;
+    font-size: 1.6rem;
     border: 1px solid #aaa;
   }
 `;
+
 type PropsLikeType = {
   $like: boolean;
 };
 export const LikeButton = styled.button<PropsLikeType>`
-  cursor: pointer;
   position: relative;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #ffae73;
+    background-color: #ffae73;
+    color: #fff;
+    font-weight: bold;
+  }
+
   svg {
     position: absolute;
     top: 50%;
