@@ -8,6 +8,7 @@ import {
 } from '../../../../API/supabase.api';
 
 import { UserMetadata } from '@supabase/supabase-js';
+import { useNavigate } from 'react-router-dom';
 import { EditSalePropsType } from '../EditSale';
 import * as St from './Form.styled';
 import EditForm from './editForm/EditForm';
@@ -17,8 +18,8 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
   const [tags, setTags] = useState<string[]>(productInfo.hash_tags);
   const [userData, setUserData] = useState<UserMetadata>({});
   const [imgFiles, setImgFiles] = useState<(Blob | File)[]>([]);
-  console.log(productInfo);
-  const registProduct = async (e: FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+  const editProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const product = {
@@ -30,13 +31,11 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
       imgFiles,
       category2_id: parseInt(e.currentTarget['category_2'].value),
     };
-    // e.currentTarget['product_name'].value = '';
-    // e.currentTarget['product_text'].value = '';
-    // e.currentTarget['product_value'].value = '';
     const result = await insertProduct(product);
     await updateTableRow(productInfo, result);
     await deleteImageFromStorage(productInfo);
     await deleteProduct(productInfo);
+    navigate('/');
   };
 
   // 사용자의 고유 아이디 uid를 가져옵니다.
@@ -52,10 +51,14 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
       <St.Wrapper>
         <EditImg imgFiles={imgFiles} setImgFiles={setImgFiles} productInfo={productInfo} />
 
-        <St.Form onSubmit={registProduct}>
+        <St.Form onSubmit={editProduct}>
           <EditForm tags={tags} setTags={setTags} productInfo={productInfo} />
-          <button>sdf</button>
-          {/* <EditButton isEdit={isEdit} setIsEdit={setIsEdit} userData={userData} productInfo={productInfo} /> */}
+          <St.ButtonGroup>
+            <button className="delete-button" type="button" onClick={(e) => e.stopPropagation()}>
+              삭제하기
+            </button>
+            <button className="edit-button">수정완료</button>
+          </St.ButtonGroup>
         </St.Form>
       </St.Wrapper>
     </St.Container>

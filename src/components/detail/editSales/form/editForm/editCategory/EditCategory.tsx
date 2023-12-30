@@ -29,6 +29,7 @@ const EditCategory = () => {
   return (
     <St.Container>
       <select
+        required
         name="category_1"
         id="category_1"
         onChange={(e) => {
@@ -47,6 +48,7 @@ const EditCategory = () => {
 
       {mainIndex && (
         <select
+          required
           name="category_2"
           id="category_2"
           onChange={(e) => {
