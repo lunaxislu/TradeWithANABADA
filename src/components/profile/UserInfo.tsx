@@ -1,5 +1,5 @@
 import * as St from './Profile.styled';
-import UploadProfile from './UpdateProfile';
+import ProfileInfo from './ProfileInfo';
 
 type UidProps = {
   uid: string;
@@ -10,7 +10,7 @@ const UserInfo = ({ uid, params }: UidProps) => {
   return (
     <St.ProfileReviewWrapper>
       <St.ProfileBox>
-        <UploadProfile uid={uid} params={params} />
+        <ProfileInfo uid={uid} params={params} />
         {/* {uid === params ? <UploadProfile uid={uid} params={params} /> : <TargetProfile params={params} />} */}
       </St.ProfileBox>
       <St.ReviewBox>
