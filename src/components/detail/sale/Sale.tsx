@@ -32,7 +32,7 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
         console.log(error);
       });
   }, []);
-
+  console.log(productInfo);
   return (
     <St.Container>
       <div className="product-info">
@@ -40,7 +40,7 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
         <ProductInfo userData={userData} productInfo={productInfo} />
       </div>
 
-      <div>asdf</div>
+      <St.Content>{productInfo.content}</St.Content>
 
       {/* {state.userid === userId && <St.EditButton>{isEdit ? '수정완료' : '수정하기'}</St.EditButton>}; */}
     </St.Container>
