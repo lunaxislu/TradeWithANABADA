@@ -1,30 +1,21 @@
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { Tables } from '../../../../database.types';
 import { getReviews, getUserData } from '../../../API/supabase.api';
 import * as St from './Chart.styled';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-// null이 들어가는 이유는 리뷰가 없을 수도 있고 DB에서 null을 허용해놨기 때문에
-type ReviewType = {
-  res_fast: number | null;
-  kind: number | null;
-  good_product: number | null;
-  good_time: number | null;
-  same_product: number | null;
-  user_id: string | null;
-}[];
-
 export const ReviewChart = () => {
-  const [reviews, setReviews] = useState<ReviewType>();
+  const [reviews, setReviews] = useState<Tables<'review'>[]>();
   const reviewData = reviews
     ? reviews.map((review) => ({
-        '거래가 수월해요': review.res_fast!,
-        '고객이 착해요': review.kind!,
-        '물품 상태가 좋아요': review.good_product!,
-        '사진과 동일해요': review.good_time!,
-        '약속을 잘 지켜요': review.same_product!,
+        '거래가 수월해요': review.res_fast,
+        '고객이 착해요': review.kind,
+        '물품 상태가 좋아요': review.good_product,
+        '사진과 동일해요': review.good_time,
+        '약속을 잘 지켜요': review.same_product,
       }))
     : [];
 
