@@ -429,6 +429,13 @@ export interface Database {
           invisible_count: number
         }[]
       }
+      update_visible: {
+        Args: {
+          input_user_id: string
+          input_chat_id: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

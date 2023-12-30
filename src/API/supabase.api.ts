@@ -444,3 +444,7 @@ export const getSelectChatMessages = async (channel: number): Promise<ChatMessag
   if (error) throw error;
   return data;
 };
+
+export const updateVisibleTrue = async (user_id: string, chat_id: number): Promise<void> => {
+  await supabase.rpc('update_visible', { input_user_id: user_id, input_chat_id: chat_id });
+};

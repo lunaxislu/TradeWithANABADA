@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChatMessage, getSelectChatMessages, getUserSession, supabase } from '../../API/supabase.api';
+import {
+  ChatMessage,
+  getSelectChatMessages,
+  getUserSession,
+  supabase,
+  updateVisibleTrue,
+} from '../../API/supabase.api';
 
 type TalkFormProps = {
   currentChannel: number;
@@ -20,6 +26,11 @@ const TalkForm = ({ currentChannel, setCurrentChannel }: TalkFormProps) => {
         author_id: currentUser.session?.user.id,
       },
     ]);
+  };
+
+  const updateVisibleInfo = async () => {
+    const currentUser = await getUserSession();
+    await updateVisibleTrue(currentUser.session?.user.id!, currentChannel);
   };
 
   // 이전 메세지 가져오기
@@ -48,7 +59,26 @@ const TalkForm = ({ currentChannel, setCurrentChannel }: TalkFormProps) => {
           filter: `chat_id=eq.${currentChannel}`,
         },
         (payload) => {
-          console.log('트리거 세부');
+          const newData = {
+            current_chat_id: payload.new.chat_id,
+            message_id: payload.new.id,
+            message_created_at: payload.new.created_at,
+            content: payload.new.content,
+            author_id: payload.new.author_id,
+          };
+
+          setChatData((prev) => [...prev, newData]);
+        },
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'chat_messages',
+          filter: `chat_id=eq.${currentChannel}`,
+        },
+        (payload) => {
           const newData = {
             current_chat_id: payload.new.chat_id,
             message_id: payload.new.id,
@@ -70,6 +100,10 @@ const TalkForm = ({ currentChannel, setCurrentChannel }: TalkFormProps) => {
     return () => {
       removeChannel();
     };
+  }, []);
+
+  useEffect(() => {
+    updateVisibleInfo();
   }, []);
 
   return (
