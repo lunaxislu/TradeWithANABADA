@@ -423,7 +423,26 @@ const getImageFileList = async (info: ProductInfoType) => {
     return data;
   }
 };
+export const updateTableRow = async (preInfo: ProductInfoType, currentInfo: ProductInfoType) => {
+  await supabase.from('likes').update({ post_id: currentInfo.product_id }).eq('post_id', preInfo.product_id);
+  await supabase.from('');
+};
+export const deleteProduct = async (info: ProductInfoType) => {
+  await supabase.from('products').delete().eq('id', info.product_id);
+  console.log('삭제완료');
+};
 
 /**
  * category 불러오기
  */
+
+export const getCategory = async () => {
+  let { data: categories1, error } = await supabase.from('categories1').select('*');
+
+  return categories1;
+};
+
+export const getSubCategory = async (id: number) => {
+  let { data: categories2 } = await supabase.from('categories2').select('name').eq('category1_id', id);
+  return categories2;
+};
