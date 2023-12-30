@@ -381,3 +381,47 @@ export const registLike = async (user_id: string, post_id: number) => {
   const { data, error } = await supabase.from('likes').insert([{ post_id, user_id }]).select();
   console.log('찜하기 완료');
 };
+
+/**
+ * product Edit 할 때 사용하는 함수
+ */
+type ProductInfoType = {
+  content: string;
+  created_at: string;
+  hash_tags: string[];
+  like_count: number;
+  price: string;
+  product_id: number;
+  product_img: string[];
+  title: string;
+  user_id: string;
+};
+
+type FileTyep = {
+  [key: string]: any;
+};
+export const listToBlob = async (info: ProductInfoType) => {
+  const lists = await getImageFileList(info);
+  if (lists !== undefined) {
+    const blobs = await downloadImageFiles(lists, info);
+    return blobs;
+  }
+};
+const downloadImageFiles = async (lists: FileTyep[], info: ProductInfoType) => {
+  const promiseBlob = lists.map(async (list) => {
+    const { data, error } = await supabase.storage
+      .from('product-images')
+      .download(`${info.user_id}/${info.product_id}/${info.created_at}/${list.name}`);
+    return data;
+  });
+  const blobs = await Promise.all(promiseBlob);
+  return blobs;
+};
+const getImageFileList = async (info: ProductInfoType) => {
+  const { data, error } = await supabase.storage
+    .from('product-images')
+    .list(`${info.user_id}/${info.product_id}/${info.created_at}`);
+  if (data) {
+    return data;
+  }
+};

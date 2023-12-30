@@ -47,6 +47,7 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
         <ImgCard imgUrl={productInfo.product_img} />
         <ProductInfo userData={userData} productInfo={productInfo} />
       </div>
+
       <St.TextContainer className="product-text">
         <h2 className="title">상품 설명</h2>{' '}
         <EditButton userData={userData} productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} />
