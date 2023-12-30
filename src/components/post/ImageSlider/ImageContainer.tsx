@@ -19,7 +19,7 @@ const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
     const imageList = e.target.files || [];
     let imagesUrl = [...showImages];
 
-    // // type에서 null에러가 뜨길래 해줬습니다.
+    // type에서 null에러가 뜨길래 해줬습니다.
     // if (!imageList) return; 위의 10번째에서 빈 배열 넣어줬씁니다.
 
     // 값이 null이 아니라면 아래 로직을 수행합니다.
@@ -37,10 +37,16 @@ const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
   const deletePreviewImage = (id: number) => {
     const editImages = showImages.filter((_, idx) => idx !== id);
     const updateImgFiles = imgFiles.filter((_, idx) => idx !== id);
-    setImageIndex(updateImgFiles.length - 1);
+    if (updateImgFiles.length !== 0) {
+      setImageIndex(updateImgFiles.length - 1);
+    }
+    if (updateImgFiles.length === 0) {
+      setImageIndex(0);
+    }
     setShowImages(editImages);
     setImgFiles(updateImgFiles);
   };
+  console.log(imageIndex);
   // 이미지가 등록되면 input file을 초기화 시켜줍니다.
   useEffect(() => {
     if (inputFileRef.current) {

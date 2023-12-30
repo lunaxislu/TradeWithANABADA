@@ -1,3 +1,4 @@
+import { FileObject } from '@supabase/storage-js';
 import { createClient } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import { Database } from '../../database.types';
@@ -169,7 +170,7 @@ type ParamForRegist = {
   price: string;
   tags: string[];
   user_id: string;
-  imgFiles: File[];
+  imgFiles: (File | Blob)[];
 };
 
 export const insertProduct = async (info: ParamForRegist) => {
@@ -227,7 +228,7 @@ const insertHashTag = async (post_id: number, hash_tag: string[]) => {
  * @param date
  * @param uuid
  */
-const insertImageStorage = async (id: number, files: File[], date: string, uuid: string) => {
+const insertImageStorage = async (id: number, files: (File | Blob)[], date: string, uuid: string) => {
   // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
   const uploadImage = files.map(async (file) => {
     // nano id를 사용해서 이미지 고유 이름으로 넣습니다.
@@ -416,4 +417,68 @@ export const cancelLike = async (post_id: number) => {
 export const registLike = async (user_id: string, post_id: number) => {
   const { data, error } = await supabase.from('likes').insert([{ post_id, user_id }]).select();
   console.log('찜하기 완료');
+};
+
+/**
+ * product Edit 할 때 사용하는 함수들과 타입입니다.
+ */
+type ProductInfoType = {
+  content: string;
+  created_at: string;
+  hash_tags: string[];
+  like_count: number;
+  price: string;
+  product_id: number;
+  product_img: string[];
+  title: string;
+  user_id: string;
+};
+
+export const listToBlob = async (info: ProductInfoType) => {
+  const lists = await getImageFileList(info);
+  if (lists !== undefined) {
+    const blobs = await downloadImageFiles(lists, info);
+    return blobs;
+  }
+};
+const downloadImageFiles = async (lists: FileObject[], info: ProductInfoType) => {
+  const promiseBlob = lists.map(async (list) => {
+    const { data, error } = await supabase.storage
+      .from('product-images')
+      .download(`${info.user_id}/${info.product_id}/${info.created_at}/${list.name}`);
+    return data;
+  });
+  const blobs = await Promise.all(promiseBlob);
+  return blobs;
+};
+const getImageFileList = async (info: ProductInfoType) => {
+  const { data, error } = await supabase.storage
+    .from('product-images')
+    .list(`${info.user_id}/${info.product_id}/${info.created_at}`);
+  if (data) {
+    return data;
+  }
+};
+export const updateTableRow = async (preInfo: ProductInfoType, currentInfo: ProductInfoType) => {
+  await supabase.from('likes').update({ post_id: currentInfo.product_id }).eq('post_id', preInfo.product_id);
+  await supabase.from('');
+};
+export const deleteProduct = async (info: ProductInfoType) => {
+  await supabase.from('products').delete().eq('id', info.product_id);
+  console.log('삭제완료');
+};
+
+/**
+ * category 불러오기
+ */
+
+export const getCategory = async () => {
+  let { data: categories1, error } = await supabase.from('categories1').select('*');
+
+  return categories1;
+};
+
+export const getSubCategory = async (id: number) => {
+  let { data: categories2 } = await supabase.from('categories2').select('name').eq('category1_id', id);
+  return categories2;
 };

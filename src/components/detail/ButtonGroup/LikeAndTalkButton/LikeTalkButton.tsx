@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { cancelLike, findLike, registLike } from '../../../../API/supabase.api';
 import { ReactComponent as Heart } from '../../../../styles/assets/heart.svg';
 import { ReactComponent as Like } from '../../../../styles/assets/unlike.svg';
-import * as St from './Button.styled';
+import * as St from './LikeTalkButton.styled';
 type PropsType = {
   post_id: number;
   user_id: string;
@@ -21,6 +21,7 @@ const Button = ({ post_id, user_id }: PropsType) => {
       }
     });
     userIdRef.current = user_id;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user_id]);
 
   useEffect(() => {
@@ -31,6 +32,7 @@ const Button = ({ post_id, user_id }: PropsType) => {
         cancelLike(post_id);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -38,7 +40,6 @@ const Button = ({ post_id, user_id }: PropsType) => {
       <St.LikeButton
         $like={isLike}
         onClick={() => {
-          console.log(likeRef);
           likeRef.current = !isLike;
           setIsLike(!isLike);
         }}

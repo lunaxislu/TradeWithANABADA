@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInfoInProduct } from '../../../../API/supabase.api';
 import { displayCreateAt } from '../../../../utils/date';
-import Button from '../ButtonGroup/Button';
+import Button from '../../ButtonGroup/LikeAndTalkButton/LikeTalkButton';
 import { ProductInfoType } from '../Sale';
 import * as St from './ProductInfo.styled';
 
