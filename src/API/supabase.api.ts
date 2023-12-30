@@ -263,7 +263,14 @@ const insertImageStorage = async (id: number, files: (File | Blob)[], date: stri
 };
 
 export const deleteImageFromStorage = async (info: ProductInfoType) => {
-  const { data, error } = await supabase.storage.from('products-images').remove([`${info.user_id}/${info.product_id}`]);
+  const { data: lists } = await supabase.storage
+    .from('product-images')
+    .list(`${info.user_id}/${info.product_id}/${info.created_at}`);
+  const filesToRemove = lists?.map((list) => `${info.user_id}/${info.product_id}/${info.created_at}/${list.name}`);
+
+  const { data, error } = await supabase.storage.from('product-images').remove(filesToRemove!);
+
+  console.log('product-images에 삭제되고', data);
   if (error) {
     console.log('스토리지 폴더삭제에서', error);
   }

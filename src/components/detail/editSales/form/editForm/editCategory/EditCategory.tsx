@@ -13,7 +13,7 @@ const EditCategory = () => {
   const [subCategory, setSubCategory] = useState<{ name: string }[]>([]);
 
   const [mainIndex, setMainIndex] = useState('');
-  const [subIndex, setSubIndex] = useState('');
+  const [_, setSubIndex] = useState('');
   useEffect(() => {
     getMainCategory().then((result) => {
       setCategory(result!);
