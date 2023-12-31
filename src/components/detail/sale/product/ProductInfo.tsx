@@ -33,7 +33,7 @@ const ProductInfo = ({ userData, productInfo }: PropsType) => {
     <St.Container>
       {/* 상품 제목과 상품의 가치를 등록한 유저가 측정내용입니다.  */}
       <St.ProductText>
-        <St.CreatedDate>{displayCreateAt(productInfo.created_at)}</St.CreatedDate>
+        <St.CreatedDate>{displayCreateAt(productInfo?.created_at)}</St.CreatedDate>
         <div className="text-wrapper">
           <h3 className="product-title">상품명</h3>
           <div>{productInfo.title}</div>
@@ -72,7 +72,7 @@ const ProductInfo = ({ userData, productInfo }: PropsType) => {
       </St.HashTag>
 
       {/* 좋아요와 대화하기 버튼 모음입니다. */}
-      <Button post_id={productInfo.product_id} user_id={userData.id} />
+      <Button post_id={productInfo?.product_id} user_id={userData.id} />
     </St.Container>
   );
 };

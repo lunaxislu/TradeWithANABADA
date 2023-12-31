@@ -6,6 +6,7 @@ const ImgCard = ({ imgUrl }: PropsType) => {
   const showImg = (idx: number) => () => {
     setImgIndex(idx);
   };
+
   return (
     <St.Container>
       {/* 큰 사진 */}
@@ -15,7 +16,7 @@ const ImgCard = ({ imgUrl }: PropsType) => {
 
       {/* 작은 사진 */}
       <div className="sl-img_container">
-        {imgUrl.map((url, idx) => {
+        {imgUrl?.map((url, idx) => {
           return (
             <St.SmallImg key={url} src={url} $imgIndex={imgIndex} $idx={idx} alt="상품이미지" onClick={showImg(idx)} />
           );

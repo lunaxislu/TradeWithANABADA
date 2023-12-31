@@ -14,7 +14,7 @@ export const FormButton = styled.button`
   cursor: pointer;
   background-color: transparent;
   border: 1px solid #666;
-
+  box-sizing: border-box;
   &:hover {
     border: 1px solid #ffae73;
     background-color: #ffae73;
