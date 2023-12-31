@@ -1,10 +1,10 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
-import * as St from './HashTag.styled';
+import * as St from './HashTagInput.styled';
 type PropsType = {
   tags: string[];
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
 };
-const HashTag = ({ tags, setTags }: PropsType) => {
+const HashTagInput = ({ tags, setTags }: PropsType) => {
   const [hashTag, setHashTag] = useState('');
 
   const changeHashInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,4 +75,4 @@ const HashTag = ({ tags, setTags }: PropsType) => {
   );
 };
 
-export default HashTag;
+export default HashTagInput;

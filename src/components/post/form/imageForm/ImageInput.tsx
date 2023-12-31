@@ -1,7 +1,7 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import * as St from './ImageContainer.styled';
-import ImageCard from './imageCard/ImageCard';
-import ImageInput from './imageInput/ImageInput';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import ImageCard from './BigImgCard/BigImgCard';
+import * as St from './ImageInput.styled';
+import SmImgCard from './smImgCard/SmImgCard';
 
 type EventObject = ChangeEvent<HTMLInputElement>;
 
@@ -10,33 +10,23 @@ type PropsType = {
   setImgFiles: React.Dispatch<React.SetStateAction<File[]>>;
 };
 
-const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
+const ImageInput = ({ imgFiles, setImgFiles }: PropsType) => {
   const [showImages, setShowImages] = useState<string[]>([]);
   const [imageIndex, setImageIndex] = useState(0);
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const previewImages = (e: EventObject) => {
-    const imageList = e.target.files || [];
-    let imagesUrl = [...showImages];
+    if (showImages.length >= 5) return alert('5개가 최대입니다.');
 
-    // type에서 null에러가 뜨길래 해줬습니다.
-    // if (!imageList) return; 위의 10번째에서 빈 배열 넣어줬씁니다.
-
-    // 값이 null이 아니라면 아래 로직을 수행합니다.
-    for (let i = 0; i < imageList.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageList[i]);
-      imagesUrl.push(currentImageUrl);
-    }
-
-    // 이미지 Url은 최대 5개로 지정한 조건문입니다.
-    if (imagesUrl.length > 5) imagesUrl.splice(0, 5);
-    setShowImages(imagesUrl);
-
-    setImgFiles((prev) => [...prev, e.target.files![0]]);
+    const imageFile = e.target.files || [];
+    const currentImageUrl = URL.createObjectURL(imageFile[0]);
+    setShowImages((prev) => [...prev, currentImageUrl]);
+    setImgFiles((pre) => [...pre, e.target.files![0]]);
   };
   const deletePreviewImage = (id: number) => {
     const editImages = showImages.filter((_, idx) => idx !== id);
     const updateImgFiles = imgFiles.filter((_, idx) => idx !== id);
+
     if (updateImgFiles.length !== 0) {
       setImageIndex(updateImgFiles.length - 1);
     }
@@ -46,7 +36,7 @@ const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
     setShowImages(editImages);
     setImgFiles(updateImgFiles);
   };
-  console.log(imageIndex);
+
   // 이미지가 등록되면 input file을 초기화 시켜줍니다.
   useEffect(() => {
     if (inputFileRef.current) {
@@ -58,7 +48,7 @@ const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
     <St.Container>
       <ImageCard showImages={showImages} imageIndex={imageIndex} />
 
-      <ImageInput
+      <SmImgCard
         showImages={showImages}
         setImageIndex={setImageIndex}
         deletePreviewImage={deletePreviewImage}
@@ -70,4 +60,4 @@ const ImageContainer = ({ imgFiles, setImgFiles }: PropsType) => {
   );
 };
 
-export default ImageContainer;
+export default React.memo(ImageInput);

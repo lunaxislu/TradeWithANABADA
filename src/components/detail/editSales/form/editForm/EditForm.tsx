@@ -2,7 +2,7 @@ import React from 'react';
 import { ProductInfoType } from '../../../sale/Sale';
 import * as St from './EditForm.styled';
 import EditCategory from './editCategory/EditCategory';
-import EditInfo from './editInfo/EditInfo';
+import EditInfo from './editInfoInput/EditInfoInput';
 import EditText from './editText/EditText';
 import EditHashTag from './hashTag/EditHashTag';
 type PropsType = {

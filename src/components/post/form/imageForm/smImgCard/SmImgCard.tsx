@@ -1,5 +1,5 @@
 import React from 'react';
-import * as St from './ImageInput.styled';
+import * as St from './SmImgCard.styled';
 type SetStateProps = React.Dispatch<React.SetStateAction<number>>;
 
 type PropsType = {
@@ -8,7 +8,7 @@ type PropsType = {
   deletePreviewImage: (param: number) => void;
   imageIndex: number;
 };
-const ImageInput = ({ showImages, setImageIndex, deletePreviewImage, imageIndex }: PropsType) => {
+const SmImgCard = ({ showImages, setImageIndex, deletePreviewImage, imageIndex }: PropsType) => {
   return (
     <St.Container>
       {showImages.map((url, idx) => {
@@ -34,4 +34,4 @@ const ImageInput = ({ showImages, setImageIndex, deletePreviewImage, imageIndex 
   );
 };
 
-export default ImageInput;
+export default SmImgCard;
