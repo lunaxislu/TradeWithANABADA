@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import {
   deleteStorageImage,
   getUserSession,
+  getUsersAvartarImg,
+  getUsersNickname,
   imgPublicUrl,
   insertProfileImg,
   updateTableNickname,
@@ -32,21 +34,24 @@ const UpdateProfile = ({ uid, params }: UidProps) => {
       const sessionProfileImg = session.session.user.user_metadata.avatar_img;
       setNickname(sessionNickname);
       setImg(sessionProfileImg);
+      console.log(sessionProfileImg);
     }
   };
   // 타겟 유저의 프로필 가져오는 함수
-  // const getTargetUserProfile = () => {
-  //   const getInfo = async () => {
-  //     const targetProfileImg = await getUsersAvartarImg(uid);
-  //     console.log(targetProfileImg);
-  //   };
-  //   const getNickname = async () => {
-  //     const targetNickname = await getUsersNickname(uid);
-  //     console.log(targetNickname);
-  //   };
-  //   getInfo();
-  //   getNickname();
-  // };
+  const getTargetUserProfile = () => {
+    const getInfo = async () => {
+      const targetProfileImg = await getUsersAvartarImg(params as string);
+      console.log(targetProfileImg);
+      setImg(targetProfileImg[0].avatar_img!);
+    };
+    const getNickname = async () => {
+      const targetNickname = await getUsersNickname(params as string);
+      console.log(targetNickname);
+      setNickname(targetNickname[0].nickname!);
+    };
+    getInfo();
+    getNickname();
+  };
 
   // 이미지 미리보기 함수
   const imgReader = () => {
@@ -86,9 +91,9 @@ const UpdateProfile = ({ uid, params }: UidProps) => {
   };
 
   useEffect(() => {
-    getSession();
-    // getTargetUserProfile();
-  }, []);
+    if (uid === params) getSession();
+    else getTargetUserProfile();
+  }, [uid, params]);
   return (
     <>
       <St.ProfileImg>

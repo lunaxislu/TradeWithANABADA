@@ -28,14 +28,14 @@ export const ProfileBox = styled.div`
   display: flex;
   border: solid 0.2rem #dcdcdc;
   width: 100%;
-  height: 20rem;
+  height: 25rem;
   ${({ theme }) => theme.mediaQuery.sm`
       width : 35rem;
-      height: 17.5rem;
+      height: 25rem;
   `}
   ${({ theme }) => theme.mediaQuery.lg`
       width : 45rem;
-      height: 24.5rem;
+      height: 25rem;
   `};
 `;
 export const ProfileImg = styled.div`
@@ -109,6 +109,7 @@ export const ProfileReview = styled.button`
 `;
 export const ReviewBox = styled.div`
   width: 100%;
+  height: 25rem;
   padding: 1rem;
   border: 0.2rem solid #dcdcdc;
   display: flex;
@@ -155,25 +156,26 @@ export const ListTitle = styled.div`
   flex-direction: row;
   background-color: beige;
   justify-content: center;
+`;
 
-  div:nth-of-type(1) {
-    background-color: #7bd3ea;
+export const ListBtn = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  cursor: pointer;
+  text-align: center;
+  border-bottom: 0.2rem solid black;
+  &:hover {
+    background-color: white;
   }
-  div:nth-of-type(2) {
-    background-color: #f2afef;
-  }
-
-  div {
-    width: 100%;
-    padding: 2rem;
-    cursor: pointer;
-    text-align: center;
-
-    &:hover {
-      background-color: white;
-    }
+  &.active {
+    background-color: white;
+    border: 0.2rem solid black;
+    border-bottom: none;
   }
 `;
+
 export const ListWrapper = styled.div`
   height: 80rem;
   overflow: scroll;
