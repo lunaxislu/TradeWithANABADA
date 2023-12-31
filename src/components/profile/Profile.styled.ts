@@ -64,10 +64,12 @@ export const ProfileInfo = styled.div`
   `}
 `;
 export const Nickname = styled.div`
-  padding: 2rem;
+  padding: 3rem 2rem;
   & input {
     border: none;
     border-bottom: 0.1rem solid #dcdcdc;
+    font-size: 2rem;
+    width: 100%;
   }
   & p {
     font-size: 2rem;
@@ -80,43 +82,40 @@ export const Nickname = styled.div`
     cursor: pointer;
   }
 `;
-export const UploadImg = styled.label`
+export const Grade = styled.div`
+  background-color: transparent;
+  color: #aaaaaa;
+  padding-top: 0.8rem;
+`;
+export const UploadLabel = styled.label`
   text-align: center;
   padding-top: 1.4rem;
   font-size: 1.3rem;
   border: none;
   background-color: #dcdcdc;
   margin: 0 auto;
+  margin-bottom: 1rem;
   width: 80%;
   height: 4rem;
   cursor: pointer;
 `;
-export const FollowerList = styled.button`
+
+export const ProfileBtn = styled.button`
   border: none;
   background-color: #dcdcdc;
-  margin: 1rem auto;
+  margin: 0 auto;
+  margin-bottom: 1rem;
   width: 80%;
   height: 4rem;
   cursor: pointer;
+  font-size: 1.3rem;
   text-align: center;
+  &.empty {
+    background-color: transparent;
+    cursor: auto;
+  }
 `;
-export const ProfileEdit = styled.button`
-  border: none;
-  background-color: #dcdcdc;
-  margin: 1rem auto;
-  width: 80%;
-  height: 4rem;
-  cursor: pointer;
-  text-align: center;
-`;
-export const ProfileReview = styled.button`
-  border: none;
-  background-color: #dcdcdc;
-  margin: 1rem auto;
-  width: 80%;
-  height: 4rem;
-  cursor: pointer;
-`;
+
 export const ReviewBox = styled.div`
   width: 100%;
   height: 25rem;

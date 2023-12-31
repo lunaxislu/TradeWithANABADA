@@ -112,36 +112,45 @@ const UpdateProfile = ({ uid, params }: UidProps) => {
             />
           ) : (
             <p>{nickname}</p>
-          )}
+          )}{' '}
+          <St.Grade>{nickname}님의 점수</St.Grade>
         </St.Nickname>
-        {edit ? (
-          <>
-            <St.UploadImg htmlFor="img">이미지 업로드</St.UploadImg>
-            <input
-              id="img"
-              type="file"
-              accept="image/*"
-              ref={imgRef}
-              onChange={(e) => {
-                setUploadFile(e.target.files?.[0]);
-                imgReader();
-              }}
-              style={{ display: 'none' }}
-            />
-          </>
-        ) : (
-          <>
-            <St.FollowerList>팔로워 목록 보기</St.FollowerList>
-          </>
-        )}
         {uid === params ? (
-          <St.ProfileEdit onClick={onClickChangeBtnHandler}>
-            {edit ? '프로필 변경 완료' : '프로필 변경하기'}
-          </St.ProfileEdit>
+          // 마이페이지의 버튼 구역
+          <>
+            <St.ProfileBtn className="empty"></St.ProfileBtn>
+            {edit ? (
+              <>
+                <St.UploadLabel htmlFor="img">이미지 업로드</St.UploadLabel>
+                <input
+                  id="img"
+                  type="file"
+                  accept="image/*"
+                  ref={imgRef}
+                  onChange={(e) => {
+                    setUploadFile(e.target.files?.[0]);
+                    imgReader();
+                  }}
+                  style={{ display: 'none' }}
+                />
+                <St.ProfileBtn onClick={onClickChangeBtnHandler}>프로필 변경 완료</St.ProfileBtn>
+              </>
+            ) : (
+              <>
+                <St.ProfileBtn>팔로워 목록 보기</St.ProfileBtn>
+                <St.ProfileBtn onClick={onClickChangeBtnHandler}>프로필 변경하기</St.ProfileBtn>
+              </>
+            )}
+          </>
         ) : (
-          <St.ProfileReview></St.ProfileReview>
+          // 타겟유저페이지의 버튼 구역
+          <>
+            <St.ProfileBtn>팔로워 목록 보기</St.ProfileBtn>
+            <St.ProfileBtn>팔로우하기</St.ProfileBtn>
+            <St.ProfileBtn>후기 등록하기</St.ProfileBtn>
+          </>
         )}
-      </St.ProfileInfo>{' '}
+      </St.ProfileInfo>
     </>
   );
 };
