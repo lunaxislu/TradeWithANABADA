@@ -14,12 +14,14 @@ import {
 import defaultImg from '../../styles/assets/user.svg';
 import * as St from './Profile.styled';
 
-type UidProps = {
+type Props = {
   uid: string;
   params: string | undefined;
+  setFollowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const UpdateProfile = ({ uid, params }: UidProps) => {
+const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) => {
   const imgRef = useRef<HTMLInputElement>(null);
   const [edit, setEdit] = useState(false);
   const [img, setImg] = useState(defaultImg);
@@ -89,6 +91,16 @@ const UpdateProfile = ({ uid, params }: UidProps) => {
       setEdit(true);
     }
   };
+  // 팔로우 모달 보여주기
+  const showFollowModal = () => {
+    setFollowModal(true);
+  };
+  // 팔로우/언팔로우 하기
+  const onClickFollowHandler = () => {};
+  // 리뷰 모달 보여주기
+  const showReviewModal = () => {
+    setReviewModal(true);
+  };
 
   useEffect(() => {
     if (uid === params) getSession();
@@ -137,7 +149,7 @@ const UpdateProfile = ({ uid, params }: UidProps) => {
               </>
             ) : (
               <>
-                <St.ProfileBtn>팔로워 목록 보기</St.ProfileBtn>
+                <St.ProfileBtn onClick={showFollowModal}>팔로워 목록 보기</St.ProfileBtn>
                 <St.ProfileBtn onClick={onClickChangeBtnHandler}>프로필 변경하기</St.ProfileBtn>
               </>
             )}
@@ -145,9 +157,9 @@ const UpdateProfile = ({ uid, params }: UidProps) => {
         ) : (
           // 타겟유저페이지의 버튼 구역
           <>
-            <St.ProfileBtn>팔로워 목록 보기</St.ProfileBtn>
-            <St.ProfileBtn>팔로우하기</St.ProfileBtn>
-            <St.ProfileBtn>후기 등록하기</St.ProfileBtn>
+            <St.ProfileBtn onClick={showFollowModal}>팔로워 목록 보기</St.ProfileBtn>
+            <St.ProfileBtn onClick={onClickFollowHandler}>팔로우하기</St.ProfileBtn>
+            <St.ProfileBtn onClick={showReviewModal}>후기 등록하기</St.ProfileBtn>
           </>
         )}
       </St.ProfileInfo>
