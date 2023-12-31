@@ -182,7 +182,7 @@ type ParamForRegist = {
 
 export const insertProduct = async (info: ParamForRegist) => {
   // post Table에 우선 text들을 저장 합니다.
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('products')
     .insert([
       {
@@ -200,12 +200,12 @@ export const insertProduct = async (info: ParamForRegist) => {
 
   await insertHashTag(post_id, info.tags);
   await insertImageStorage(post_id, info.imgFiles, date, info.user_id);
-
+  const { data: result, error } = await supabase.from('products').select('*').eq('id', post_id);
   if (error) {
     throw console.log(error);
   }
 
-  return data;
+  return result;
 };
 
 /**
@@ -493,8 +493,6 @@ const getImageFileList = async (info: ProductInfoType) => {
   }
 };
 export const updateTableRow = async (preInfo: ProductInfoType, currentInfo: NewProductType) => {
-  console.log(preInfo.product_id);
-  console.log(currentInfo[0].id);
   const { data, error } = await supabase
     .from('likes')
     .update({ post_id: currentInfo[0].id })

@@ -34,7 +34,8 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
     await updateTableRow(productInfo, result);
     await deleteImageFromStorage(productInfo);
     await deleteProduct(productInfo);
-    navigate(`/detail/${result[0].id}`);
+    navigate(`/`);
+    setIsEdit(false);
   };
 
   const deleteGoods = async () => {
