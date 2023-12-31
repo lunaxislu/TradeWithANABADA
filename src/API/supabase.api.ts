@@ -171,6 +171,7 @@ export const updatePasswordHandler = async (values: users) => {
  * @param 아래 타입이 파라미터입니다.
  */
 type ParamForRegist = {
+  category2_id: number;
   title: string;
   content: string;
   price: string;
@@ -185,6 +186,7 @@ export const insertProduct = async (info: ParamForRegist) => {
     .from('products')
     .insert([
       {
+        category2_id: info.category2_id,
         title: info.title,
         content: info.content,
         price: info.price,
@@ -263,6 +265,20 @@ const insertImageStorage = async (id: number, files: (File | Blob)[], date: stri
 
   if (error) {
     throw console.log(error);
+  }
+};
+
+export const deleteImageFromStorage = async (info: ProductInfoType) => {
+  const { data: lists } = await supabase.storage
+    .from('product-images')
+    .list(`${info.user_id}/${info.product_id}/${info.created_at}`);
+  const filesToRemove = lists?.map((list) => `${info.user_id}/${info.product_id}/${info.created_at}/${list.name}`);
+
+  const { data, error } = await supabase.storage.from('product-images').remove(filesToRemove!);
+
+  console.log('product-images에 삭제되고', data);
+  if (error) {
+    console.log('스토리지 폴더삭제에서', error);
   }
 };
 
@@ -440,6 +456,17 @@ type ProductInfoType = {
   user_id: string;
 };
 
+type NewProductType = {
+  category2_id: number;
+  content: string | null;
+  created_at: string;
+  id: number;
+  price: string;
+  product_img: string[] | null;
+  title: string | null;
+  user_id: string;
+}[];
+
 export const listToBlob = async (info: ProductInfoType) => {
   const lists = await getImageFileList(info);
   if (lists !== undefined) {
@@ -465,26 +492,38 @@ const getImageFileList = async (info: ProductInfoType) => {
     return data;
   }
 };
-export const updateTableRow = async (preInfo: ProductInfoType, currentInfo: ProductInfoType) => {
-  await supabase.from('likes').update({ post_id: currentInfo.product_id }).eq('post_id', preInfo.product_id);
-  await supabase.from('');
+export const updateTableRow = async (preInfo: ProductInfoType, currentInfo: NewProductType) => {
+  console.log(preInfo.product_id);
+  console.log(currentInfo[0].id);
+  const { data, error } = await supabase
+    .from('likes')
+    .update({ post_id: currentInfo[0].id })
+    .eq('post_id', preInfo.product_id);
+  console.log(data);
+  if (error) {
+    console.log(error);
+  }
 };
 export const deleteProduct = async (info: ProductInfoType) => {
   await supabase.from('products').delete().eq('id', info.product_id);
-  console.log('삭제완료');
 };
 
 /**
  * category 불러오기
  */
 
-export const getCategory = async () => {
+export const getMainCategory = async () => {
   let { data: categories1, error } = await supabase.from('categories1').select('*');
-
+  if (error) {
+    console.log('mainCategory', error);
+  }
   return categories1;
 };
 
 export const getSubCategory = async (id: number) => {
-  let { data: categories2 } = await supabase.from('categories2').select('name').eq('category1_id', id);
+  let { data: categories2, error } = await supabase.from('categories2').select('name').eq('category1_id', id);
+  if (error) {
+    console.log('subCategory', error);
+  }
   return categories2;
 };

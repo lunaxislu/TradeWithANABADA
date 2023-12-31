@@ -1,6 +1,7 @@
 import { UserMetadata } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import { getUserSession } from '../../../API/supabase.api';
+import EditButton from '../ButtonGroup/EditButton/EditButton';
 import * as St from './Sale.styled';
 import ImgCard from './imgComponent/ImgCard';
 import ProductInfo from './product/ProductInfo';
@@ -47,9 +48,11 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
         <ProductInfo userData={userData} productInfo={productInfo} />
       </div>
 
-      <div>asdf</div>
-
-      {/* {state.userid === userId && <St.EditButton>{isEdit ? '수정완료' : '수정하기'}</St.EditButton>}; */}
+      <St.TextContainer className="product-text">
+        <h2 className="title">상품 설명</h2>{' '}
+        <EditButton userData={userData} productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} />
+        <St.TextWrapper>{productInfo.content}</St.TextWrapper>
+      </St.TextContainer>
     </St.Container>
   );
 };

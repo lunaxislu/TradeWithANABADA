@@ -70,6 +70,7 @@ export const ReviewChart = () => {
       },
     ],
   };
+
   return (
     <St.ReviewWrapper>
       <div>

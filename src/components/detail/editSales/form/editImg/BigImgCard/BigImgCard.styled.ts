@@ -4,5 +4,5 @@ type PropsType = {
   imageIndex: number;
 };
 export const Container = styled.div`
-  width: 75%;
+  width: 86%;
 `;

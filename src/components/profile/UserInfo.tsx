@@ -1,4 +1,4 @@
-import { ReviewChart } from '../ui/chart/Chart';
+// import { ReviewChart } from '../ui/chart/Chart';
 import * as St from './Profile.styled';
 import ProfileInfo from './ProfileInfo';
 
@@ -16,7 +16,7 @@ const UserInfo = ({ uid, params }: UidProps) => {
       </St.ProfileBox>
       <St.ReviewBox>
         <p>거래한 고객분이 리뷰를 달아주셨어요 👍</p>
-        <ReviewChart />
+        {/* <ReviewChart /> */}
       </St.ReviewBox>
     </St.ProfileReviewWrapper>
   );

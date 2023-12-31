@@ -217,6 +217,7 @@ export interface Database {
           id: number;
           post_id: number | null;
           user_id: string;
+          products: Tables<'products'>[];
         };
         Insert: {
           created_at?: string | null;
