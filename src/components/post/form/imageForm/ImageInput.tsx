@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import ImageCard from './BigImgCard/BigImgCard';
-import * as St from './SmImgCard.styled';
-import ImageInput from './smImgCard/ImageInput';
+import * as St from './ImageInput.styled';
+import SmImgCard from './smImgCard/SmImgCard';
 
 type EventObject = ChangeEvent<HTMLInputElement>;
 
@@ -10,7 +10,7 @@ type PropsType = {
   setImgFiles: React.Dispatch<React.SetStateAction<File[]>>;
 };
 
-const ImageForm = ({ imgFiles, setImgFiles }: PropsType) => {
+const ImageInput = ({ imgFiles, setImgFiles }: PropsType) => {
   const [showImages, setShowImages] = useState<string[]>([]);
   const [imageIndex, setImageIndex] = useState(0);
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -48,7 +48,7 @@ const ImageForm = ({ imgFiles, setImgFiles }: PropsType) => {
     <St.Container>
       <ImageCard showImages={showImages} imageIndex={imageIndex} />
 
-      <ImageInput
+      <SmImgCard
         showImages={showImages}
         setImageIndex={setImageIndex}
         deletePreviewImage={deletePreviewImage}
@@ -60,4 +60,4 @@ const ImageForm = ({ imgFiles, setImgFiles }: PropsType) => {
   );
 };
 
-export default React.memo(ImageForm);
+export default React.memo(ImageInput);

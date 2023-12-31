@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { getUserSession, insertProduct } from '../../../API/supabase.api';
 import * as St from './Form.styled';
-import ImageForm from './imageForm/SmImgCard';
+import ImageInput from './imageForm/ImageInput';
 import InputForm from './inputForm/InputForm';
 
 /**
@@ -45,7 +45,7 @@ const Form = () => {
   return (
     <St.Container>
       <St.Wrapper>
-        <ImageForm imgFiles={imgFiles} setImgFiles={setImgFiles} />
+        <ImageInput imgFiles={imgFiles} setImgFiles={setImgFiles} />
         <St.Form onSubmit={registProduct}>
           <InputForm tags={tags} setTags={setTags} />
         </St.Form>
