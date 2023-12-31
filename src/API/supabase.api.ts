@@ -32,6 +32,12 @@ export const getZzimList = async (userId: string) => {
   return data;
 };
 
+export const getSalesList = async (userId: string) => {
+  const { data, error } = await supabase.from('products').select('*').eq('user_id', userId);
+  if (error) throw error;
+  return data;
+};
+
 /**
  * 회원가입
  * @param values 이메일, 비밀번호, 닉네임
