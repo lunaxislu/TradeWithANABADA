@@ -4,6 +4,7 @@ import { getUserSession, insertProduct } from '../../../API/supabase.api';
 import * as St from './Form.styled';
 import ImageInput from './imageForm/ImageInput';
 import InputForm from './inputForm/InputForm';
+import FormButton from './inputForm/formButton/FormButton';
 
 /**
  * 코드 리팩토링 필요
@@ -46,8 +47,10 @@ const Form = () => {
     <St.Container>
       <St.Wrapper>
         <ImageInput imgFiles={imgFiles} setImgFiles={setImgFiles} />
+
         <St.Form onSubmit={registProduct}>
           <InputForm tags={tags} setTags={setTags} />
+          <FormButton />
         </St.Form>
       </St.Wrapper>
     </St.Container>
