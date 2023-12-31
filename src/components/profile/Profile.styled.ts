@@ -91,6 +91,15 @@ export const UploadImg = styled.label`
   height: 4rem;
   cursor: pointer;
 `;
+export const FollowerList = styled.button`
+  border: none;
+  background-color: #dcdcdc;
+  margin: 1rem auto;
+  width: 80%;
+  height: 4rem;
+  cursor: pointer;
+  text-align: center;
+`;
 export const ProfileEdit = styled.button`
   border: none;
   background-color: #dcdcdc;
@@ -98,6 +107,7 @@ export const ProfileEdit = styled.button`
   width: 80%;
   height: 4rem;
   cursor: pointer;
+  text-align: center;
 `;
 export const ProfileReview = styled.button`
   border: none;

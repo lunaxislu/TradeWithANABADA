@@ -129,7 +129,11 @@ const UpdateProfile = ({ uid, params }: UidProps) => {
               style={{ display: 'none' }}
             />
           </>
-        ) : null}
+        ) : (
+          <>
+            <St.FollowerList>팔로워 목록 보기</St.FollowerList>
+          </>
+        )}
         {uid === params ? (
           <St.ProfileEdit onClick={onClickChangeBtnHandler}>
             {edit ? '프로필 변경 완료' : '프로필 변경하기'}
