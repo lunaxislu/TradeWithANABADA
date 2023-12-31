@@ -11,7 +11,6 @@ import UserInfo from '../components/profile/UserInfo';
 
 const Profile = () => {
   const params = useParams();
-  // console.log('휘파람쓰', params);
 
   const [uid, setUid] = useState('');
   const checkUserSession = async () => {
@@ -29,7 +28,7 @@ const Profile = () => {
       <St.ProfileWrapper>
         <UserInfo uid={uid} params={params.id} />
         {/* 프로필 아래 목록 표시 컴포넌트 */}
-        <ProfileProductList />
+        <ProfileProductList uid={uid} params={params.id} />
       </St.ProfileWrapper>
     </>
   );
