@@ -27,13 +27,18 @@ export const getReviews = async (userId: string) => {
  * @returns 찜 목록
  */
 export const getZzimList = async (userId: string) => {
-  const { data, error } = await supabase.from('likes').select('*, products(*)').eq('user_id', userId);
+  const { data, error } = await supabase.rpc('get_likes_products', { input_user_id: userId });
   if (error) throw error;
   return data;
 };
 
+/**
+ * 판매 목록 가져오기 (판매중, 거래완료)
+ * @param userId 유저 아이디
+ * @returns 판매 목록
+ */
 export const getSalesList = async (userId: string) => {
-  const { data, error } = await supabase.from('products').select('*').eq('user_id', userId);
+  const { data, error } = await supabase.rpc('get_sales_products', { input_user_id: userId });
   if (error) throw error;
   return data;
 };
@@ -182,7 +187,7 @@ type ParamForRegist = {
 
 export const insertProduct = async (info: ParamForRegist) => {
   // post Table에 우선 text들을 저장 합니다.
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('products')
     .insert([
       {
@@ -200,12 +205,12 @@ export const insertProduct = async (info: ParamForRegist) => {
 
   await insertHashTag(post_id, info.tags);
   await insertImageStorage(post_id, info.imgFiles, date, info.user_id);
-  const { data: result, error } = await supabase.from('products').select('*').eq('id', post_id);
+
   if (error) {
     throw console.log(error);
   }
 
-  return result;
+  return data;
 };
 
 /**
