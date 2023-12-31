@@ -188,7 +188,14 @@ export const ListWrapper = styled.div`
 
     li {
       padding: 2rem;
+      cursor: pointer;
       border: 0.2rem solid #dcdcdc;
+
+      // 임시 hover: 테스트 끝나면 제거해야 합니다.
+      &:hover {
+        background-color: #dcdcdc;
+      }
+
       span {
         font-size: 1.5rem;
         float: right;
