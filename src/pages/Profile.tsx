@@ -13,6 +13,9 @@ const Profile = () => {
   const params = useParams();
 
   const [uid, setUid] = useState('');
+  const [follow, setFollow] = useState(false);
+  const [review, setReview] = useState(false);
+
   const checkUserSession = async () => {
     const userSession = await getUserSession();
     if (userSession !== null && userSession.session && userSession.session.user) {

@@ -46,11 +46,15 @@ const ProfileProductList = ({ uid, params }: Props) => {
         {uid === params ? (
           <>
             {' '}
-            <div onClick={showZzimList}>찜 목록</div>
-            <div onClick={showSalesList}>판매 목록</div>
+            <St.ListBtn className={list ? 'active' : ''} onClick={showZzimList}>
+              찜 목록
+            </St.ListBtn>
+            <St.ListBtn className={list ? '' : 'active'} onClick={showSalesList}>
+              판매 목록
+            </St.ListBtn>
           </>
         ) : (
-          <div>판매 목록</div>
+          <St.ListBtn>판매 목록</St.ListBtn>
         )}
       </St.ListTitle>
 
