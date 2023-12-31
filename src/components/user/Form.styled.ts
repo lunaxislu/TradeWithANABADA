@@ -75,6 +75,8 @@ export const ButtonWrapper = styled.div<ButtonProps>`
     height: 40px;
     border: none;
     outline: none;
+    font-size: 15px;
+    text-align: center;
     margin: 20px 0px 10px 0px;
     color: ${(props) => (props.$active ? 'gray' : 'white')};
     background-color: ${(props) => (props.$active ? '#F5F7F8' : '#191919')};
