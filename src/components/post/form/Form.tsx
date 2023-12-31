@@ -1,11 +1,9 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { getUserSession, insertProduct } from '../../../API/supabase.api';
-import * as St from './PostForm.styled';
-import FormButton from './formButton/FormButton';
-import HashTag from './hashTag/HashTag';
-import ProductInfo from './productInfo/ProductInfo';
-import ProductText from './productText/ProductText';
+import * as St from './Form.styled';
+import ImageForm from './imageForm/SmImgCard';
+import InputForm from './inputForm/InputForm';
 
 /**
  * 코드 리팩토링 필요
@@ -14,24 +12,26 @@ type PropsType = {
   imgFiles: File[];
 };
 
-const PostForm = ({ imgFiles }: PropsType) => {
-  const navigate = useNavigate();
+const Form = () => {
+  const [imgFiles, setImgFiles] = useState<File[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [userId, setUserId] = useState('');
+  const navigate = useNavigate();
+
   const registProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const product = {
-      category2_id: parseInt(e.currentTarget['category_2'].value),
       title: e.currentTarget['product_name'].value,
       content: e.currentTarget['product_text'].value,
       price: e.currentTarget['product_value'].value,
       tags,
       user_id: userId,
       imgFiles,
+      category2_id: parseInt(e.currentTarget['category_2'].value),
     };
     const result = await insertProduct(product);
 
-    navigate(`/detail/:${result[0].id}`);
+    // navigate(`/detail/:${result[0].id}`);
   };
 
   // 사용자의 고유 아이디 uid를 가져옵니다.
@@ -44,14 +44,14 @@ const PostForm = ({ imgFiles }: PropsType) => {
   }, []);
   return (
     <St.Container>
-      <St.Form onSubmit={registProduct}>
-        <ProductInfo />
-        <HashTag tags={tags} setTags={setTags} />
-        <ProductText />
-        <FormButton />
-      </St.Form>
+      <St.Wrapper>
+        <ImageForm imgFiles={imgFiles} setImgFiles={setImgFiles} />
+        <St.Form onSubmit={registProduct}>
+          <InputForm tags={tags} setTags={setTags} />
+        </St.Form>
+      </St.Wrapper>
     </St.Container>
   );
 };
 
-export default PostForm;
+export default Form;

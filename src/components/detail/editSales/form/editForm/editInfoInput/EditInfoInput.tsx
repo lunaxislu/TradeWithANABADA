@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ProductInfoType } from '../../../../sale/Sale';
-import * as St from './EditInfo.styled';
+import * as St from './EditInfoInput.styled';
 const EditInfo = ({ productInfo }: { productInfo: ProductInfoType }) => {
   const [title, setTitle] = useState(productInfo.title);
   const [price, setPrice] = useState(productInfo.price);

@@ -1,6 +1,6 @@
-import * as St from './ProductText.styled';
+import * as St from './TextInput.styled';
 
-const ProductText = () => {
+const TextInput = () => {
   return (
     <St.Container>
       <textarea name="product_text" placeholder="최대 500자입니다." maxLength={500} required />
@@ -8,4 +8,4 @@ const ProductText = () => {
   );
 };
 
-export default ProductText;
+export default TextInput;

@@ -1,4 +1,4 @@
-import * as St from './ImageCard.styled';
+import * as St from './BigImgCard.styled';
 
 type PropsType = {
   showImages: string[];

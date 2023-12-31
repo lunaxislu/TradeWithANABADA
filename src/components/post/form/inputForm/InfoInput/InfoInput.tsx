@@ -1,5 +1,5 @@
-import * as St from './ProductInfo.styled';
-const ProductInfo = () => {
+import * as St from './InfoInput.styled';
+const InfoInput = () => {
   return (
     <St.Container>
       <St.InputWrapper>
@@ -16,4 +16,4 @@ const ProductInfo = () => {
   );
 };
 
-export default ProductInfo;
+export default InfoInput;

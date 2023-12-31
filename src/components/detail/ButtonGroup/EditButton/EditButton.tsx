@@ -19,7 +19,6 @@ const EditButton = ({ userData, productInfo, isEdit, setIsEdit }: PropsType) => 
           수정하기
         </St.EditButton>
       )}
-      {isEdit && <button>삭제하기ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ</button>}
     </>
   );
 };

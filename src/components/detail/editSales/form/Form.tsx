@@ -21,7 +21,6 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
   const navigate = useNavigate();
   const editProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const product = {
       title: e.currentTarget['product_name'].value,
       content: e.currentTarget['product_text'].value,
@@ -35,8 +34,9 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
     await updateTableRow(productInfo, result);
     await deleteImageFromStorage(productInfo);
     await deleteProduct(productInfo);
-    navigate('/');
+    navigate(`/detail/${result[0].id}`);
   };
+
   const deleteGoods = async () => {
     await deleteImageFromStorage(productInfo);
     await deleteProduct(productInfo);
@@ -57,6 +57,7 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
 
         <St.Form onSubmit={editProduct}>
           <EditForm tags={tags} setTags={setTags} productInfo={productInfo} />
+
           <St.ButtonGroup>
             <button className="delete-button" type="button" onClick={deleteGoods}>
               삭제하기
