@@ -107,7 +107,6 @@ export const signInWithProvider = async (provider: 'google' | 'kakao') => {
   });
 
   if (error) throw error;
-  console.log('로그인한 사용자:', data);
 };
 /**
  * 로그아웃
@@ -407,13 +406,11 @@ export const updateUserProfile = async (url: string) => {
 };
 export const getUsersAvartarImg = async (uid: string) => {
   const { data, error } = await supabase.from('users').select('avatar_img').eq('id', uid);
-  console.log(data);
   if (error) throw error;
   return data;
 };
 export const getUsersNickname = async (uid: string) => {
   const { data, error } = await supabase.from('users').select('nickname').eq('id', uid);
-  console.log(data);
   if (error) throw error;
   return data;
 };
