@@ -199,13 +199,7 @@ export const ListWrapper = styled.div`
 
     li {
       padding: 2rem;
-      cursor: pointer;
       border: 0.2rem solid #dcdcdc;
-
-      // 임시 hover: 테스트 끝나면 제거해야 합니다.
-      &:hover {
-        background-color: #dcdcdc;
-      }
 
       span {
         font-size: 1.5rem;
@@ -225,21 +219,36 @@ export const ListImage = styled.div`
   img {
     width: 18rem;
     height: 18rem;
+    cursor: pointer;
   }
 `;
 
 export const PostsWrapper = styled.div`
   width: 70%;
-  padding: 2rem 0 0 2rem;
   display: flex;
-  flex-direction: column;
   justify-content: end;
+  padding: 2rem 0 0 2rem;
+  flex-direction: column;
 
-  div {
+  div:nth-of-type(1) {
+    display: flex;
+    flex-direction: column;
+
+    p {
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  div:nth-of-type(2) {
+    display: flex;
+
     p:nth-of-type(1) {
       padding: 0.5rem;
-      font-size: 1.5rem;
       font-weight: 700;
+      font-size: 1.5rem;
       border-radius: 0.7rem;
       background-color: #c3e2c2;
     }
