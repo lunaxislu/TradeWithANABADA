@@ -286,7 +286,7 @@ export interface Database {
           product_img?: string[] | null;
           title?: string | null;
           user_id?: string;
-          status: boolean;
+          status?: boolean;
         };
         Relationships: [
           {
