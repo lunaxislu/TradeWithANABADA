@@ -6,8 +6,7 @@ import TalkLayout from './TalkLayout';
 import * as St from './chat.styled';
 
 const TalkArea = () => {
-  const { currentChannel } = useTalkContext();
-  const { invisible } = useTalkContext();
+  const { invisible, currentChannel } = useTalkContext();
 
   return (
     <section>
@@ -19,8 +18,8 @@ const TalkArea = () => {
       <TalkLayout>
         {
           <>
-            {!!currentChannel && <TalkForm />}
             <TalkChannelList />
+            {!!currentChannel && <TalkForm />}
           </>
         }
       </TalkLayout>

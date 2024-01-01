@@ -9,13 +9,20 @@ export const TalkContainer = styled.div`
   height: 50rem;
   background-color: beige;
   border-radius: 10px;
-  padding: 2rem 1rem;
 `;
 
-export const TalkListContainer = styled.div`
+export const TalkListContainer = styled.div<{ $talkChannelOpen: boolean }>`
   display: flex;
   flex-direction: column;
   height: 100%;
+  opacity: ${(props) => (props.$talkChannelOpen ? 0 : 1)};
+  z-index: ${(props) => (props.$talkChannelOpen ? -5 : 5)};
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  padding: 2rem 1rem;
   & > h2 {
     font-size: 2rem;
     font-weight: bold;
@@ -59,10 +66,6 @@ export const TalkChannelCardItem = styled.li`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    & h3 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
     & div:last-child {
       width: 100%;
       display: flex;
@@ -84,12 +87,15 @@ export const TalkMessageContainer = styled.section`
   display: flex;
   height: 100%;
   flex-direction: column;
+  padding: 2rem 1rem;
 
   & ul {
     margin: 3rem 0;
     height: 35rem;
     overflow-y: scroll;
     background: white;
+    display: flex;
+    flex-direction: column;
 
     &::-webkit-scrollbar {
       width: 0;
@@ -97,4 +103,32 @@ export const TalkMessageContainer = styled.section`
   }
 `;
 
-export const TalkMessage = styled.li``;
+export const TalkCardUserInfo = styled.div`
+  display: flex;
+  & > h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+  }
+`;
+
+export const TalkFormUserInfo = styled.section`
+  display: flex;
+  align-items: center;
+
+  & > h2 {
+    font-size: 2rem;
+  }
+  & > img {
+    width: 5rem;
+  }
+`;
+
+type style = { 'x-position': string; color: string };
+export const TalkMessage = styled.li<{ $subStyle: style }>`
+  align-self: ${(props) => props.$subStyle['x-position']};
+
+  & span {
+    background-color: ${(props) => props.$subStyle.color};
+  }
+`;

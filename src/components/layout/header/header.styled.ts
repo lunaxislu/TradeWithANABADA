@@ -29,7 +29,7 @@ export const Header = styled.header`
     cursor: pointer;
   }
 
-  & > section:last-child {
+  & > section + section {
     position: fixed;
     right: 2rem;
     bottom: 2rem;

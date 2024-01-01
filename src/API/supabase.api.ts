@@ -440,6 +440,7 @@ export type ChannelInfo = {
 
 // 현재 유저 정보에 따른 채팅방 가져오기
 export const getCurrentUserChatChannel = async (userId: string): Promise<ChannelInfo[] | []> => {
+  if (!userId) return [];
   const { data, error } = await supabase
     .rpc('get_user_channel', {
       input_user_id: userId,
@@ -467,4 +468,16 @@ export const getUserInfo = async (uid: string) => {
   if (data) {
     return data;
   }
+};
+
+export const sendMessage = async (currentChannel: number, message: string, otherUserIn: boolean) => {
+  const currentUser = await getUserSession();
+  await supabase.from('chat_messages').insert([
+    {
+      chat_id: currentChannel,
+      content: message,
+      author_id: currentUser.session?.user.id,
+      visible: otherUserIn,
+    },
+  ]);
 };

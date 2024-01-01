@@ -1,6 +1,6 @@
 import { RealtimeChannel, Session } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { ChannelInfo, getCurrentUserChatChannel, getUserInfo, getUserSession } from '../API/supabase.api';
+import { ChannelInfo, getCurrentUserChatChannel, getSelectChatMessages, getUserSession } from '../API/supabase.api';
 
 type Messages = {
   message_id: number;
@@ -26,7 +26,9 @@ type initStateType = {
       };
 
   updateChannelStatus: () => Promise<void>;
-  TalkChannelSubscribeSetting: (arg1: RealtimeChannel, arg2: number) => Promise<void>;
+  getCurrentChannelAllMessage: () => Promise<void>;
+  TalkChannelSubscribeSetting: (arg1: RealtimeChannel, arg2: number) => void;
+  TalkChannelMessageSubscribeSetting: (channel: RealtimeChannel) => void;
 };
 
 const initialState: initStateType = {
@@ -37,7 +39,9 @@ const initialState: initStateType = {
   invisible: 0,
   currentUserInfo: { session: null },
   updateChannelStatus: async () => {},
-  TalkChannelSubscribeSetting: async (channel, channelId) => {},
+  getCurrentChannelAllMessage: async () => {},
+  TalkChannelSubscribeSetting: (channel, channelId) => {},
+  TalkChannelMessageSubscribeSetting: (channel) => {},
 };
 
 // context 초기설정
@@ -76,6 +80,13 @@ const TalkContextProvider = ({ children }: React.PropsWithChildren) => {
     setUserAllChannelInfo(currentUserChatChannels);
   };
 
+  // func: 정보가 업데이트 될 때마다 채팅방 메시지를 업데이트 하는 함수
+  const getCurrentChannelAllMessage = async () => {
+    // 현재유저에 따른 전체 채팅방 정보 가져오기
+    const currentChannelAllMessage = await getSelectChatMessages(currentChannel);
+    setTalkMessages(currentChannelAllMessage);
+  };
+
   // func: 전체 채팅방에서 읽지않은 메시지 개수를 저장하는 함수
   const setInvisibleMessageCount = (channelsInfo: [] | ChannelInfo[]) => {
     let totalInvisibleNum = 0;
@@ -84,7 +95,7 @@ const TalkContextProvider = ({ children }: React.PropsWithChildren) => {
   };
 
   // func: 채널 구독을 실시하는 이벤트
-  const TalkChannelSubscribeSetting = async (channel: RealtimeChannel, channelId: number) => {
+  const TalkChannelSubscribeSetting = (channel: RealtimeChannel, channelId: number) => {
     // 채널 구독 이벤트 설정 및 구독
     channel.on(
       // realtime table의 변경상태 구독
@@ -103,21 +114,48 @@ const TalkContextProvider = ({ children }: React.PropsWithChildren) => {
     );
   };
 
+  // func: 특정채팅방의 메시지를 구독하는 이벤트
+  const TalkChannelMessageSubscribeSetting = (channel: RealtimeChannel) => {
+    // 채널 구독 이벤트 설정 및 구독
+    channel
+      .on(
+        // realtime table의 변경상태 구독
+        'postgres_changes',
+        {
+          // INSERT UPDATE 등 모든 변경상태 구독
+          event: 'INSERT',
+          schema: 'public',
+          // 변경상태를 구독할 table 지정
+          table: 'chat_messages',
+          // table 내에서도 다음 조건을 만족할 때만 구독
+          filter: `chat_id=eq.${currentChannel}`,
+        },
+        // 위 조건을 만족할 때 다음 콜백 실행
+        getCurrentChannelAllMessage,
+      )
+      .on(
+        // realtime table의 변경상태 구독
+        'postgres_changes',
+        {
+          // INSERT UPDATE 등 모든 변경상태 구독
+          event: 'UPDATE',
+          schema: 'public',
+          // 변경상태를 구독할 table 지정
+          table: 'chat_messages',
+          // table 내에서도 다음 조건을 만족할 때만 구독
+          filter: `chat_id=eq.${currentChannel}`,
+        },
+        // 위 조건을 만족할 때 다음 콜백 실행
+        getCurrentChannelAllMessage,
+      );
+  };
+
   // 선택한 채널을 변경해주는 로직
   const changeCurrentChannel = (channel: number) => {
     setCurrentChannel(channel);
   };
 
-  const getOtherUserInfo = async (selectChannel: ChannelInfo) => {
-    if (selectChannel.user1_id === currentUserInfo.session?.user.id) {
-      await getUserInfo(selectChannel.user2_id);
-    }
-    if (selectChannel.user2_id === currentUserInfo.session?.user.id) {
-      await getUserInfo(selectChannel.user1_id);
-    }
-  };
-
-  // effect: 유저 정보가 변경될 때 마다 현재 유저를 업데이트
+  // effect: 유저 정보 업데이트
   useEffect(() => {
     getCurrentUserInfo();
   }, []);
@@ -130,7 +168,9 @@ const TalkContextProvider = ({ children }: React.PropsWithChildren) => {
     currentUserInfo,
     updateChannelStatus,
     TalkChannelSubscribeSetting,
+    getCurrentChannelAllMessage,
     changeCurrentChannel,
+    TalkChannelMessageSubscribeSetting,
   };
   return <TalkContext.Provider value={value}>{children}</TalkContext.Provider>;
 };

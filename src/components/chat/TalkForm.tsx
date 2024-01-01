@@ -1,117 +1,107 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  ChatMessage,
-  getSelectChatMessages,
-  getUserSession,
-  supabase,
-  updateVisibleTrue,
-} from '../../API/supabase.api';
+import { Tables } from '../../../database.types';
+import { getUserInfo, sendMessage, supabase, updateVisibleTrue } from '../../API/supabase.api';
 import { useTalkContext } from '../../contexts/TalkContext';
 import TalkMessage from './TalkMessage';
 import * as St from './chat.styled';
 
-const TalkForm = () => {
-  const { changeCurrentChannel, currentChannel } = useTalkContext();
+const initialUser = {
+  avatar_img: '',
+  created_at: '',
+  email: '',
+  id: '',
+  nickname: '',
+  point: 0,
+};
 
-  const [chatData, setChatData] = useState<ChatMessage[]>([]);
-  const [otherUser, onOtherUser] = useState<boolean>(false);
+const TalkForm = () => {
+  const {
+    changeCurrentChannel,
+    currentChannel,
+    currentUserInfo,
+    TalkChannelMessageSubscribeSetting,
+    getCurrentChannelAllMessage,
+    talkMessages,
+    userAllChannelInfo,
+  } = useTalkContext();
+
+  const [otherUserIn, onOtherUserIn] = useState<boolean>(false);
+  const [otherUserInfo, setOtherUserInfo] = useState<Tables<'users'>>(initialUser);
+
+  const messageListRef = useRef<HTMLUListElement>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   //  메세지 보내기
   const sendMessageHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const currentUser = await getUserSession();
-    await supabase.from('chat_messages').insert([
-      {
-        chat_id: currentChannel,
-        content: inputRef.current?.value,
-        author_id: currentUser.session?.user.id,
-        // 유저가 보고있다면 true, false
-        visible: otherUser,
-      },
-    ]);
-  };
-
-  const updateVisibleInfo = async () => {
-    const currentUser = await getUserSession();
-    await updateVisibleTrue(currentUser.session?.user.id!, currentChannel);
+    const message = inputRef.current?.value;
+    if (!message) return;
+    await sendMessage(currentChannel, message, otherUserIn);
   };
 
   useEffect(() => {
-    // 이전 메세지 가져오기
-    const getSelectAllMessage = async () => {
-      await updateVisibleInfo();
-      const messageData = await getSelectChatMessages(currentChannel);
-      setChatData(messageData);
+    scrollMessageSection();
+  }, [talkMessages]);
+
+  const updateVisibleInfo = async () => {
+    await updateVisibleTrue(currentUserInfo.session?.user.id!, currentChannel);
+  };
+
+  const getOtherUserInfo = async () => {
+    const currentChannelInfo = userAllChannelInfo.find((channelInfo) => channelInfo.chat_id === currentChannel)!;
+
+    if (currentChannelInfo?.user1_id === currentUserInfo.session?.user.id) {
+      const userData = await getUserInfo(currentChannelInfo?.user2_id);
+      setOtherUserInfo(userData![0]);
+      return;
+    }
+
+    const userData = await getUserInfo(currentChannelInfo?.user1_id);
+    setOtherUserInfo(userData![0]);
+  };
+
+  const initMessageSetting = async () => {
+    await updateVisibleInfo();
+    await getOtherUserInfo();
+    await getCurrentChannelAllMessage();
+    scrollMessageSection();
+  };
+
+  const scrollMessageSection = () => {
+    if (messageListRef.current) messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+  };
+  useEffect(() => {
+    initMessageSetting();
+    const messageChannel = supabase.channel(`message_channel_${currentChannel}`);
+
+    const userStatus = {
+      user: currentUserInfo.session?.user.id,
+      online_at: new Date().toISOString(),
     };
 
-    const subscribeConfigSetting = async () => {
-      const currentUser = await getUserSession();
-      const currentUserId = currentUser.session?.user.id;
-      const userStatus = {
-        user: currentUserId,
-        online_at: new Date().toISOString(),
-      };
+    TalkChannelMessageSubscribeSetting(messageChannel);
 
-      channel
-        .on('presence', { event: 'join' }, ({ key, newPresences }) => {
-          if (newPresences[0].user !== currentUserId) {
-            onOtherUser(true);
-          }
-        })
-        .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-          if (leftPresences[0].user !== currentUserId) {
-            onOtherUser(false);
-          }
-        })
-        .subscribe(async (status) => {
-          if (status !== 'SUBSCRIBED') {
-            return;
-          }
-          const presenceTrackStatus = await channel.track(userStatus);
-          console.log(presenceTrackStatus);
-        });
-    };
-
-    // 채널 세팅 (동적으로 채널 변경)
-    const channel = supabase.channel(`target_${currentChannel}`, {
-      config: {
-        broadcast: { self: true },
-      },
-    });
-
-    // 연결된 채널에 연결된 table의 insert 동작을 구독 (동적으로 변경)
-    channel
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'chat_messages',
-          filter: `chat_id=eq.${currentChannel}`,
-        },
-        (payload) => {
-          getSelectAllMessage();
-        },
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'chat_messages',
-          filter: `chat_id=eq.${currentChannel}`,
-        },
-        (payload) => {
-          getSelectAllMessage();
-        },
-      );
-
-    // subscribeConfigSetting();
-    getSelectAllMessage();
+    messageChannel
+      .on('presence', { event: 'join' }, ({ newPresences }) => {
+        if (newPresences[0].user !== currentUserInfo.session?.user.id) {
+          onOtherUserIn(true);
+        }
+      })
+      .on('presence', { event: 'leave' }, ({ leftPresences }) => {
+        if (leftPresences[0].user !== currentUserInfo.session?.user.id) {
+          onOtherUserIn(false);
+        }
+      })
+      .subscribe(async (status) => {
+        if (status !== 'SUBSCRIBED') {
+          return;
+        }
+        await messageChannel.track(userStatus);
+      });
 
     const removeChannel = async () => {
-      await supabase.removeChannel(channel);
+      await supabase.removeChannel(messageChannel);
     };
 
     return () => {
@@ -129,9 +119,21 @@ const TalkForm = () => {
         홈으로
       </button>
 
-      <ul>
-        {chatData?.map((chat) => {
-          return <TalkMessage key={chat.message_id} chat={chat} />;
+      {/* 상대방 user Info */}
+      <St.TalkFormUserInfo>
+        <img src={otherUserInfo.avatar_img!}></img>
+        <h2>{otherUserInfo.nickname}</h2>
+      </St.TalkFormUserInfo>
+
+      <ul ref={messageListRef}>
+        {talkMessages?.map((talk) => {
+          if (talk.author_id === otherUserInfo.id) {
+            return (
+              <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'start', color: '#f8c291' }} />
+            );
+          } else {
+            return <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'end', color: '#82ccdd' }} />;
+          }
         })}
       </ul>
 

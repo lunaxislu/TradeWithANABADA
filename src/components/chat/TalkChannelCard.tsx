@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Tables } from '../../../database.types';
 import { ChannelInfo, getUserInfo, supabase } from '../../API/supabase.api';
 import { useTalkContext } from '../../contexts/TalkContext';
+import { ReactComponent as UserOn } from '../../styles/assets/userOn.svg';
 import { displayCreateAt } from '../../utils/date';
 import * as St from './chat.styled';
 
@@ -21,9 +22,7 @@ const initialUser = {
 const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
   const { TalkChannelSubscribeSetting, currentUserInfo, changeCurrentChannel } = useTalkContext();
 
-  console.log(channel);
-
-  const [otherUserIn, isOtherUserIn] = useState<boolean>(false);
+  const [otherUserInPage, isOtherUserInPage] = useState<boolean>(false);
   const [otherUser, setOtherUser] = useState<Tables<'users'>>(initialUser);
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
       .on('presence', { event: 'sync' }, () => {
         const newState = trackChannel.presenceState();
         const currentSessionInfo = Object.values(newState);
-        isOtherUserIn(
+        isOtherUserInPage(
           currentSessionInfo.some((session) => {
             if ('user' in session[0]) {
               return currentUserInfo.session?.user.id !== session[0].user;
@@ -82,10 +81,10 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
 
       <div>
         {/* 유저정보 */}
-        <div>
+        <St.TalkCardUserInfo>
           <h3>{otherUser.nickname}</h3>
-          <span>{otherUserIn ? '접송중' : '미접속'}</span>
-        </div>
+          {otherUserInPage && <UserOn />}
+        </St.TalkCardUserInfo>
 
         {/* preview */}
         <div>

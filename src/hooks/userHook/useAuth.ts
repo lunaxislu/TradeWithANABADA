@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { loginHandler, logoutHandler, signupHandler, updatePasswordHandler } from '../../API/supabase.api';
+import { loginHandler, logoutHandler, signupHandler, supabase, updatePasswordHandler } from '../../API/supabase.api';
 
 const enum queryKey {
   SIGNUP = 'signup',
@@ -33,8 +33,11 @@ export const useAuth = () => {
 
   // 로그아웃
   const logoutMutation = useMutation({
-    mutationFn: logoutHandler,
-    onSuccess: () => {
+    mutationFn: async () => {
+      await supabase.removeAllChannels();
+      logoutHandler();
+    },
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.LOGOUT] });
       navigate('/');
     },
