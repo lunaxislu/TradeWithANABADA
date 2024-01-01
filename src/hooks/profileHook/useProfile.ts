@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteWishList, updateOnSaleToSoldOut } from '../../API/supabase.api';
-import { QueryKey } from '../queryHook/useData';
+import { QueryKey } from '../queryHook/profile/useData';
 
 export const useProfile = () => {
   const queryClient = useQueryClient();

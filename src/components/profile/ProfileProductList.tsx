@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useData } from '../../hooks/queryHook/useData';
+import { useData } from '../../hooks/queryHook/profile/useData';
 import { ProductData } from '../home/HomeProductList';
 import * as St from './Profile.styled';
 import ListButton from './product/ListButton';
