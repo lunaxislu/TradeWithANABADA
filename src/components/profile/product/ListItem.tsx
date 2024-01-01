@@ -9,12 +9,11 @@ import { ProductDataExtends } from '../ProfileProductList';
 type ListItemProps = {
   name: string;
   list: ProductDataExtends[];
-  soldOut?: (id: number) => void;
 };
 
-const ListItem = ({ name, list, soldOut }: ListItemProps) => {
+const ListItem = ({ name, list }: ListItemProps) => {
   const navigate = useNavigate();
-  const { remove } = useProfile();
+  const { remove, update } = useProfile();
 
   const moveToDetailPage = (item: ProductData) => navigate(`/detail/${item.product_id}`, { state: item });
 
@@ -46,9 +45,14 @@ const ListItem = ({ name, list, soldOut }: ListItemProps) => {
 
               <St.PriceWrapper>
                 <span>{date}</span>
-                <Button color="primary" onClick={() => remove(item.product_id)}>
-                  삭제
-                </Button>
+                {name === 'onSale' && (
+                  <Button color="primary" onClick={() => update(item.product_id)}>
+                    완료
+                  </Button>
+                  // <Button color="primary" onClick={() => remove(item.product_id)}>
+                  //   삭제
+                  // </Button>
+                )}
               </St.PriceWrapper>
             </div>
           </li>

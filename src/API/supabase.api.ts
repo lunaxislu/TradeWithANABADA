@@ -54,6 +54,17 @@ export const getSalesList = async (userId: string) => {
 };
 
 /**
+ * 판매 중 => 판매 완료로 상태 변경
+ * @param productId 상품 아이디
+ */
+export const updateOnSaleToSoldOut = async (productId: number) => {
+  console.log('productId: ', productId);
+  const { data, error } = await supabase.from('products').update({ status: true }).eq('id', productId);
+  if (error) throw error;
+  return data;
+};
+
+/**
  * 회원가입
  * @param values 이메일, 비밀번호, 닉네임
  */
