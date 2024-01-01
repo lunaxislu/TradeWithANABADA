@@ -6,6 +6,7 @@ import {
   deleteProduct,
   getUserSession,
   insertProduct,
+  supabase,
   updateTableRow,
 } from '../../../../API/supabase.api';
 import * as St from './Form.styled';
@@ -46,6 +47,8 @@ const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
       category2_id: parseInt(e.currentTarget['category_2'].value),
     };
     const result = await insertProduct(product);
+    const getProductFromDB = await supabase.rpc('get_product', { input_post_id: result[0].id });
+    console.log(getProductFromDB);
     if (productInfo) {
       await updateTableRow(productInfo, result);
       await deleteImageFromStorage(productInfo);
