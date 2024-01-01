@@ -22,17 +22,18 @@ export const FollowWrapper = styled.div`
   left: 37%; */
   padding: 20px;
   border-radius: 8px;
-  width: 30rem;
+  width: 35em;
   height: 50rem;
   text-align: center;
   overflow-y: auto;
 `;
 type ExitBtnProps = {
-  top: string;
+  $top: string;
 };
 export const ExitBtn = styled.button<ExitBtnProps>`
   position: fixed;
-  top: ${(props) => props.top || '20%'};
+  text-align: center;
+  top: ${(props) => props.$top || '20%'};
   border-radius: 20%;
   height: 5rem;
   width: 5rem;
@@ -42,12 +43,14 @@ export const ExitBtn = styled.button<ExitBtnProps>`
   color: #fff;
   cursor: pointer;
 `;
+
 export const FollowList = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
   border-bottom: 0.1rem solid #dcdcdc;
+  cursor: pointer;
   & img {
     width: 4rem;
     height: 4rem;
@@ -62,11 +65,16 @@ export const FollowList = styled.li`
     font-size: 1.5rem;
   }
   & button {
-    background-color: #dcdcdc;
-    width: 25%;
-    height: 2rem;
-    border-radius: 0.5rem;
   }
+`;
+type BtnProps = {
+  $color: string;
+};
+export const UnfollowBtn = styled.button<BtnProps>`
+  background-color: ${(props) => props.$color || '#dcdcdc'};
+  width: 25%;
+  height: 2rem;
+  border-radius: 0.5rem;
 `;
 
 export const ReviewContainer = styled.div`
@@ -86,14 +94,23 @@ export const ReviewContainer = styled.div`
 
 export const ReviewWrapper = styled.div`
   background-color: #fff;
-  /* position: relative;
-  top: 30%;
-  left: 37%; */
   padding: 20px;
   border-radius: 8px;
-  width: 70rem;
+  width: 30rem;
   height: 50rem;
   text-align: center;
 `;
 
-export const ReviewBtn = styled.li``;
+export const ReviewBtn = styled.li`
+  background-color: #dcdcdc;
+  padding: 1.5rem;
+  margin: 1rem;
+  font-size: 1.3rem;
+`;
+
+export const SubmitBtn = styled.button`
+  background-color: #dcdcdc;
+  padding: 1.5rem;
+  margin: 1rem;
+  font-size: 1.3rem;
+`;

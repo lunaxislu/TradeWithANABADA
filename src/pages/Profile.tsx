@@ -17,7 +17,6 @@ const Profile = () => {
   const [uid, setUid] = useState('');
   const [followModal, setFollowModal] = useState(false);
   const [reviewModal, setReviewModal] = useState(false);
-  console.log('follow', followModal, 'review', reviewModal);
 
   const checkUserSession = async () => {
     const userSession = await getUserSession();
@@ -32,7 +31,7 @@ const Profile = () => {
   return (
     <>
       <St.ProfileWrapper>
-        <FollowList followModal={followModal} setFollowModal={setFollowModal} />
+        <FollowList uid={uid} params={params.id} followModal={followModal} setFollowModal={setFollowModal} />
         <ReviewForm reviewModal={reviewModal} setReviewModal={setReviewModal} />
         <UserInfo uid={uid} params={params.id} setFollowModal={setFollowModal} setReviewModal={setReviewModal} />
         {/* 프로필 아래 목록 표시 컴포넌트 */}

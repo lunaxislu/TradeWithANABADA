@@ -107,7 +107,6 @@ export const signInWithProvider = async (provider: 'google' | 'kakao') => {
   });
 
   if (error) throw error;
-  console.log('로그인한 사용자:', data);
 };
 /**
  * 로그아웃
@@ -407,16 +406,44 @@ export const updateUserProfile = async (url: string) => {
 };
 export const getUsersAvartarImg = async (uid: string) => {
   const { data, error } = await supabase.from('users').select('avatar_img').eq('id', uid);
-  console.log(data);
   if (error) throw error;
   return data;
 };
 export const getUsersNickname = async (uid: string) => {
   const { data, error } = await supabase.from('users').select('nickname').eq('id', uid);
-  console.log(data);
   if (error) throw error;
   return data;
 };
+
+// 팔로우 추가하기
+export const follow = async (id: string, uid: string, params: string, nickname: string) => {
+  const { data, error } = await supabase
+    .from('follow')
+    .insert([{ follow_id: id, from_user_id: uid, to_user_id: params, to_user_nickname: nickname }]);
+  return { data, error };
+};
+
+// 팔로우 목록 가져오기
+export const getFollowList = async (params: string) => {
+  const { data, error } = await supabase.from('follow').select('*').eq('from_user_id', params);
+  return data;
+};
+// 팔로우 목록 확인하기(followId로)
+export const checkFollowId = async (followId: string) => {
+  const { data, error } = await supabase.from('follow').select('follow_id').eq('follow_id', followId);
+  return { data, error };
+};
+// 팔로우 취소하기
+export const unfollow = async (followId: string) => {
+  const { error } = await supabase.from('follow').delete().eq('follow_id', followId);
+  return error;
+};
+// 팔로우 취소하기(마이페이지)
+export const mypageUnfollow = async (targetuser: string) => {
+  const { error } = await supabase.from('follow').delete().eq('to_user_id', targetuser);
+  return error;
+};
+
 /**
  * product를 등록한 user의 point& nickname & avatar_img 가져오는 함수입니다.
  * @param [{}] 형태로 가져옵니다.

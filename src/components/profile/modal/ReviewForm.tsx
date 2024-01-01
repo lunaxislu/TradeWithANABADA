@@ -7,21 +7,24 @@ type Props = {
 
 const ReviewForm = ({ reviewModal, setReviewModal }: Props) => {
   const reviewArr = [
-    '응답이 빨라요',
-    '친절해요',
-    '상품 상태가 좋아요',
-    '상품 상태가 설명한 것과 같아요',
-    '시간 약속을 잘 지켜요',
+    '거래가 수월해요',
+    '판매자가 친절해요',
+    '물품 상태가 좋아요',
+    '사진과 동일해요',
+    '약속을 작 지켜요',
   ];
+
+  const onSubmitReviewHandler = () => {};
   return (
     <St.ReviewContainer className={reviewModal ? 'isOpen' : ''} onClick={() => setReviewModal(false)}>
+      <St.ExitBtn $top="20%">X</St.ExitBtn>
       <St.ReviewWrapper>
-        <St.ExitBtn top="20%">X</St.ExitBtn>
         <ul>
-          {reviewArr.map((item) => {
-            return <St.ReviewBtn>{item}</St.ReviewBtn>;
+          {reviewArr.map((item, i) => {
+            return <St.ReviewBtn key={i}>{item}</St.ReviewBtn>;
           })}
         </ul>
+        <St.SubmitBtn onClick={onSubmitReviewHandler}>후기 보내기</St.SubmitBtn>
       </St.ReviewWrapper>
     </St.ReviewContainer>
   );

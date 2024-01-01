@@ -159,18 +159,24 @@ export interface Database {
           from_user_id: string;
           id: number;
           to_user_id: string;
+          to_user_nickname: string;
+          follow_id: string;
         };
         Insert: {
           created_at?: string;
           from_user_id: string;
           id?: number;
           to_user_id: string;
+          to_user_nickname: string;
+          follow_id: string;
         };
         Update: {
           created_at?: string;
           from_user_id?: string;
           id?: number;
           to_user_id?: string;
+          to_user_nickname?: string;
+          follow_id: string;
         };
         Relationships: [
           {

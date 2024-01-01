@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import {
+  checkFollowId,
   deleteStorageImage,
+  follow,
   getUserSession,
   getUsersAvartarImg,
   getUsersNickname,
   imgPublicUrl,
   insertProfileImg,
+  unfollow,
   updateTableNickname,
   updateUserNickname,
   updateUserProfile,
@@ -27,6 +30,8 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   const [img, setImg] = useState(defaultImg);
   const [uploadFile, setUploadFile] = useState<File | undefined>();
   const [nickname, setNickname] = useState('');
+  const [followId, setFolllowId] = useState('');
+  const [followBtn, setFollowBtn] = useState(true);
 
   // 세션에 있는 닉네임 가져오는 함수
   const getSession = async () => {
@@ -36,25 +41,25 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
       const sessionProfileImg = session.session.user.user_metadata.avatar_img;
       setNickname(sessionNickname);
       setImg(sessionProfileImg);
-      console.log(sessionProfileImg);
     }
+    return;
   };
   // 타겟 유저의 프로필 가져오는 함수
   const getTargetUserProfile = () => {
     const getInfo = async () => {
       const targetProfileImg = await getUsersAvartarImg(params as string);
-      console.log(targetProfileImg);
       setImg(targetProfileImg[0].avatar_img!);
     };
     const getNickname = async () => {
       const targetNickname = await getUsersNickname(params as string);
-      console.log(targetNickname);
       setNickname(targetNickname[0].nickname!);
     };
     getInfo();
     getNickname();
+    // setFolllowId(`${uid}-${params}`);
+    checkFollowList();
+    return;
   };
-
   // 이미지 미리보기 함수
   const imgReader = () => {
     const reader = new FileReader();
@@ -66,7 +71,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
       setUploadFile(imgRef.current.files[0]);
     }
   };
-
   // 닉네임 업데이트
   const updateNickname = async () => {
     updateUserNickname(nickname);
@@ -80,7 +84,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
     insertProfileImg(uid, publicUrl.publicUrl);
     updateUserProfile(publicUrl.publicUrl);
   };
-
   // 프로필 변경하기 핸들러
   const onClickChangeBtnHandler = () => {
     if (edit) {
@@ -96,15 +99,61 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
     setFollowModal(true);
   };
   // 팔로우/언팔로우 하기
-  const onClickFollowHandler = () => {};
+  const onClickFollowHandler = async () => {
+    // follow 테이블에 followId 있으면 언팔, 없으면 팔로우
+    const check = await checkFollowId(followId);
+    if (check.data) {
+      // console.log(check.data.length);
+      if (check.data.length === 0) {
+        // insert follow
+        const followData = await follow(followId, uid, params as string, nickname);
+        setFollowBtn(false);
+        console.log('추가 완료');
+      } else {
+        // delete follow
+        const deleteFollow = await unfollow(followId);
+        setFollowBtn(true);
+        console.log('삭제 완료');
+      }
+    }
+  };
+  // 팔로우/언팔로우 체크(useEffect로 상태 체크하여 버튼 바꾸기 위함
+  const checkFollowList = async () => {
+    const check = await checkFollowId(followId);
+    console.log(followId);
+    // console.log(check);
+    if (check.data) {
+      if (check.data.length === 0) {
+        setFollowBtn(true); // 팔로우 버튼
+        console.log('팔로우 버튼 활성화');
+      } else {
+        setFollowBtn(false); // 언팔로우 버튼
+        console.log('언팔로우 버튼 활성화');
+      }
+    }
+    return;
+  };
   // 리뷰 모달 보여주기
   const showReviewModal = () => {
     setReviewModal(true);
   };
 
   useEffect(() => {
-    if (uid === params) getSession();
-    else getTargetUserProfile();
+    const initValue = async () => {
+      if (uid && params) {
+        await checkFollowList();
+        console.log('checkFollowList 완료');
+        if (uid === params) await getSession();
+        else getTargetUserProfile();
+        setFolllowId(() => {
+          console.log(followId);
+          console.log('팔로우/언팔로우 생태 변경');
+          return `${uid}-${params}`;
+        });
+      }
+      return;
+    };
+    initValue();
   }, [uid, params]);
   return (
     <>
@@ -158,7 +207,7 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
           // 타겟유저페이지의 버튼 구역
           <>
             <St.ProfileBtn onClick={showFollowModal}>팔로워 목록 보기</St.ProfileBtn>
-            <St.ProfileBtn onClick={onClickFollowHandler}>팔로우하기</St.ProfileBtn>
+            <St.ProfileBtn onClick={onClickFollowHandler}>{followBtn ? '팔로우하기' : '팔로우 취소하기'}</St.ProfileBtn>
             <St.ProfileBtn onClick={showReviewModal}>후기 등록하기</St.ProfileBtn>
           </>
         )}
