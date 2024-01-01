@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInfoInProduct } from '../../../../API/supabase.api';
 import { displayCreateAt } from '../../../../utils/date';
-import Button from '../../ButtonGroup/LikeAndTalkButton/LikeTalkButton';
+import ButtonForm from '../../../common/product/Form/buttonForm/ButtonForm';
 import { ProductInfoType } from '../Sale';
 import * as St from './ProductInfo.styled';
 
@@ -71,8 +71,7 @@ const ProductInfo = ({ userData, productInfo }: PropsType) => {
         </div>
       </St.HashTag>
 
-      {/* 좋아요와 대화하기 버튼 모음입니다. */}
-      <Button post_id={productInfo?.product_id} user_id={userData.id} />
+      <ButtonForm userData={userData} productInfo={productInfo} />
     </St.Container>
   );
 };
