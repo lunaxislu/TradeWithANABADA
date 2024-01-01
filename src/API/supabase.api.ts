@@ -18,7 +18,7 @@ type users = Record<string, string>;
 export const getReviews = async (userId: string) => {
   const { data, error } = await supabase.from('review').select('*').eq('user_id', userId);
   if (error) throw error;
-  return data;
+  return { data, error };
 };
 
 /**
@@ -473,14 +473,29 @@ export const filteredReview = async (uid: string) => {
   const { data, error } = await supabase.from('review').select('*').eq('user_id', uid);
   return data;
 };
-// 리뷰등록
-export const review = async (params: string, i1: number, i2: number, i3: number, i4: number, i5: number) => {
+type ReviewProps = {
+  params: string;
+  i1: number;
+  i2: number;
+  i3: number;
+  i4: number;
+  i5: number;
+};
+// 리뷰등록(update)
+export const updateReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) => {
   const { data, error } = await supabase
     .from('review')
     .update({ res_fast: i1, kind: i2, good_product: i3, same_product: i4, good_time: i5 })
     .eq('user_id', params);
   if (error) throw error;
   return { data };
+};
+// 리뷰등록(insert)
+export const insertReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) => {
+  const { data, error } = await supabase
+    .from('review')
+    .insert([{ user_id: params, res_fast: i1, kind: i2, good_product: i3, same_product: i4, good_time: i5 }])
+    .select();
 };
 
 /**
