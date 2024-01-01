@@ -18,6 +18,7 @@ const DEFAULT_DATAS = [0, 0, 0, 0, 0];
 
 export const ReviewChart = () => {
   const [reviews, setReviews] = useState<Tables<'review'>[]>([]);
+  console.log(reviews);
   const reviewData = reviews
     ? reviews.map((review) => {
         const data: Record<string, number | undefined> = {};

@@ -161,6 +161,7 @@ export interface Database {
           to_user_id: string;
           to_user_nickname: string;
           follow_id: string;
+          to_user_img: string;
         };
         Insert: {
           created_at?: string;
@@ -169,6 +170,7 @@ export interface Database {
           to_user_id: string;
           to_user_nickname: string;
           follow_id: string;
+          to_user_img: string;
         };
         Update: {
           created_at?: string;
@@ -177,6 +179,7 @@ export interface Database {
           to_user_id?: string;
           to_user_nickname?: string;
           follow_id: string;
+          to_user_img: string;
         };
         Relationships: [
           {

@@ -56,7 +56,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
     };
     getInfo();
     getNickname();
-    // setFolllowId(`${uid}-${params}`);
     checkFollowList();
     return;
   };
@@ -103,10 +102,9 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
     // follow 테이블에 followId 있으면 언팔, 없으면 팔로우
     const check = await checkFollowId(followId);
     if (check.data) {
-      // console.log(check.data.length);
       if (check.data.length === 0) {
         // insert follow
-        const followData = await follow(followId, uid, params as string, nickname);
+        const followData = await follow(followId, uid, params as string, nickname, img);
         setFollowBtn(false);
       } else {
         // delete follow

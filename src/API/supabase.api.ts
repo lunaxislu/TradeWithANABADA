@@ -2,6 +2,7 @@ import { FileObject } from '@supabase/storage-js';
 import { createClient } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import { Database } from '../../database.types';
+import user from '../styles/assets/user.svg';
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL as string;
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY as string;
@@ -77,8 +78,7 @@ export const signupHandler = async (values: users) => {
       options: {
         data: {
           full_name: name,
-          avatar_img:
-            'https://vianpfkkmxarfiifomax.supabase.co/storage/v1/object/public/profile-images/default-avatar-img/user.svg',
+          avatar_img: user,
         },
       },
     });
@@ -109,10 +109,10 @@ export const loginHandler = async (values: users) => {
  * @returns data
  */
 export const saveUser = async (values: users) => {
-  const { email, id, created_at, full_name } = values;
+  const { email, id, created_at, full_name, avatar_img } = values;
   const { data, error } = await supabase
     .from('users')
-    .insert([{ email, id, created_at, nickname: full_name }])
+    .insert([{ email, id, created_at, nickname: full_name, avatar_img }])
     .select();
   if (error) throw error;
   return data;
@@ -440,10 +440,10 @@ export const getUsersNickname = async (uid: string) => {
 };
 
 // 팔로우 추가하기
-export const follow = async (id: string, uid: string, params: string, nickname: string) => {
+export const follow = async (id: string, uid: string, params: string, nickname: string, img: string) => {
   const { data, error } = await supabase
     .from('follow')
-    .insert([{ follow_id: id, from_user_id: uid, to_user_id: params, to_user_nickname: nickname }]);
+    .insert([{ follow_id: id, from_user_id: uid, to_user_id: params, to_user_nickname: nickname, to_user_img: img }]);
   return { data, error };
 };
 
@@ -466,6 +466,21 @@ export const unfollow = async (followId: string) => {
 export const mypageUnfollow = async (targetuser: string) => {
   const { error } = await supabase.from('follow').delete().eq('to_user_id', targetuser);
   return error;
+};
+
+// 유저의 리뷰 row 가져오기
+export const filteredReview = async (uid: string) => {
+  const { data, error } = await supabase.from('review').select('*').eq('user_id', uid);
+  return data;
+};
+// 리뷰등록
+export const review = async (params: string, i1: number, i2: number, i3: number, i4: number, i5: number) => {
+  const { data, error } = await supabase
+    .from('review')
+    .update({ res_fast: i1, kind: i2, good_product: i3, same_product: i4, good_time: i5 })
+    .eq('user_id', params);
+  if (error) throw error;
+  return { data };
 };
 
 /**
