@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tables } from '../../../../database.types';
 import { getFollowList, mypageUnfollow } from '../../../API/supabase.api';
-import user from '../../../styles/assets/user.svg';
 import * as St from './modal.styled';
 
 type Props = {
@@ -14,32 +13,11 @@ type Props = {
 
 const FollowList = ({ uid, params, followModal, setFollowModal }: Props) => {
   const [following, setFollowing] = useState<Tables<'follow'>[] | null>();
-  const [followId, setFollowId] = useState('');
 
   const navigate = useNavigate();
-  const arr = [
-    '하니',
-    '민지',
-    '다니엘',
-    '해린',
-    '혜인',
-    '아이린',
-    '슬기',
-    '웬디',
-    '조이',
-    '예리',
-    '채원',
-    '윤진',
-    '사쿠라',
-    '은채',
-    '카즈하',
-  ];
-  //
+
   const filterFollowList = async () => {
     const followData = await getFollowList(params as string);
-    if (followData) {
-      console.log(followData);
-    }
     setFollowing(followData);
   };
 
@@ -54,15 +32,22 @@ const FollowList = ({ uid, params, followModal, setFollowModal }: Props) => {
         <ul>
           {following?.map((item, i) => {
             return (
-              <St.FollowList key={i} onClick={() => navigate(`/profile/${item.to_user_id}`)}>
-                <img src={user} />
+              <St.FollowList
+                key={i}
+                onClick={(e) => {
+                  navigate(`/profile/${item.to_user_id}`);
+                }}
+              >
+                <img src={item.to_user_img} />
                 <div>{item.to_user_nickname}</div>
                 {uid === params ? (
                   <St.UnfollowBtn
                     $color="#dcdcdc"
-                    onClick={async () => {
+                    onClick={async (e) => {
                       // to_user_id 비교해서 삭제해야함
+                      e.stopPropagation();
                       await mypageUnfollow(item.to_user_id);
+                      await filterFollowList();
                       console.log('삭제 완료');
                     }}
                   >

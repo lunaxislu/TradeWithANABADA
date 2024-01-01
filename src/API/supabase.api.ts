@@ -426,10 +426,10 @@ export const getUsersNickname = async (uid: string) => {
 };
 
 // 팔로우 추가하기
-export const follow = async (id: string, uid: string, params: string, nickname: string) => {
+export const follow = async (id: string, uid: string, params: string, nickname: string, img: string) => {
   const { data, error } = await supabase
     .from('follow')
-    .insert([{ follow_id: id, from_user_id: uid, to_user_id: params, to_user_nickname: nickname }]);
+    .insert([{ follow_id: id, from_user_id: uid, to_user_id: params, to_user_nickname: nickname, to_user_img: img }]);
   return { data, error };
 };
 
@@ -452,6 +452,24 @@ export const unfollow = async (followId: string) => {
 export const mypageUnfollow = async (targetuser: string) => {
   const { error } = await supabase.from('follow').delete().eq('to_user_id', targetuser);
   return error;
+};
+// 리뷰등록
+export const review = async (
+  uid: string,
+  input1: number,
+  input2: number,
+  input3: number,
+  input4: number,
+  input5: number,
+) => {
+  const { data, error } = await supabase
+    .from('review')
+    .insert([
+      { user_id: uid, res_fast: input1, kind: input2, good_product: input3, same_product: input4, good_time: input5 },
+    ])
+    .select();
+  if (error) throw error;
+  return { data };
 };
 
 /**

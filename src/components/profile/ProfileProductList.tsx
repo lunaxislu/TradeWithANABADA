@@ -15,9 +15,10 @@ type Props = {
 const ProfileProductList = ({ uid, params }: Props) => {
   const navigate = useNavigate();
   const [list, setList] = useState(true);
+
   const { remove } = useProfile();
   const { wishList, wishListLoading, salesList, salesListLoading } = useData();
-
+  // console.log(wishList);
   // 상품으로 이동
   const moveToDetailPage = (item: ProductData) => navigate(`/detail/${item.product_id}`, { state: item });
 

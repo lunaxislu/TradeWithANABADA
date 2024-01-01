@@ -56,7 +56,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
     };
     getInfo();
     getNickname();
-    // setFolllowId(`${uid}-${params}`);
     checkFollowList();
     return;
   };
@@ -103,32 +102,26 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
     // follow 테이블에 followId 있으면 언팔, 없으면 팔로우
     const check = await checkFollowId(followId);
     if (check.data) {
-      // console.log(check.data.length);
       if (check.data.length === 0) {
         // insert follow
-        const followData = await follow(followId, uid, params as string, nickname);
+        const followData = await follow(followId, uid, params as string, nickname, img);
         setFollowBtn(false);
-        console.log('추가 완료');
       } else {
         // delete follow
         const deleteFollow = await unfollow(followId);
         setFollowBtn(true);
-        console.log('삭제 완료');
       }
     }
   };
   // 팔로우/언팔로우 체크(useEffect로 상태 체크하여 버튼 바꾸기 위함
   const checkFollowList = async () => {
     const check = await checkFollowId(followId);
-    console.log(followId);
     // console.log(check);
     if (check.data) {
       if (check.data.length === 0) {
         setFollowBtn(true); // 팔로우 버튼
-        console.log('팔로우 버튼 활성화');
       } else {
         setFollowBtn(false); // 언팔로우 버튼
-        console.log('언팔로우 버튼 활성화');
       }
     }
     return;
@@ -142,12 +135,9 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
     const initValue = async () => {
       if (uid && params) {
         await checkFollowList();
-        console.log('checkFollowList 완료');
         if (uid === params) await getSession();
         else getTargetUserProfile();
         setFolllowId(() => {
-          console.log(followId);
-          console.log('팔로우/언팔로우 생태 변경');
           return `${uid}-${params}`;
         });
       }
