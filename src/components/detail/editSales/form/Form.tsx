@@ -12,8 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import { EditSalePropsType } from '../EditSale';
 import * as St from './Form.styled';
 // import EditForm from './editForm/EditForm';
-import ImageForm from '../../../common/product/imageForm/ImageForm';
-import InputForm from '../../../common/product/inputform/InputForm';
+import ImageForm from '../../../common/product/Form/imageForm/ImageForm';
+import InputForm from '../../../common/product/Form/inputForm/InputForm';
 // import EditImg from './editImg/EditImg';
 
 const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CommonProductInfoType } from '../InputForm';
+import { CommonProductInfoType } from '../../Form';
 import * as St from './TextInput.styled';
 
 const TextInput = ({ productInfo }: { productInfo: CommonProductInfoType | undefined }) => {

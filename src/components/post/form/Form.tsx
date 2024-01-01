@@ -1,8 +1,8 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { getUserSession, insertProduct } from '../../../API/supabase.api';
-import ImageForm from '../../common/product/imageForm/ImageForm';
-import InputForm from '../../common/product/inputform/InputForm';
+import ImageForm from '../../common/product/Form/imageForm/ImageForm';
+import InputForm from '../../common/product/Form/inputForm/InputForm';
 import * as St from './Form.styled';
 // import ImageInput from './imageForm/ImageInput';
 // import InputForm from './inputForm/InputForm';

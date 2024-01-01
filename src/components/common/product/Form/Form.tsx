@@ -8,9 +8,9 @@ import {
   insertProduct,
   updateTableRow,
 } from '../../../../API/supabase.api';
-import ImageForm from '../imageForm/ImageForm';
-import InputForm from '../inputform/InputForm';
 import * as St from './Form.styled';
+import ImageForm from './imageForm/ImageForm';
+import InputForm from './inputForm/InputForm';
 type PropsOfEditProductType = {
   productInfo?: CommonProductInfoType | undefined;
   isEdit?: boolean | undefined;

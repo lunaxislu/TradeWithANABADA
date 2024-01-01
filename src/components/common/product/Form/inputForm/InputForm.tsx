@@ -1,4 +1,4 @@
-import { CommonProductInfoType } from '../Form/Form';
+import { CommonProductInfoType } from '../Form';
 import * as St from './InputForm.styled';
 import CategoryInput from './categoryInput/CategoryInput';
 import HashTagInput from './hashTagInput/HashTagInput';

@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { CommonProductInfoType } from '../InputForm';
+import { CommonProductInfoType } from '../../Form';
 import * as St from './InfoInput.styled';
+
 const InfoInput = ({ productInfo }: { productInfo: CommonProductInfoType | undefined }) => {
   const [title, setTitle] = useState(productInfo ? productInfo.title : '');
   const [price, setPrice] = useState(productInfo ? productInfo.price : '');

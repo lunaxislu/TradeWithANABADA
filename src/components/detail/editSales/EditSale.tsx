@@ -1,6 +1,7 @@
+import Form from '../../common/product/Form/Form';
 import { ProductInfoType } from '../sale/Sale';
 import * as St from './EditSale.styled';
-import Form from './form/Form';
+// import Form from './form/Form';
 export type EditSalePropsType = {
   productInfo: ProductInfoType;
   isEdit: boolean;
@@ -9,6 +10,7 @@ export type EditSalePropsType = {
 const EditSale = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
   return (
     <St.Container>
+      {/* <Form productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} /> */}
       <Form productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} />
     </St.Container>
   );

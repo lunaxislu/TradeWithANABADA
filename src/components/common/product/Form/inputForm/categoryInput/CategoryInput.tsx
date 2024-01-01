@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getMainCategory, getSubCategory } from '../../../../../API/supabase.api';
+import { getMainCategory, getSubCategory } from '../../../../../../API/supabase.api';
 import * as St from './CategoryInput.styled';
 type MainCategoryType = {
   created_at: string;
