@@ -12,14 +12,24 @@ type Props = {
   params: string | undefined;
 };
 
+export type ProductDataExtends = ProductData & { status: boolean };
+export type ProductStatus = 'wish' | 'onSale' | 'soldOut';
 const ProfileProductList = ({ uid, params }: Props) => {
-  const navigate = useNavigate();
-  const [list, setList] = useState(true);
-  const { remove } = useProfile();
+  const [list, setList] = useState<ProductStatus>('wish');
   const { wishList, wishListLoading, salesList, salesListLoading } = useData();
+  // 판매 중
+  const onSaleList = salesList?.filter((item) => item.status === false);
+  // 판매 완료
+  const soldOutList = salesList?.filter((item) => item.status === true);
 
-  // 상품으로 이동
-  const moveToDetailPage = (item: ProductData) => navigate(`/detail/${item.product_id}`, { state: item });
+  // 판매 완료 테스트 버튼
+  const soldOut = (id: number) => {
+    const data = salesList?.filter((item) => item.product_id === id);
+    console.log('data: ', data);
+    if (data) {
+      data[0].status = true;
+    }
+  };
 
   if (wishListLoading) return <div>로딩중...</div>;
   if (salesListLoading) return <div>로딩중...</div>;
@@ -45,79 +55,23 @@ const ProfileProductList = ({ uid, params }: Props) => {
       {/* 리스트 영역 */}
       <St.ListWrapper>
         <ul>
-          {list ? (
-            <>
-              {wishList?.map((item, i) => {
-                const date = displayCreateAt(item.created_at);
-                return (
-                  <li key={item.product_id}>
-                    <div>
-                      <St.ListImage>
-                        {item.product_img && item.product_img.length > 0 ? (
-                          <img src={item.product_img[0]} alt="" onClick={() => moveToDetailPage(item)} />
-                        ) : (
-                          <img src="" alt="" />
-                        )}
-                      </St.ListImage>
+          {(() => {
+            const wishListExtends: ProductDataExtends[] = wishList!.map((item) => ({
+              ...item,
+              status: false,
+            }));
 
-                      <St.PostsWrapper>
-                        <div onClick={() => moveToDetailPage(item)}>
-                          <p>제목: {item.title}</p>
-                          <p>내용: {item.content}</p>
-                        </div>
-                        <div>
-                          <p>10,000</p>
-                          <p>원의 가치</p>
-                        </div>
-                      </St.PostsWrapper>
-
-                      <St.PriceWrapper>
-                        <span>{date}</span>
-                        <Button color="primary" onClick={() => remove(item.product_id)}>
-                          삭제
-                        </Button>
-                      </St.PriceWrapper>
-                    </div>
-                  </li>
-                );
-              })}
-            </>
-          ) : (
-            <>
-              {salesList?.map((item, i) => {
-                const date = displayCreateAt(item.created_at);
-                return (
-                  <li key={item.product_id} onClick={() => moveToDetailPage(item)}>
-                    <div>
-                      <St.ListImage>
-                        {item.product_img && item.product_img.length > 0 ? (
-                          <img src={item.product_img[0]} alt="" />
-                        ) : (
-                          <img src="" alt="" />
-                        )}
-                      </St.ListImage>
-
-                      <St.PostsWrapper>
-                        <p>제목: {item.title}</p>
-                        <p>내용: {item.content}</p>
-                        <div>
-                          <p>10,000</p>
-                          <p>원의 가치</p>
-                        </div>
-                      </St.PostsWrapper>
-
-                      <St.PriceWrapper>
-                        <span>{date}</span>
-                        {/* <Button color="primary" onClick={deleteZzimProduct}>
-                          삭제
-                        </Button> */}
-                      </St.PriceWrapper>
-                    </div>
-                  </li>
-                );
-              })}
-            </>
-          )}
+            switch (list) {
+              case 'wish':
+                return <ListItem name={list} list={wishListExtends!} />;
+              case 'onSale':
+                return <ListItem name={list} list={onSaleList!} />;
+              case 'soldOut':
+                return <ListItem name={list} list={soldOutList!} soldOut={soldOut} />;
+              default:
+                return null;
+            }
+          })()}
         </ul>
       </St.ListWrapper>
     </St.ProductListSection>
