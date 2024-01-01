@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import TalkContextProvider from '../../contexts/TalkContext';
 import TalkContainer from '../chat/TalkArea';
 import HeaderBtnArea from './header/HeaderBtnArea';
 import SearchCategoryArea from './header/SearchCategoryArea';
@@ -16,7 +17,9 @@ const Header = () => {
       <h1 onClick={navigateToHome}>ANABADA</h1>
       <SearchCategoryArea />
       <HeaderBtnArea />
-      <TalkContainer />
+      <TalkContextProvider>
+        <TalkContainer />
+      </TalkContextProvider>
     </St.Header>
   );
 };

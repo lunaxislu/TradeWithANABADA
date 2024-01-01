@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUserSession } from '../../../API/supabase.api';
+import { getUserSession, supabase } from '../../../API/supabase.api';
 import { useAuth } from '../../../hooks/userHook/useAuth';
 import { Button } from '../../ui/Button';
 import * as St from './header.styled';
@@ -26,9 +26,15 @@ const HeaderBtnArea = () => {
     }
   };
 
+  const logoutHandler = async () => {
+    logout();
+    setIsLogin(false);
+    await supabase.removeAllChannels();
+  };
+
   useEffect(() => {
     checkUserSession();
-  }, []);
+  }, [isLogin]);
 
   const headerButton = [
     {
@@ -48,7 +54,7 @@ const HeaderBtnArea = () => {
     {
       text: '로그아웃',
       isLogin: true,
-      clickHandler: logout,
+      clickHandler: logoutHandler,
     },
     {
       text: '로그인',

@@ -6,15 +6,13 @@ import {
   supabase,
   updateVisibleTrue,
 } from '../../API/supabase.api';
+import { useTalkContext } from '../../contexts/TalkContext';
 import TalkMessage from './TalkMessage';
 import * as St from './chat.styled';
 
-type TalkFormProps = {
-  currentChannel: number;
-  setCurrentChannel: React.Dispatch<React.SetStateAction<number>>;
-};
+const TalkForm = () => {
+  const { changeCurrentChannel, currentChannel } = useTalkContext();
 
-const TalkForm = ({ currentChannel, setCurrentChannel }: TalkFormProps) => {
   const [chatData, setChatData] = useState<ChatMessage[]>([]);
   const [otherUser, onOtherUser] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -93,17 +91,7 @@ const TalkForm = ({ currentChannel, setCurrentChannel }: TalkFormProps) => {
           filter: `chat_id=eq.${currentChannel}`,
         },
         (payload) => {
-          const newData = {
-            current_chat_id: payload.new.chat_id,
-            message_id: payload.new.id,
-            message_created_at: payload.new.created_at,
-            content: payload.new.content,
-            author_id: payload.new.author_id,
-            visible: payload.new.visible,
-          };
           getSelectAllMessage();
-
-          // setChatData((prev) => [...prev, newData]);
         },
       )
       .on(
@@ -119,7 +107,7 @@ const TalkForm = ({ currentChannel, setCurrentChannel }: TalkFormProps) => {
         },
       );
 
-    subscribeConfigSetting();
+    // subscribeConfigSetting();
     getSelectAllMessage();
 
     const removeChannel = async () => {
@@ -135,7 +123,7 @@ const TalkForm = ({ currentChannel, setCurrentChannel }: TalkFormProps) => {
     <St.TalkMessageContainer>
       <button
         onClick={() => {
-          setCurrentChannel(0);
+          changeCurrentChannel(0);
         }}
       >
         홈으로

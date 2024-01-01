@@ -1,27 +1,90 @@
-import { ChannelInfo } from '../../API/supabase.api';
+import { useEffect, useState } from 'react';
+import { Tables } from '../../../database.types';
+import { ChannelInfo, getUserInfo, supabase } from '../../API/supabase.api';
+import { useTalkContext } from '../../contexts/TalkContext';
 import { displayCreateAt } from '../../utils/date';
 import * as St from './chat.styled';
 
 type TalkChannelCardProps = {
   channel: ChannelInfo;
-  setCurrentChannel: React.Dispatch<React.SetStateAction<number>>;
 };
-const TalkChannelCard = ({ channel, setCurrentChannel }: TalkChannelCardProps) => {
+
+const initialUser = {
+  avatar_img: '',
+  created_at: '',
+  email: '',
+  id: '',
+  nickname: '',
+  point: 0,
+};
+
+const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
+  const { TalkChannelSubscribeSetting, currentUserInfo, changeCurrentChannel } = useTalkContext();
+
+  console.log(channel);
+
+  const [otherUserIn, isOtherUserIn] = useState<boolean>(false);
+  const [otherUser, setOtherUser] = useState<Tables<'users'>>(initialUser);
+
+  useEffect(() => {
+    // presence 정보 저장
+    const userStatus = {
+      user: currentUserInfo.session?.user.id,
+      online_at: new Date().toISOString(),
+    };
+
+    // 채널 선언
+    const trackChannel = supabase.channel(`talkChannel_${channel.chat_id}`);
+    TalkChannelSubscribeSetting(trackChannel, channel.chat_id);
+
+    trackChannel
+      .on('presence', { event: 'sync' }, () => {
+        const newState = trackChannel.presenceState();
+        const currentSessionInfo = Object.values(newState);
+        isOtherUserIn(
+          currentSessionInfo.some((session) => {
+            if ('user' in session[0]) {
+              return currentUserInfo.session?.user.id !== session[0].user;
+            }
+          }),
+        );
+      })
+      .subscribe(async (status) => {
+        if (status !== 'SUBSCRIBED') {
+          return;
+        }
+        await trackChannel.track(userStatus);
+      });
+
+    const getOtherUserInfo = async () => {
+      if (channel.user1_id === currentUserInfo.session?.user.id) {
+        const otherUserData = await getUserInfo(channel.user2_id);
+        if (otherUserData) setOtherUser(otherUserData[0]);
+      }
+      if (channel.user2_id === currentUserInfo.session?.user.id) {
+        const otherUserData = await getUserInfo(channel.user1_id);
+        if (otherUserData) setOtherUser(otherUserData[0]);
+      }
+    };
+    getOtherUserInfo();
+  }, []);
+
   return (
     <St.TalkChannelCardItem
       key={channel.chat_id}
       onClick={() => {
-        setCurrentChannel(channel.chat_id);
+        changeCurrentChannel(channel.chat_id);
       }}
     >
       <figure>
-        <img src="https://images.freeimages.com/fic/images/icons/573/must_have/256/user.png" />
+        <img src={otherUser.avatar_img!} />
       </figure>
 
       <div>
         {/* 유저정보 */}
         <div>
-          <h3>닉네임</h3>
+          <h3>{otherUser.nickname}</h3>
+          <span>{otherUserIn ? '접송중' : '미접속'}</span>
         </div>
 
         {/* preview */}

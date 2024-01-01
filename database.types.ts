@@ -457,6 +457,7 @@ export interface Database {
           chat_created_at: string;
           user1_id: string;
           user2_id: string;
+          enter_users: string[];
           messages: Json[];
           invisible_count: number;
         }[];

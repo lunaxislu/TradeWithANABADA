@@ -435,6 +435,7 @@ export type ChannelInfo = {
   user2_id: string;
   messages: Omit<ChatMessage, 'current_chat_id' | 'visible'>[];
   invisible_count: number;
+  enter_user: string[];
 };
 
 // 현재 유저 정보에 따른 채팅방 가져오기
@@ -459,4 +460,11 @@ export const getSelectChatMessages = async (channel: number): Promise<ChatMessag
 
 export const updateVisibleTrue = async (user_id: string, chat_id: number): Promise<void> => {
   await supabase.rpc('update_visible', { input_user_id: user_id, input_chat_id: chat_id });
+};
+
+export const getUserInfo = async (uid: string) => {
+  const { data } = await supabase.from('users').select('*').eq('id', uid);
+  if (data) {
+    return data;
+  }
 };
