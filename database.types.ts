@@ -159,18 +159,24 @@ export interface Database {
           from_user_id: string;
           id: number;
           to_user_id: string;
+          to_user_nickname: string;
+          follow_id: string;
         };
         Insert: {
           created_at?: string;
           from_user_id: string;
           id?: number;
           to_user_id: string;
+          to_user_nickname: string;
+          follow_id: string;
         };
         Update: {
           created_at?: string;
           from_user_id?: string;
           id?: number;
           to_user_id?: string;
+          to_user_nickname?: string;
+          follow_id: string;
         };
         Relationships: [
           {
@@ -432,8 +438,44 @@ export interface Database {
           category2_name: string;
         }[];
       };
+      get_likes_products: {
+        Args: {
+          input_user_id: string;
+        };
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          created_at: string;
+          price: string;
+          product_img: string[];
+          user_id: string;
+          like_count: number;
+          hash_tags: string[];
+          category1_name: string;
+          category2_name: string;
+        }[];
+      };
       get_popular_products: {
         Args: Record<PropertyKey, never>;
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          created_at: string;
+          price: string;
+          product_img: string[];
+          user_id: string;
+          like_count: number;
+          hash_tags: string[];
+          category1_name: string;
+          category2_name: string;
+        }[];
+      };
+      get_sales_products: {
+        Args: {
+          input_user_id: string;
+        };
         Returns: {
           product_id: number;
           title: string;

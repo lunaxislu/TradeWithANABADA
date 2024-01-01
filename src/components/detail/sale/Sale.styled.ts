@@ -19,4 +19,23 @@ export const Content = styled.div`
   font-size: 2rem;
 `;
 
-export const EditButton = styled.button``;
+export const TextContainer = styled.div`
+  position: relative;
+  margin-top: 4rem;
+  padding: 2.6rem 2.8rem;
+  border: 2px solid #666;
+  border-radius: 1.2rem;
+
+  .title {
+    margin-top: 1rem;
+    color: #333;
+    font-size: 2.8rem;
+    font-weight: bold;
+  }
+`;
+
+export const TextWrapper = styled.div`
+  margin-top: 2.4rem;
+  min-height: 20rem;
+  font-size: 1.4rem;
+`;

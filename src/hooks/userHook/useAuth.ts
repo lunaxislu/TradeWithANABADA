@@ -1,6 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { loginHandler, logoutHandler, signupHandler, supabase, updatePasswordHandler } from '../../API/supabase.api';
+import {
+  getUserData,
+  loginHandler,
+  logoutHandler,
+  saveUser,
+  signupHandler,
+  supabase,
+  updatePasswordHandler,
+} from '../../API/supabase.api';
+import { Users } from '../../components/user/Form';
 
 const enum queryKey {
   SIGNUP = 'signup',
@@ -16,8 +25,16 @@ export const useAuth = () => {
   // 회원가입
   const signupMutation = useMutation({
     mutationFn: signupHandler,
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.SIGNUP] });
+      const token = await getUserData();
+      const info = {
+        id: token?.id,
+        email: token?.email,
+        created_at: new Date().toISOString(),
+        full_name: token?.user_metadata.full_name,
+      };
+      await saveUser(info as Users);
       navigate('/auth/login');
     },
   });

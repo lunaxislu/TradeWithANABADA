@@ -1,3 +1,4 @@
+import { FileObject } from '@supabase/storage-js';
 import { createClient } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import { Database } from '../../database.types';
@@ -26,7 +27,18 @@ export const getReviews = async (userId: string) => {
  * @returns 찜 목록
  */
 export const getZzimList = async (userId: string) => {
-  const { data, error } = await supabase.from('likes').select('*, products(*)').eq('user_id', userId);
+  const { data, error } = await supabase.rpc('get_likes_products', { input_user_id: userId });
+  if (error) throw error;
+  return data;
+};
+
+/**
+ * 판매 목록 가져오기 (판매중, 거래완료)
+ * @param userId 유저 아이디
+ * @returns 판매 목록
+ */
+export const getSalesList = async (userId: string) => {
+  const { data, error } = await supabase.rpc('get_sales_products', { input_user_id: userId });
   if (error) throw error;
   return data;
 };
@@ -95,7 +107,6 @@ export const signInWithProvider = async (provider: 'google' | 'kakao') => {
   });
 
   if (error) throw error;
-  console.log('로그인한 사용자:', data);
 };
 /**
  * 로그아웃
@@ -164,12 +175,13 @@ export const updatePasswordHandler = async (values: users) => {
  * @param 아래 타입이 파라미터입니다.
  */
 type ParamForRegist = {
+  category2_id: number;
   title: string;
   content: string;
   price: string;
   tags: string[];
   user_id: string;
-  imgFiles: File[];
+  imgFiles: (File | Blob)[];
 };
 
 export const insertProduct = async (info: ParamForRegist) => {
@@ -178,6 +190,7 @@ export const insertProduct = async (info: ParamForRegist) => {
     .from('products')
     .insert([
       {
+        category2_id: info.category2_id,
         title: info.title,
         content: info.content,
         price: info.price,
@@ -227,7 +240,7 @@ const insertHashTag = async (post_id: number, hash_tag: string[]) => {
  * @param date
  * @param uuid
  */
-const insertImageStorage = async (id: number, files: File[], date: string, uuid: string) => {
+const insertImageStorage = async (id: number, files: (File | Blob)[], date: string, uuid: string) => {
   // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
   const uploadImage = files.map(async (file) => {
     // nano id를 사용해서 이미지 고유 이름으로 넣습니다.
@@ -256,6 +269,20 @@ const insertImageStorage = async (id: number, files: File[], date: string, uuid:
 
   if (error) {
     throw console.log(error);
+  }
+};
+
+export const deleteImageFromStorage = async (info: ProductInfoType) => {
+  const { data: lists } = await supabase.storage
+    .from('product-images')
+    .list(`${info.user_id}/${info.product_id}/${info.created_at}`);
+  const filesToRemove = lists?.map((list) => `${info.user_id}/${info.product_id}/${info.created_at}/${list.name}`);
+
+  const { data, error } = await supabase.storage.from('product-images').remove(filesToRemove!);
+
+  console.log('product-images에 삭제되고', data);
+  if (error) {
+    console.log('스토리지 폴더삭제에서', error);
   }
 };
 
@@ -379,16 +406,44 @@ export const updateUserProfile = async (url: string) => {
 };
 export const getUsersAvartarImg = async (uid: string) => {
   const { data, error } = await supabase.from('users').select('avatar_img').eq('id', uid);
-  console.log(data);
   if (error) throw error;
   return data;
 };
 export const getUsersNickname = async (uid: string) => {
   const { data, error } = await supabase.from('users').select('nickname').eq('id', uid);
-  console.log(data);
   if (error) throw error;
   return data;
 };
+
+// 팔로우 추가하기
+export const follow = async (id: string, uid: string, params: string, nickname: string) => {
+  const { data, error } = await supabase
+    .from('follow')
+    .insert([{ follow_id: id, from_user_id: uid, to_user_id: params, to_user_nickname: nickname }]);
+  return { data, error };
+};
+
+// 팔로우 목록 가져오기
+export const getFollowList = async (params: string) => {
+  const { data, error } = await supabase.from('follow').select('*').eq('from_user_id', params);
+  return data;
+};
+// 팔로우 목록 확인하기(followId로)
+export const checkFollowId = async (followId: string) => {
+  const { data, error } = await supabase.from('follow').select('follow_id').eq('follow_id', followId);
+  return { data, error };
+};
+// 팔로우 취소하기
+export const unfollow = async (followId: string) => {
+  const { error } = await supabase.from('follow').delete().eq('follow_id', followId);
+  return error;
+};
+// 팔로우 취소하기(마이페이지)
+export const mypageUnfollow = async (targetuser: string) => {
+  const { error } = await supabase.from('follow').delete().eq('to_user_id', targetuser);
+  return error;
+};
+
 /**
  * product를 등록한 user의 point& nickname & avatar_img 가져오는 함수입니다.
  * @param [{}] 형태로 가져옵니다.
@@ -416,6 +471,92 @@ export const cancelLike = async (post_id: number) => {
 export const registLike = async (user_id: string, post_id: number) => {
   const { data, error } = await supabase.from('likes').insert([{ post_id, user_id }]).select();
   console.log('찜하기 완료');
+};
+
+/**
+ * product Edit 할 때 사용하는 함수들과 타입입니다.
+ */
+type ProductInfoType = {
+  category2_id: number;
+  content: string;
+  created_at: string;
+  hash_tags: string[];
+  like_count: number;
+  price: string;
+  product_id: number;
+  product_img: string[];
+  title: string;
+  user_id: string;
+};
+
+type NewProductType = {
+  category2_id: number;
+  content: string | null;
+  created_at: string;
+  id: number;
+  price: string;
+  product_img: string[] | null;
+  title: string | null;
+  user_id: string;
+}[];
+
+export const listToBlob = async (info: ProductInfoType) => {
+  const lists = await getImageFileList(info);
+  if (lists !== undefined) {
+    const blobs = await downloadImageFiles(lists, info);
+    return blobs;
+  }
+};
+const downloadImageFiles = async (lists: FileObject[], info: ProductInfoType) => {
+  const promiseBlob = lists.map(async (list) => {
+    const { data, error } = await supabase.storage
+      .from('product-images')
+      .download(`${info.user_id}/${info.product_id}/${info.created_at}/${list.name}`);
+    return data;
+  });
+  const blobs = await Promise.all(promiseBlob);
+  return blobs;
+};
+const getImageFileList = async (info: ProductInfoType) => {
+  const { data, error } = await supabase.storage
+    .from('product-images')
+    .list(`${info.user_id}/${info.product_id}/${info.created_at}`);
+  if (data) {
+    return data;
+  }
+};
+export const updateTableRow = async (preInfo: ProductInfoType, currentInfo: NewProductType) => {
+  const { data, error } = await supabase
+    .from('likes')
+    .update({ post_id: currentInfo[0].id })
+    .eq('post_id', preInfo.product_id);
+  console.log(data);
+  if (error) {
+    console.log(error);
+  }
+};
+export const deleteProduct = async (info: ProductInfoType) => {
+  await supabase.from('products').delete().eq('id', info.product_id);
+};
+
+/**
+ * category 불러오기
+ */
+
+export const getMainCategory = async () => {
+  let { data: categories1, error } = await supabase.from('categories1').select('*');
+  if (error) {
+    console.log('mainCategory', error);
+  }
+  return categories1;
+};
+
+export const getSubCategory = async (id: number) => {
+  let { data: categories2, error } = await supabase.from('categories2').select('name').eq('category1_id', id);
+  if (error) {
+    console.log('subCategory', error);
+  }
+  return categories2;
 };
 
 // realtime 채팅 로직

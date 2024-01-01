@@ -4,6 +4,8 @@ import { getUserSession } from '../API/supabase.api';
 import * as St from '../components/profile/Profile.styled';
 import ProfileProductList from '../components/profile/ProfileProductList';
 import UserInfo from '../components/profile/UserInfo';
+import FollowList from '../components/profile/modal/FollowList';
+import ReviewForm from '../components/profile/modal/ReviewForm';
 
 // type RouterParams = {
 //   params: string
@@ -11,9 +13,11 @@ import UserInfo from '../components/profile/UserInfo';
 
 const Profile = () => {
   const params = useParams();
-  // console.log('휘파람쓰', params);
 
   const [uid, setUid] = useState('');
+  const [followModal, setFollowModal] = useState(false);
+  const [reviewModal, setReviewModal] = useState(false);
+
   const checkUserSession = async () => {
     const userSession = await getUserSession();
     if (userSession !== null && userSession.session && userSession.session.user) {
@@ -27,9 +31,11 @@ const Profile = () => {
   return (
     <>
       <St.ProfileWrapper>
-        <UserInfo uid={uid} params={params.id} />
+        <FollowList uid={uid} params={params.id} followModal={followModal} setFollowModal={setFollowModal} />
+        <ReviewForm reviewModal={reviewModal} setReviewModal={setReviewModal} />
+        <UserInfo uid={uid} params={params.id} setFollowModal={setFollowModal} setReviewModal={setReviewModal} />
         {/* 프로필 아래 목록 표시 컴포넌트 */}
-        <ProfileProductList />
+        <ProfileProductList uid={uid} params={params.id} />
       </St.ProfileWrapper>
     </>
   );

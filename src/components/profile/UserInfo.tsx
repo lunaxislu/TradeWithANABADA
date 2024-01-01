@@ -1,17 +1,20 @@
+// import { ReviewChart } from '../ui/chart/Chart';
 import { ReviewChart } from '../ui/chart/Chart';
 import * as St from './Profile.styled';
 import ProfileInfo from './ProfileInfo';
 
-type UidProps = {
+type Props = {
   uid: string;
   params: string | undefined;
+  setFollowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const UserInfo = ({ uid, params }: UidProps) => {
+const UserInfo = ({ uid, params, setFollowModal, setReviewModal }: Props) => {
   return (
     <St.ProfileReviewWrapper>
       <St.ProfileBox>
-        <ProfileInfo uid={uid} params={params} />
+        <ProfileInfo uid={uid} params={params} setFollowModal={setFollowModal} setReviewModal={setReviewModal} />
         {/* {uid === params ? <UploadProfile uid={uid} params={params} /> : <TargetProfile params={params} />} */}
       </St.ProfileBox>
       <St.ReviewBox>

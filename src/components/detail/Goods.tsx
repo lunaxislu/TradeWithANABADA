@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router';
 import * as St from './Goods.styled';
-import EditSale from './editComponent/EditSale';
+import EditSale from './editSales/EditSale';
 import Sale from './sale/Sale';
 
 const Goods = () => {
   const { state } = useLocation();
-  const [editGoods, setEditGoods] = useState({});
   const [isEdit, setIsEdit] = useState(false);
-
+  console.log(state);
   return (
     <St.Container>
       {isEdit ? (
-        <EditSale setEditGoods={setEditGoods} />
+        <EditSale productInfo={state} setIsEdit={setIsEdit} isEdit={isEdit} />
       ) : (
         <Sale productInfo={state} setIsEdit={setIsEdit} isEdit={isEdit} />
       )}
