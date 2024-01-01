@@ -1,19 +1,21 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { getUserSession, insertProduct } from '../../../API/supabase.api';
+import ImageForm from '../../common/product/imageForm/ImageForm';
+import InputForm from '../../common/product/inputform/InputForm';
 import * as St from './Form.styled';
-import ImageInput from './imageForm/ImageInput';
-import InputForm from './inputForm/InputForm';
+// import ImageInput from './imageForm/ImageInput';
+// import InputForm from './inputForm/InputForm';
 
 /**
  * 코드 리팩토링 필요
  */
 type PropsType = {
-  imgFiles: File[];
+  imgFiles: (File | Blob)[];
 };
 
 const Form = () => {
-  const [imgFiles, setImgFiles] = useState<File[]>([]);
+  const [imgFiles, setImgFiles] = useState<(File | Blob)[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [userId, setUserId] = useState('');
   const navigate = useNavigate();
@@ -45,9 +47,11 @@ const Form = () => {
   return (
     <St.Container>
       <St.Wrapper>
-        <ImageInput imgFiles={imgFiles} setImgFiles={setImgFiles} />
+        <ImageForm imgFiles={imgFiles} setImgFiles={setImgFiles} />
+        {/* <ImageInput imgFiles={imgFiles} setImgFiles={setImgFiles} /> */}
         <St.Form onSubmit={registProduct}>
           <InputForm tags={tags} setTags={setTags} />
+          {/* <InputForm tags={tags} setTags={setTags} /> */}
         </St.Form>
       </St.Wrapper>
     </St.Container>

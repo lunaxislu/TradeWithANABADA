@@ -11,8 +11,10 @@ import { UserMetadata } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
 import { EditSalePropsType } from '../EditSale';
 import * as St from './Form.styled';
-import EditForm from './editForm/EditForm';
-import EditImg from './editImg/EditImg';
+// import EditForm from './editForm/EditForm';
+import ImageForm from '../../../common/product/imageForm/ImageForm';
+import InputForm from '../../../common/product/inputform/InputForm';
+// import EditImg from './editImg/EditImg';
 
 const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
   const [tags, setTags] = useState<string[]>(productInfo.hash_tags);
@@ -54,10 +56,11 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
   return (
     <St.Container>
       <St.Wrapper>
-        <EditImg imgFiles={imgFiles} setImgFiles={setImgFiles} productInfo={productInfo} />
-
+        {/* <EditImg imgFiles={imgFiles} setImgFiles={setImgFiles} productInfo={productInfo} /> */}
+        <ImageForm imgFiles={imgFiles} setImgFiles={setImgFiles} productInfo={productInfo} />
         <St.Form onSubmit={editProduct}>
-          <EditForm tags={tags} setTags={setTags} productInfo={productInfo} />
+          <InputForm tags={tags} setTags={setTags} productInfo={productInfo} />
+          {/* <EditForm tags={tags} setTags={setTags} productInfo={productInfo} /> */}
 
           <St.ButtonGroup>
             <button className="delete-button" type="button" onClick={deleteGoods}>
