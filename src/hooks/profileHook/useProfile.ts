@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteWishList } from '../../API/supabase.api';
+import { deleteWishList, updateOnSaleToSoldOut } from '../../API/supabase.api';
 import { QueryKey } from '../queryHook/useData';
 
 export const useProfile = () => {
@@ -13,5 +13,13 @@ export const useProfile = () => {
     },
   });
 
-  return { remove: deleteWishListMutation.mutate };
+  // 판매 중 => 판매 완료로 상태 변경
+  const updateOnSaleToSoldOutMutation = useMutation({
+    mutationFn: updateOnSaleToSoldOut,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryKey.GET_SALES_LIST] });
+    },
+  });
+
+  return { remove: deleteWishListMutation.mutate, update: updateOnSaleToSoldOutMutation.mutate };
 };
