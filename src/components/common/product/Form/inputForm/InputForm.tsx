@@ -18,7 +18,6 @@ const InputForm = ({ tags, setTags, productInfo }: InputFormPropsType) => {
       <HashTagInput tags={tags} setTags={setTags} />
       <CategoryInput />
       <TextInput productInfo={productInfo} />
-      {/* button하나 들어가야함/ */}
     </St.Container>
   );
 };
