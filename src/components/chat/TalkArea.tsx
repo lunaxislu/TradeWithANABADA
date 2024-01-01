@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTalkContext } from '../../contexts/TalkContext';
 import { ReactComponent as Talk } from '../../styles/assets/talk.svg';
 import TalkChannelList from './TalkChannelList';
@@ -7,15 +8,21 @@ import * as St from './chat.styled';
 
 const TalkArea = () => {
   const { invisible, currentChannel } = useTalkContext();
+  const [talkOpen, isTalkOpen] = useState<boolean>(false);
+
+  const talkToggle = () => {
+    isTalkOpen((prev) => !prev);
+  };
 
   return (
     <section>
-      <figure>
+      <figure onClick={talkToggle}>
         <Talk />
         <span>TALK</span>
       </figure>
       <St.InvisibleMessage>{invisible}</St.InvisibleMessage>
-      <TalkLayout>
+
+      <TalkLayout talkOpen={talkOpen}>
         {
           <>
             <TalkChannelList />

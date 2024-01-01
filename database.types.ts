@@ -56,7 +56,10 @@ export interface Database {
           chat_id: number | null;
           content: string | null;
           created_at: string;
-          id: number;
+          id: string;
+          img_src: string | null;
+          request_answer: boolean | null;
+          type: string;
           visible: boolean;
         };
         Insert: {
@@ -64,7 +67,10 @@ export interface Database {
           chat_id?: number | null;
           content?: string | null;
           created_at?: string;
-          id?: number;
+          id?: string;
+          img_src?: string | null;
+          request_answer?: boolean | null;
+          type?: string;
           visible?: boolean;
         };
         Update: {
@@ -72,7 +78,10 @@ export interface Database {
           chat_id?: number | null;
           content?: string | null;
           created_at?: string;
-          id?: number;
+          id?: string;
+          img_src?: string | null;
+          request_answer?: boolean | null;
+          type?: string;
           visible?: boolean;
         };
         Relationships: [
@@ -420,12 +429,15 @@ export interface Database {
           input_channel_id: number;
         };
         Returns: {
-          message_id: number;
+          message_id: string;
           message_created_at: string;
           current_chat_id: number;
           content: string;
           author_id: string;
           visible: boolean;
+          type: string;
+          request_answer: boolean;
+          img_src: string;
         }[];
       };
       get_latest_products: {
@@ -509,6 +521,7 @@ export interface Database {
           enter_users: string[];
           messages: Json[];
           invisible_count: number;
+          product_status: boolean;
         }[];
       };
       update_visible: {

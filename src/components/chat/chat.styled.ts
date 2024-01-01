@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 
-export const TalkContainer = styled.div`
+export const TalkContainer = styled.div<{ $talkOpen: boolean }>`
   position: absolute;
   top: 0;
   left: 0%;
+  opacity: ${(props) => (props.$talkOpen ? 1 : 0)};
   transform: translate(-100%, -100%);
-  width: 30rem;
-  height: 50rem;
+  width: ${(props) => (props.$talkOpen ? '30rem' : '0')};
+  height: ${(props) => (props.$talkOpen ? '50rem' : '0')};
   background-color: beige;
   border-radius: 10px;
+  transition: 0.5s ease-in-out;
+  overflow: hidden;
 `;
 
 export const TalkListContainer = styled.div<{ $talkChannelOpen: boolean }>`
@@ -91,6 +94,7 @@ export const TalkMessageContainer = styled.section`
 
   & ul {
     margin: 3rem 0;
+    padding: 0 0.5rem;
     height: 35rem;
     overflow-y: scroll;
     background: white;
@@ -126,9 +130,47 @@ export const TalkFormUserInfo = styled.section`
 
 type style = { 'x-position': string; color: string };
 export const TalkMessage = styled.li<{ $subStyle: style }>`
+  position: relative;
+  margin: 0.8rem 0;
+  padding: 1rem;
+  max-width: 60%;
+  border-radius: 10px 10px ${(props) => (props.$subStyle['x-position'] === 'start' ? '10px 0px' : '0px 10px')};
+
+  font-size: 1.3rem;
   align-self: ${(props) => props.$subStyle['x-position']};
 
-  & span {
-    background-color: ${(props) => props.$subStyle.color};
+  line-height: 1.5rem;
+  background-color: ${(props) => props.$subStyle.color};
+  color: ${(props) => (props.$subStyle.color === '#000000' ? '#FFFFFF' : '#000000')};
+  border: 1px solid;
+  border-color: ${(props) => (props.$subStyle.color === '#000000' ? '#FFFFFF' : '#000000')};
+
+  & > span:last-child {
+    left: ${(props) => (props.$subStyle['x-position'] === 'start' ? '0' : 'unset')};
+    right: ${(props) => (props.$subStyle['x-position'] === 'end' ? '0' : 'unset')};
   }
+  & figure {
+    margin-bottom: 0.5rem;
+  }
+`;
+
+export const MessageContext = styled.span`
+  width: 100%;
+  word-break: break-all;
+`;
+export const VisibleChecker = styled.span`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform: translate(-100%, 0);
+  color: #000000;
+`;
+
+export const MessageDate = styled.span`
+  position: absolute;
+  font-size: 1rem;
+  transform: translate(0, 90%);
+  bottom: 0;
+  white-space: nowrap;
+  color: gray;
 `;

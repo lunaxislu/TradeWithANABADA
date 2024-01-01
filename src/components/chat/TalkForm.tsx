@@ -29,19 +29,59 @@ const TalkForm = () => {
   const [otherUserInfo, setOtherUserInfo] = useState<Tables<'users'>>(initialUser);
 
   const messageListRef = useRef<HTMLUListElement>(null);
-
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
-  //  메세지 보내기
+  //  메세지 보내기 (type=message/image)
   const sendMessageHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const message = inputRef.current?.value;
-    if (!message) return;
-    await sendMessage(currentChannel, message, otherUserIn);
+    const imgFile = fileRef.current?.files;
+
+    // 이미지가 없을 때
+    if (imgFile?.length === 0) {
+      // 메시지가 없다 => 입력값이 없다.
+      if (!message) {
+        alert('메시지를 입력하세요.');
+        return;
+      }
+      // 메시지 형식 : type message
+      await sendMessage({
+        currentChannel,
+        message,
+        otherUserIn,
+        image: null,
+        type: 'message',
+      });
+      inputRef.current.value = '';
+      return;
+    }
+    // 이미지가 있을 때 : type image
+    else {
+      await sendMessage({
+        currentChannel,
+        message: message ? message : null,
+        otherUserIn,
+        image: imgFile![0],
+        type: 'image',
+      });
+    }
+  };
+
+  //  메세지 보내기 (type=request)
+  const sendRequestMessageHandler = async () => {
+    await sendMessage({
+      currentChannel,
+      message: null,
+      otherUserIn,
+      image: null,
+      type: 'request',
+    });
   };
 
   useEffect(() => {
     scrollMessageSection();
+    console.log(talkMessages);
   }, [talkMessages]);
 
   const updateVisibleInfo = async () => {
@@ -129,17 +169,21 @@ const TalkForm = () => {
         {talkMessages?.map((talk) => {
           if (talk.author_id === otherUserInfo.id) {
             return (
-              <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'start', color: '#f8c291' }} />
+              <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'start', color: '#FFFFFF' }} />
             );
           } else {
-            return <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'end', color: '#82ccdd' }} />;
+            return <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'end', color: '#000000' }} />;
           }
         })}
       </ul>
 
       <form onSubmit={sendMessageHandler}>
+        <button type="button" onClick={sendRequestMessageHandler}>
+          물품교환 신청하기
+        </button>
         <input ref={inputRef} placeholder="채팅 입력" />
-        <button>입력</button>
+        <button type="submit">입력</button>
+        <input type="file" ref={fileRef} />
       </form>
     </St.TalkMessageContainer>
   );
