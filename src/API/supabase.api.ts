@@ -117,6 +117,7 @@ export const signInWithProvider = async (provider: 'google' | 'kakao') => {
   });
 
   if (error) throw error;
+  return data;
 };
 /**
  * 로그아웃
@@ -205,6 +206,7 @@ export const insertProduct = async (info: ParamForRegist) => {
         content: info.content,
         price: info.price,
         user_id: info.user_id,
+        status: false,
       },
     ])
     .select();
@@ -273,6 +275,7 @@ const insertImageStorage = async (id: number, files: (File | Blob)[], date: stri
     .from('products')
     .update({
       product_img: urls,
+      status: false,
     })
     .eq('id', id) // product_id를 찾는 eq입니다.
     .select();
