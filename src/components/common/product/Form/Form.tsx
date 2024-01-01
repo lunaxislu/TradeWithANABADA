@@ -1,4 +1,6 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { UserMetadata } from '@supabase/supabase-js';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   deleteImageFromStorage,
   deleteProduct,
@@ -6,18 +8,28 @@ import {
   insertProduct,
   updateTableRow,
 } from '../../../../API/supabase.api';
-
-import { UserMetadata } from '@supabase/supabase-js';
-import { useNavigate } from 'react-router-dom';
-import { EditSalePropsType } from '../EditSale';
 import * as St from './Form.styled';
-// import EditForm from './editForm/EditForm';
-import ImageForm from '../../../common/product/Form/imageForm/ImageForm';
-import InputForm from '../../../common/product/Form/inputForm/InputForm';
-// import EditImg from './editImg/EditImg';
-
-const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
-  const [tags, setTags] = useState<string[]>(productInfo.hash_tags);
+import ImageForm from './imageForm/ImageForm';
+import InputForm from './inputForm/InputForm';
+type PropsOfEditProductType = {
+  productInfo?: CommonProductInfoType | undefined;
+  isEdit?: boolean | undefined;
+  setIsEdit?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+};
+export type CommonProductInfoType = {
+  content: string;
+  created_at: string;
+  hash_tags: string[];
+  like_count: number;
+  price: string;
+  product_id: number;
+  product_img: string[];
+  title: string;
+  user_id: string;
+  category2_id: number;
+};
+const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
+  const [tags, setTags] = useState<string[]>(productInfo ? productInfo.hash_tags : []);
   const [userData, setUserData] = useState<UserMetadata>({});
   const [imgFiles, setImgFiles] = useState<(Blob | File)[]>([]);
   const navigate = useNavigate();
@@ -32,19 +44,25 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
       imgFiles,
       category2_id: parseInt(e.currentTarget['category_2'].value),
     };
+
     const result = await insertProduct(product);
-    await updateTableRow(productInfo, result);
-    await deleteImageFromStorage(productInfo);
-    await deleteProduct(productInfo);
+    if (productInfo) {
+      await updateTableRow(productInfo, result);
+      await deleteImageFromStorage(productInfo);
+      await deleteProduct(productInfo);
+      if (setIsEdit) {
+        setIsEdit(false);
+      }
+    }
+
     navigate(`/`);
-    setIsEdit(false);
   };
 
-  const deleteGoods = async () => {
-    await deleteImageFromStorage(productInfo);
-    await deleteProduct(productInfo);
-    navigate('/');
-  };
+  //   const deleteGoods = async () => {
+  //     await deleteImageFromStorage(productInfo);
+  //     await deleteProduct(productInfo);
+  //     navigate('/');
+  //   };
   // 사용자의 고유 아이디 uid를 가져옵니다.
   useEffect(() => {
     getUserSession().then(async (userSession) => {
@@ -63,9 +81,9 @@ const Form = ({ productInfo, isEdit, setIsEdit }: EditSalePropsType) => {
           {/* <EditForm tags={tags} setTags={setTags} productInfo={productInfo} /> */}
 
           <St.ButtonGroup>
-            <button className="delete-button" type="button" onClick={deleteGoods}>
+            {/* <button className="delete-button" type="button" onClick={deleteGoods}>
               삭제하기
-            </button>
+            </button> */}
             <button className="edit-button">수정완료</button>
           </St.ButtonGroup>
         </St.Form>
