@@ -46,13 +46,15 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
     <St.Container>
       <div className="product-info">
         <ImgCard imgUrl={productInfo.product_img} />
-        <ProductInfo userData={userData} productInfo={productInfo} />
+        <ProductInfo userData={userData} productInfo={productInfo} isEdit={isEdit} />
       </div>
 
       <St.TextContainer className="product-text">
-        <h2 className="title">상품 설명</h2>{' '}
-        <ButtonForm userData={userData} productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} />
-        <St.TextWrapper>{productInfo.content}</St.TextWrapper>
+        <h2 className="title">상품 설명</h2>
+        <St.TextWrapper>
+          {productInfo.content}
+          <ButtonForm userData={userData} productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} />
+        </St.TextWrapper>
       </St.TextContainer>
     </St.Container>
   );

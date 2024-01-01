@@ -25,7 +25,9 @@ export const TextContainer = styled.div`
   padding: 2.6rem 2.8rem;
   border: 2px solid #666;
   border-radius: 1.2rem;
-
+  .like-talk {
+    display: none;
+  }
   .title {
     margin-top: 1rem;
     color: #333;

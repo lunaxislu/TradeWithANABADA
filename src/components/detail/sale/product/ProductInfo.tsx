@@ -10,6 +10,7 @@ import * as St from './ProductInfo.styled';
 type PropsType = {
   userData: UserMetadata;
   productInfo: ProductInfoType;
+  isEdit: boolean;
 };
 
 type UserStateType = {
@@ -17,7 +18,7 @@ type UserStateType = {
   point: number | null;
   avatar_img: string | null;
 };
-const ProductInfo = ({ userData, productInfo }: PropsType) => {
+const ProductInfo = ({ userData, productInfo, isEdit }: PropsType) => {
   const [userState, setUserState] = useState<null | UserStateType>(null);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const ProductInfo = ({ userData, productInfo }: PropsType) => {
     });
     return () => {};
   }, []);
-  console.log(userState);
+
   return (
     <St.Container>
       {/* 상품 제목과 상품의 가치를 등록한 유저가 측정내용입니다.  */}
@@ -71,7 +72,7 @@ const ProductInfo = ({ userData, productInfo }: PropsType) => {
         </div>
       </St.HashTag>
 
-      <ButtonForm userData={userData} productInfo={productInfo} />
+      <ButtonForm userData={userData} productInfo={productInfo} isEdit={isEdit} />
     </St.Container>
   );
 };
