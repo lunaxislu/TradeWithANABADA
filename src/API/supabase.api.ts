@@ -7,7 +7,6 @@ const supabaseUrl = process.env.REACT_APP_SUPABASE_URL as string;
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY as string;
 export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
-// TODO: 나중에 따로 분리
 type users = Record<string, string>;
 
 /**
@@ -26,8 +25,19 @@ export const getReviews = async (userId: string) => {
  * @param userId 유저 아이디
  * @returns 찜 목록
  */
-export const getZzimList = async (userId: string) => {
+export const getWishList = async (userId: string) => {
   const { data, error } = await supabase.rpc('get_likes_products', { input_user_id: userId });
+  if (error) throw error;
+  return data;
+};
+
+/**
+ * 찜 목록 삭제하기
+ * @param userId 유저 아이디
+ * @returns 찜 목록
+ */
+export const deleteWishList = async (productId: number) => {
+  const { data, error } = await supabase.from('likes').delete().eq('post_id', productId);
   if (error) throw error;
   return data;
 };
