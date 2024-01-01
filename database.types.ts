@@ -524,10 +524,10 @@ export interface Database {
           product_img: string[];
           user_id: string;
           like_count: number;
-          hash_tag: string[];
+          hash_tags: string[];
           category1_name: string;
           category2_name: string;
-        };
+        }[];
       };
     };
     Enums: {
