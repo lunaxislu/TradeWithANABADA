@@ -1,17 +1,21 @@
 import { useState } from 'react';
+import { Tables } from '../../../../database.types';
+import { filteredReview, review } from '../../../API/supabase.api';
 import * as St from './modal.styled';
 
 type Props = {
+  params: string | undefined;
   reviewModal: boolean;
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ReviewForm = ({ reviewModal, setReviewModal }: Props) => {
+const ReviewForm = ({ params, reviewModal, setReviewModal }: Props) => {
   const [input1, setInput1] = useState(0);
   const [input2, setInput2] = useState(0);
   const [input3, setInput3] = useState(0);
   const [input4, setInput4] = useState(0);
   const [input5, setInput5] = useState(0);
+  const [data, setData] = useState<Tables<'review'>[] | null>();
 
   const reviewArr = [
     '거래가 수월해요',
@@ -21,7 +25,19 @@ const ReviewForm = ({ reviewModal, setReviewModal }: Props) => {
     '약속을 잘 지켜요',
   ];
 
-  const onSubmitReviewHandler = () => {};
+  const onSubmitReviewHandler = async () => {
+    const filteredData = await filteredReview(params as string);
+    setData(filteredData);
+    if (data) {
+      const a = data[0].res_fast;
+      const b = data[0].kind;
+      const c = data[0].good_product;
+      const d = data[0].same_product;
+      const e = data[0].good_time;
+      await review(params!, a! + input1, b! + input2, c! + input3, d! + input4, e! + input5);
+    }
+  };
+
   return (
     <St.ReviewContainer className={reviewModal ? 'isOpen' : ''} onClick={() => setReviewModal(false)}>
       <St.ExitBtn $top="20%">X</St.ExitBtn>

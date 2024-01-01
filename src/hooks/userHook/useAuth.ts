@@ -28,11 +28,13 @@ export const useAuth = () => {
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.SIGNUP] });
       const token = await getUserData();
+      console.log(token);
       const info = {
         id: token?.id,
         email: token?.email,
         created_at: new Date().toISOString(),
         full_name: token?.user_metadata.full_name,
+        avatar_img: token?.user_metadata.avatar_img,
       };
       await saveUser(info as Users);
       navigate('/auth/login');

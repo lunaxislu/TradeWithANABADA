@@ -2,6 +2,7 @@ import { FileObject } from '@supabase/storage-js';
 import { createClient } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import { Database } from '../../database.types';
+import user from '../styles/assets/user.svg';
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL as string;
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY as string;
@@ -77,8 +78,7 @@ export const signupHandler = async (values: users) => {
       options: {
         data: {
           full_name: name,
-          avatar_img:
-            'https://vianpfkkmxarfiifomax.supabase.co/storage/v1/object/public/profile-images/default-avatar-img/user.svg',
+          avatar_img: user,
         },
       },
     });
@@ -109,10 +109,10 @@ export const loginHandler = async (values: users) => {
  * @returns data
  */
 export const saveUser = async (values: users) => {
-  const { email, id, created_at, full_name } = values;
+  const { email, id, created_at, full_name, avatar_img } = values;
   const { data, error } = await supabase
     .from('users')
-    .insert([{ email, id, created_at, nickname: full_name }])
+    .insert([{ email, id, created_at, nickname: full_name, avatar_img }])
     .select();
   if (error) throw error;
   return data;
@@ -467,21 +467,18 @@ export const mypageUnfollow = async (targetuser: string) => {
   const { error } = await supabase.from('follow').delete().eq('to_user_id', targetuser);
   return error;
 };
+
+// 유저의 리뷰 row 가져오기
+export const filteredReview = async (uid: string) => {
+  const { data, error } = await supabase.from('review').select('*').eq('user_id', uid);
+  return data;
+};
 // 리뷰등록
-export const review = async (
-  uid: string,
-  input1: number,
-  input2: number,
-  input3: number,
-  input4: number,
-  input5: number,
-) => {
+export const review = async (params: string, i1: number, i2: number, i3: number, i4: number, i5: number) => {
   const { data, error } = await supabase
     .from('review')
-    .insert([
-      { user_id: uid, res_fast: input1, kind: input2, good_product: input3, same_product: input4, good_time: input5 },
-    ])
-    .select();
+    .update({ res_fast: i1, kind: i2, good_product: i3, same_product: i4, good_time: i5 })
+    .eq('user_id', params);
   if (error) throw error;
   return { data };
 };
