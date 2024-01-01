@@ -10,6 +10,7 @@ const Goods = () => {
 
   return (
     <St.Container>
+      <St.Category>{state.category1_name + ` > ` + state.category2_name}</St.Category>
       {isEdit ? (
         <EditSale productInfo={state} setIsEdit={setIsEdit} isEdit={isEdit} />
       ) : (

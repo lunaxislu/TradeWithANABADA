@@ -29,7 +29,7 @@ const ProductInfo = ({ userData, productInfo, isEdit }: PropsType) => {
     });
     return () => {};
   }, []);
-
+  console.log(productInfo);
   return (
     <St.Container>
       {/* 상품 제목과 상품의 가치를 등록한 유저가 측정내용입니다.  */}

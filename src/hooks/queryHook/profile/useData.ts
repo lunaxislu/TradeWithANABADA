@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getSalesList, getUserSession, getWishList } from '../../API/supabase.api';
+import { getSalesList, getUserSession, getWishList } from '../../../API/supabase.api';
 
 export enum QueryKey {
   GET_WISH_LIST = 'getWishList',

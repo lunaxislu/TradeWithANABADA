@@ -6,6 +6,7 @@ import {
   deleteProduct,
   getUserSession,
   insertProduct,
+  supabase,
   updateTableRow,
 } from '../../../../API/supabase.api';
 import * as St from './Form.styled';
@@ -46,6 +47,8 @@ const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
       category2_id: parseInt(e.currentTarget['category_2'].value),
     };
     const result = await insertProduct(product);
+    const getProductFromDB = await supabase.rpc('get_product', { input_post_id: result[0].id });
+
     if (productInfo) {
       await updateTableRow(productInfo, result);
       await deleteImageFromStorage(productInfo);
@@ -54,8 +57,7 @@ const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
         setIsEdit(false);
       }
     }
-
-    navigate(`/`);
+    navigate(`/detail/${getProductFromDB.data?.[0].product_id}`, { state: getProductFromDB.data?.[0] });
   };
 
   // 사용자의 고유 아이디 uid를 가져옵니다.

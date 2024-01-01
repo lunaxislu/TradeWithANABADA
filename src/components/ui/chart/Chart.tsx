@@ -2,7 +2,7 @@ import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Tables } from '../../../../database.types';
-import { getReviews, getUserData } from '../../../API/supabase.api';
+import { getReviews } from '../../../API/supabase.api';
 import * as St from './Chart.styled';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -16,8 +16,13 @@ const DEFAULT_LABELS = [
 ];
 const DEFAULT_DATAS = [0, 0, 0, 0, 0];
 
-export const ReviewChart = () => {
+type Props = {
+  params: string | undefined;
+};
+
+export const ReviewChart = ({ params }: Props) => {
   const [reviews, setReviews] = useState<Tables<'review'>[]>([]);
+  // console.log(reviews);
   const reviewData = reviews
     ? reviews.map((review) => {
         const data: Record<string, number | undefined> = {};
@@ -29,14 +34,16 @@ export const ReviewChart = () => {
         return data;
       })
     : [];
+  const fetchReviews = async () => {
+    // const session = await getUserData();
+    // console.log(session, session!.id);
+    // if (!session) return alert('로그인이 필요합니다.');
+    const review = await getReviews(params as string);
+    console.log(review.data[0]);
+    setReviews(review.data);
+  };
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      const session = await getUserData();
-      if (!session) return alert('로그인이 필요합니다.');
-      const review = await getReviews(session.id);
-      setReviews(review);
-    };
     fetchReviews();
   }, []);
 

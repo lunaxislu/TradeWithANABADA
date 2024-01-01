@@ -27,11 +27,15 @@ export const FollowWrapper = styled.div`
   text-align: center;
   overflow-y: auto;
 `;
+// export const FollowListWrapper = styled.div`
+//   position: relative;
+// `;
+
 type ExitBtnProps = {
   $top: string;
 };
 export const ExitBtn = styled.button<ExitBtnProps>`
-  position: fixed;
+  position: absolute;
   text-align: center;
   top: ${(props) => props.$top || '20%'};
   border-radius: 20%;
@@ -52,10 +56,10 @@ export const FollowList = styled.li`
   border-bottom: 0.1rem solid #dcdcdc;
   cursor: pointer;
   & img {
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     border-radius: 50%;
-    border: 0.1rem solid black;
+    border: 0.2rem solid #dcdcdc;
   }
   & div {
     display: flex;
@@ -94,23 +98,43 @@ export const ReviewContainer = styled.div`
 
 export const ReviewWrapper = styled.div`
   background-color: #fff;
-  padding: 20px;
+  padding: 3rem 1rem;
   border-radius: 8px;
-  width: 30rem;
-  height: 50rem;
+  width: 70rem;
+  height: 25rem;
   text-align: center;
+  & div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
-export const ReviewBtn = styled.li`
+export const ReviewLabel = styled.div`
   background-color: #dcdcdc;
-  padding: 1.5rem;
+  border-radius: 1rem;
+  width: 12rem;
+  height: 12rem;
   margin: 1rem;
   font-size: 1.3rem;
+  cursor: pointer;
+  & input {
+    display: none;
+  }
+  &.isActive {
+    background-color: #ababab;
+  }
+  & label {
+    margin: 0 auto;
+    cursor: pointer;
+  }
 `;
 
 export const SubmitBtn = styled.button`
   background-color: #dcdcdc;
+  border-radius: 1rem;
   padding: 1.5rem;
   margin: 1rem;
   font-size: 1.3rem;
+  cursor: pointer;
 `;

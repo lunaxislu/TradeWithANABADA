@@ -19,7 +19,7 @@ const UserInfo = ({ uid, params, setFollowModal, setReviewModal }: Props) => {
       </St.ProfileBox>
       <St.ReviewBox>
         <p>거래한 고객분이 리뷰를 달아주셨어요 👍</p>
-        <ReviewChart />
+        <ReviewChart params={params} />
       </St.ReviewBox>
     </St.ProfileReviewWrapper>
   );
