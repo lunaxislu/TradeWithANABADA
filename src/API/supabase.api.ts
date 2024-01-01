@@ -54,6 +54,17 @@ export const getSalesList = async (userId: string) => {
 };
 
 /**
+ * 판매 중 => 판매 완료로 상태 변경
+ * @param productId 상품 아이디
+ */
+export const updateOnSaleToSoldOut = async (productId: number) => {
+  console.log('productId: ', productId);
+  const { data, error } = await supabase.from('products').update({ status: true }).eq('id', productId);
+  if (error) throw error;
+  return data;
+};
+
+/**
  * 회원가입
  * @param values 이메일, 비밀번호, 닉네임
  */
@@ -117,6 +128,7 @@ export const signInWithProvider = async (provider: 'google' | 'kakao') => {
   });
 
   if (error) throw error;
+  return data;
 };
 /**
  * 로그아웃
@@ -205,6 +217,7 @@ export const insertProduct = async (info: ParamForRegist) => {
         content: info.content,
         price: info.price,
         user_id: info.user_id,
+        status: false,
       },
     ])
     .select();
@@ -273,6 +286,7 @@ const insertImageStorage = async (id: number, files: (File | Blob)[], date: stri
     .from('products')
     .update({
       product_img: urls,
+      status: false,
     })
     .eq('id', id) // product_id를 찾는 eq입니다.
     .select();
