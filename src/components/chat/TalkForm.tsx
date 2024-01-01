@@ -75,7 +75,7 @@ const TalkForm = () => {
       message: null,
       otherUserIn,
       image: null,
-      type: 'message',
+      type: 'request',
     });
   };
 
@@ -169,17 +169,20 @@ const TalkForm = () => {
         {talkMessages?.map((talk) => {
           if (talk.author_id === otherUserInfo.id) {
             return (
-              <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'start', color: '#82ccdd' }} />
+              <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'start', color: '#FFFFFF' }} />
             );
           } else {
-            return <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'end', color: '#ca4d8c' }} />;
+            return <TalkMessage key={talk.message_id} chat={talk} $style={{ 'x-position': 'end', color: '#000000' }} />;
           }
         })}
       </ul>
 
       <form onSubmit={sendMessageHandler}>
+        <button type="button" onClick={sendRequestMessageHandler}>
+          물품교환 신청하기
+        </button>
         <input ref={inputRef} placeholder="채팅 입력" />
-        <button>입력</button>
+        <button type="submit">입력</button>
         <input type="file" ref={fileRef} />
       </form>
     </St.TalkMessageContainer>

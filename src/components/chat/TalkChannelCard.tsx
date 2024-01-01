@@ -68,6 +68,8 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
     getOtherUserInfo();
   }, []);
 
+  console.log(channel.messages);
+
   return (
     <St.TalkChannelCardItem
       key={channel.chat_id}
