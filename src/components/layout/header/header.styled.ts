@@ -28,6 +28,13 @@ export const Header = styled.header`
 
     cursor: pointer;
   }
+
+  & > section + section {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    padding: 1rem;
+  }
 `;
 
 export const HeaderSearchCategoryArea = styled.div`

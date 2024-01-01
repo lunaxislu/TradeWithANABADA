@@ -6,6 +6,7 @@ import {
   logoutHandler,
   saveUser,
   signupHandler,
+  supabase,
   updatePasswordHandler,
 } from '../../API/supabase.api';
 import { Users } from '../../components/user/Form';
@@ -49,8 +50,11 @@ export const useAuth = () => {
 
   // 로그아웃
   const logoutMutation = useMutation({
-    mutationFn: logoutHandler,
-    onSuccess: () => {
+    mutationFn: async () => {
+      await supabase.removeAllChannels();
+      logoutHandler();
+    },
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.LOGOUT] });
       navigate('/');
     },
