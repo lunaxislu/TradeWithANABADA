@@ -1,19 +1,24 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useProfile } from '../../hooks/profileHook/useProfile';
 import { useData } from '../../hooks/queryHook/useData';
-import { displayCreateAt } from '../../utils/date';
 import { ProductData } from '../home/HomeProductList';
-import { Button } from '../ui/Button';
 import * as St from './Profile.styled';
+import ListItem from './product/\bListItem';
+import ListButton from './product/ListButton';
 
 type Props = {
   uid: string;
   params: string | undefined;
 };
 
+const buttonData = [
+  { label: '찜 목록', state: 'wish' },
+  { label: '판매 중인 상품', state: 'onSale' },
+  { label: '판매 완료 상품', state: 'soldOut' },
+];
+
 export type ProductDataExtends = ProductData & { status: boolean };
 export type ProductStatus = 'wish' | 'onSale' | 'soldOut';
+
 const ProfileProductList = ({ uid, params }: Props) => {
   const [list, setList] = useState<ProductStatus>('wish');
   const { wishList, wishListLoading, salesList, salesListLoading } = useData();
@@ -37,16 +42,17 @@ const ProfileProductList = ({ uid, params }: Props) => {
   return (
     <St.ProductListSection>
       <St.ListTitle>
+        {/* 본인 로그인 시 */}
         {uid === params ? (
-          <>
-            {' '}
-            <St.ListBtn className={list ? 'active' : ''} onClick={() => setList(true)}>
-              찜 목록
-            </St.ListBtn>
-            <St.ListBtn className={list ? '' : 'active'} onClick={() => setList(false)}>
-              판매 목록
-            </St.ListBtn>
-          </>
+          buttonData.map((button) => (
+            <ListButton
+              key={button.state}
+              label={button.label}
+              state={button.state as ProductStatus}
+              currentList={list}
+              onClick={setList}
+            />
+          ))
         ) : (
           <St.ListBtn>판매 목록</St.ListBtn>
         )}
