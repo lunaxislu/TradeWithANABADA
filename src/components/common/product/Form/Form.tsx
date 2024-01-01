@@ -9,6 +9,7 @@ import {
   updateTableRow,
 } from '../../../../API/supabase.api';
 import * as St from './Form.styled';
+import ButtonForm from './buttonForm/ButtonForm';
 import ImageForm from './imageForm/ImageForm';
 import InputForm from './inputForm/InputForm';
 type PropsOfEditProductType = {
@@ -71,21 +72,30 @@ const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (setIsEdit) setIsEdit(false);
+    };
+  }, []);
+
   return (
     <St.Container>
       <St.Wrapper>
         {/* <EditImg imgFiles={imgFiles} setImgFiles={setImgFiles} productInfo={productInfo} /> */}
         <ImageForm imgFiles={imgFiles} setImgFiles={setImgFiles} productInfo={productInfo} />
+
         <St.Form onSubmit={editProduct}>
           <InputForm tags={tags} setTags={setTags} productInfo={productInfo} />
           {/* <EditForm tags={tags} setTags={setTags} productInfo={productInfo} /> */}
 
-          <St.ButtonGroup>
-            {/* <button className="delete-button" type="button" onClick={deleteGoods}>
+          {/* <St.ButtonGroup>
+            <button className="delete-button" type="button" onClick={deleteGoods}>
               삭제하기
-            </button> */}
+            </button>
             <button className="edit-button">수정완료</button>
-          </St.ButtonGroup>
+          </St.ButtonGroup> */}
+          <ButtonForm userData={userData} productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} />
         </St.Form>
       </St.Wrapper>
     </St.Container>
