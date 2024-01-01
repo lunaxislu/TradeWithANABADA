@@ -264,6 +264,7 @@ export interface Database {
           product_img: string[] | null;
           title: string | null;
           user_id: string;
+          status: boolean;
         };
         Insert: {
           category2_id?: number;
@@ -274,6 +275,7 @@ export interface Database {
           product_img?: string[] | null;
           title?: string | null;
           user_id: string;
+          status: boolean;
         };
         Update: {
           category2_id?: number;
@@ -284,6 +286,7 @@ export interface Database {
           product_img?: string[] | null;
           title?: string | null;
           user_id?: string;
+          status: boolean;
         };
         Relationships: [
           {
@@ -488,6 +491,7 @@ export interface Database {
           hash_tags: string[];
           category1_name: string;
           category2_name: string;
+          status: boolean;
         }[];
       };
       get_user_channel: {

@@ -186,7 +186,7 @@ export const ListBtn = styled.div`
 `;
 
 export const ListWrapper = styled.div`
-  height: 80rem;
+  height: 70rem;
   overflow: scroll;
   margin-top: 2rem;
 
