@@ -5,10 +5,14 @@ import { useAuth } from '../../../hooks/userHook/useAuth';
 import { Button } from '../../ui/Button';
 import * as St from './header.styled';
 
-const HeaderBtnArea = () => {
+type HeaderBtnAreaProps = {
+  isLogin: boolean;
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const HeaderBtnArea = ({ isLogin, setIsLogin }: HeaderBtnAreaProps) => {
   const navigate = useNavigate();
 
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  // const [isLogin, setIsLogin] = useState<boolean>(false);
   const [uid, setUid] = useState('');
 
   const { logout } = useAuth();
@@ -26,9 +30,14 @@ const HeaderBtnArea = () => {
     }
   };
 
+  const logoutHandler = async () => {
+    logout();
+    setIsLogin(false);
+  };
+
   useEffect(() => {
     checkUserSession();
-  }, []);
+  }, [isLogin]);
 
   const headerButton = [
     {
@@ -46,16 +55,9 @@ const HeaderBtnArea = () => {
       },
     },
     {
-      text: 'Talk',
-      isLogin: true,
-      clickHandler: () => {
-        headerNavigateHandler('');
-      },
-    },
-    {
       text: '로그아웃',
       isLogin: true,
-      clickHandler: logout,
+      clickHandler: logoutHandler,
     },
     {
       text: '로그인',

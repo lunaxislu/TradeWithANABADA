@@ -414,6 +414,36 @@ export const getUsersNickname = async (uid: string) => {
   if (error) throw error;
   return data;
 };
+
+// 팔로우 추가하기
+export const follow = async (id: string, uid: string, params: string, nickname: string) => {
+  const { data, error } = await supabase
+    .from('follow')
+    .insert([{ follow_id: id, from_user_id: uid, to_user_id: params, to_user_nickname: nickname }]);
+  return { data, error };
+};
+
+// 팔로우 목록 가져오기
+export const getFollowList = async (params: string) => {
+  const { data, error } = await supabase.from('follow').select('*').eq('from_user_id', params);
+  return data;
+};
+// 팔로우 목록 확인하기(followId로)
+export const checkFollowId = async (followId: string) => {
+  const { data, error } = await supabase.from('follow').select('follow_id').eq('follow_id', followId);
+  return { data, error };
+};
+// 팔로우 취소하기
+export const unfollow = async (followId: string) => {
+  const { error } = await supabase.from('follow').delete().eq('follow_id', followId);
+  return error;
+};
+// 팔로우 취소하기(마이페이지)
+export const mypageUnfollow = async (targetuser: string) => {
+  const { error } = await supabase.from('follow').delete().eq('to_user_id', targetuser);
+  return error;
+};
+
 /**
  * product를 등록한 user의 point& nickname & avatar_img 가져오는 함수입니다.
  * @param [{}] 형태로 가져옵니다.
@@ -527,4 +557,68 @@ export const getSubCategory = async (id: number) => {
     console.log('subCategory', error);
   }
   return categories2;
+};
+
+// realtime 채팅 로직
+export type ChatMessage = {
+  current_chat_id: number;
+  message_id: number;
+  message_created_at: string;
+  content: string;
+  author_id: string;
+  visible: boolean;
+};
+
+export type ChannelInfo = {
+  chat_id: number;
+  chat_created_at: string;
+  user1_id: string;
+  user2_id: string;
+  messages: Omit<ChatMessage, 'current_chat_id' | 'visible'>[];
+  invisible_count: number;
+  enter_user: string[];
+};
+
+// 현재 유저 정보에 따른 채팅방 가져오기
+export const getCurrentUserChatChannel = async (userId: string): Promise<ChannelInfo[] | []> => {
+  if (!userId) return [];
+  const { data, error } = await supabase
+    .rpc('get_user_channel', {
+      input_user_id: userId,
+    })
+    .returns<ChannelInfo[]>();
+
+  if (error) throw error;
+  return data;
+};
+
+// 선택한 채팅방 내역 가져오기
+export const getSelectChatMessages = async (channel: number): Promise<ChatMessage[] | []> => {
+  const { data, error } = await supabase.rpc('get_channel_messages', { input_channel_id: channel });
+
+  if (error) throw error;
+  return data;
+};
+
+export const updateVisibleTrue = async (user_id: string, chat_id: number): Promise<void> => {
+  await supabase.rpc('update_visible', { input_user_id: user_id, input_chat_id: chat_id });
+};
+
+export const getUserInfo = async (uid: string) => {
+  const { data } = await supabase.from('users').select('*').eq('id', uid);
+  if (data) {
+    return data;
+  }
+};
+
+export const sendMessage = async (currentChannel: number, message: string, otherUserIn: boolean) => {
+  const currentUser = await getUserSession();
+  await supabase.from('chat_messages').insert([
+    {
+      chat_id: currentChannel,
+      content: message,
+      author_id: currentUser.session?.user.id,
+      visible: otherUserIn,
+    },
+  ]);
 };

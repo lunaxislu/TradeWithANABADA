@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { getUserSession, supabase } from '../../API/supabase.api';
+import { getCurrentUserChatChannel, getSelectChatMessages, getUserSession, supabase } from '../../API/supabase.api';
 
 type ChatMessage = {
   current_chat_id: number;
@@ -19,7 +19,7 @@ type ChannelInfo = {
 
 const ChatContainer = () => {
   const [currentChannel, setCurrentChannel] = useState<number>(0);
-  const [channels, setChannels] = useState<ChannelInfo[]>();
+  const [channels, setChannels] = useState<ChannelInfo[] | []>([]);
   const [chatData, setChatData] = useState<ChatMessage[]>([]);
 
   const channel = supabase.channel(`${currentChannel}`, {
@@ -27,44 +27,6 @@ const ChatContainer = () => {
       broadcast: { self: true },
     },
   });
-
-  // user에 따른 채팅방 전체 정보 가져오기
-  const fetchData = async (userId: string) => {
-    try {
-      const { data, error } = await supabase.rpc('get_user_channel', {
-        input_user_id: userId,
-      });
-      const processedData: ChannelInfo[] = data!.map((item: any) => ({
-        chat_id: item.chat_id,
-        chat_created_at: item.chat_created_at,
-        user1_id: item.user1_id,
-        user2_id: item.user2_id,
-        messages: item.messages,
-      }));
-      setChannels(processedData);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  // 선택한 채팅방 내역 가져오기
-  const getChatMessages = async (channel: number) => {
-    try {
-      const { data, error } = await supabase.rpc('get_channel_messages', { input_channel_id: channel });
-
-      const processedData: ChatMessage[] = data!.map((item: any) => ({
-        current_chat_id: item.current_chat_id,
-        message_id: item.message_id,
-        message_created_at: item.message_created_at,
-        content: item.content,
-        author_id: item.author_id,
-      }));
-      console.log(data);
-      setChatData(processedData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const sendMessageHandler = async () => {
     const currentUser = await getUserSession();
@@ -83,7 +45,13 @@ const ChatContainer = () => {
   const getCurrectChannel = async () => {
     // 전체 채널 가져오기
     const currentUser = await getUserSession();
-    const data = await fetchData(currentUser.session?.user.id!);
+    const data = await getCurrentUserChatChannel(currentUser.session?.user.id!);
+    setChannels(data);
+  };
+
+  const getSelectAllMessage = async () => {
+    const messageData = await getSelectChatMessages(currentChannel);
+    setChatData(messageData);
   };
 
   const activeChannel = channel
@@ -93,8 +61,10 @@ const ChatContainer = () => {
         event: 'INSERT',
         schema: 'public',
         table: 'chat_messages',
+        filter: `chat_id=eq.${currentChannel}`,
       },
       (payload) => {
+        console.log(payload);
         const newData = {
           current_chat_id: payload.new.chat_id,
           message_id: payload.new.id,
@@ -111,7 +81,7 @@ const ChatContainer = () => {
   useEffect(() => {
     // 채널 정보 가져오기
     if (currentChannel) {
-      getChatMessages(currentChannel);
+      getSelectAllMessage();
     }
   }, [currentChannel]);
 
@@ -119,10 +89,6 @@ const ChatContainer = () => {
     // 전체 채널 가져오기
     getCurrectChannel();
   }, []);
-
-  useEffect(() => {
-    console.log(channels);
-  }, [channels]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   return (

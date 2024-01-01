@@ -159,18 +159,24 @@ export interface Database {
           from_user_id: string;
           id: number;
           to_user_id: string;
+          to_user_nickname: string;
+          follow_id: string;
         };
         Insert: {
           created_at?: string;
           from_user_id: string;
           id?: number;
           to_user_id: string;
+          to_user_nickname: string;
+          follow_id: string;
         };
         Update: {
           created_at?: string;
           from_user_id?: string;
           id?: number;
           to_user_id?: string;
+          to_user_nickname?: string;
+          follow_id: string;
         };
         Relationships: [
           {
@@ -493,6 +499,7 @@ export interface Database {
           chat_created_at: string;
           user1_id: string;
           user2_id: string;
+          enter_users: string[];
           messages: Json[];
           invisible_count: number;
         }[];
