@@ -56,7 +56,10 @@ export interface Database {
           chat_id: number | null;
           content: string | null;
           created_at: string;
-          id: number;
+          id: string;
+          img_src: string | null;
+          request_answer: boolean | null;
+          type: string;
           visible: boolean;
         };
         Insert: {
@@ -64,7 +67,10 @@ export interface Database {
           chat_id?: number | null;
           content?: string | null;
           created_at?: string;
-          id?: number;
+          id?: string;
+          img_src?: string | null;
+          request_answer?: boolean | null;
+          type?: string;
           visible?: boolean;
         };
         Update: {
@@ -72,7 +78,10 @@ export interface Database {
           chat_id?: number | null;
           content?: string | null;
           created_at?: string;
-          id?: number;
+          id?: string;
+          img_src?: string | null;
+          request_answer?: boolean | null;
+          type?: string;
           visible?: boolean;
         };
         Relationships: [
@@ -414,12 +423,15 @@ export interface Database {
           input_channel_id: number;
         };
         Returns: {
-          message_id: number;
+          message_id: string;
           message_created_at: string;
           current_chat_id: number;
           content: string;
           author_id: string;
           visible: boolean;
+          type: string;
+          request_answer: boolean;
+          img_src: string;
         }[];
       };
       get_latest_products: {
@@ -472,6 +484,24 @@ export interface Database {
           category2_name: string;
         }[];
       };
+      get_product: {
+        Args: {
+          input_post_id: number;
+        };
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          created_at: string;
+          price: string;
+          product_img: string[];
+          user_id: string;
+          like_count: number;
+          hash_tags: string[];
+          category1_name: string;
+          category2_name: string;
+        }[];
+      };
       get_sales_products: {
         Args: {
           input_user_id: string;
@@ -488,6 +518,7 @@ export interface Database {
           hash_tags: string[];
           category1_name: string;
           category2_name: string;
+          status: boolean;
         }[];
       };
       get_user_channel: {
@@ -502,6 +533,7 @@ export interface Database {
           enter_users: string[];
           messages: Json[];
           invisible_count: number;
+          product_status: boolean;
         }[];
       };
       update_visible: {

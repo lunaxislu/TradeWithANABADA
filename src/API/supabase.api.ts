@@ -572,11 +572,13 @@ export const getSubCategory = async (id: number) => {
 // realtime 채팅 로직
 export type ChatMessage = {
   current_chat_id: number;
-  message_id: number;
+  message_id: string;
   message_created_at: string;
   content: string;
   author_id: string;
   visible: boolean;
+  type: string;
+  img_src: string;
 };
 
 export type ChannelInfo = {
@@ -584,9 +586,10 @@ export type ChannelInfo = {
   chat_created_at: string;
   user1_id: string;
   user2_id: string;
-  messages: Omit<ChatMessage, 'current_chat_id' | 'visible'>[];
+  messages: ChatMessage[];
   invisible_count: number;
   enter_user: string[];
+  product_status: boolean;
 };
 
 // 현재 유저 정보에 따른 채팅방 가져오기
@@ -604,6 +607,7 @@ export const getCurrentUserChatChannel = async (userId: string): Promise<Channel
 
 // 선택한 채팅방 내역 가져오기
 export const getSelectChatMessages = async (channel: number): Promise<ChatMessage[] | []> => {
+  console.log(channel);
   const { data, error } = await supabase.rpc('get_channel_messages', { input_channel_id: channel });
 
   if (error) throw error;
@@ -621,14 +625,96 @@ export const getUserInfo = async (uid: string) => {
   }
 };
 
-export const sendMessage = async (currentChannel: number, message: string, otherUserIn: boolean) => {
+type sendMessageArgs = {
+  currentChannel: number;
+  message: string | null;
+  otherUserIn: boolean;
+  image: File | null;
+  type: string;
+};
+
+export const sendMessage = async ({
+  currentChannel,
+  message,
+  otherUserIn,
+  image,
+  type,
+}: sendMessageArgs): Promise<void> => {
   const currentUser = await getUserSession();
-  await supabase.from('chat_messages').insert([
-    {
-      chat_id: currentChannel,
-      content: message,
-      author_id: currentUser.session?.user.id,
-      visible: otherUserIn,
-    },
-  ]);
+
+  switch (type) {
+    case 'message':
+      await supabase.from('chat_messages').insert([
+        {
+          id: nanoid(),
+          chat_id: currentChannel,
+          content: message,
+          author_id: currentUser.session?.user.id,
+          visible: otherUserIn,
+          type: type,
+          request_answer: null,
+          img_src: null,
+        },
+      ]);
+      break;
+    case 'request':
+      await supabase.from('chat_messages').insert([
+        {
+          id: nanoid(),
+          chat_id: currentChannel,
+          content: message,
+          author_id: currentUser.session?.user.id,
+          visible: otherUserIn,
+          type: type,
+          // null일 때 질문을 던지고 답이 없는 상황
+          request_answer: null,
+          img_src: null,
+        },
+      ]);
+      break;
+    case 'image':
+      const messageId = nanoid();
+
+      await supabase.from('chat_messages').insert([
+        {
+          id: messageId,
+          chat_id: currentChannel,
+          content: message,
+          author_id: currentUser.session?.user.id,
+          visible: otherUserIn,
+          type: type,
+          request_answer: null,
+          img_src: null,
+        },
+      ]);
+      await uploadTalkMessageImage(messageId, image!);
+      break;
+    default:
+      break;
+  }
+};
+
+const uploadTalkMessageImage = async (id: string, file: File | Blob) => {
+  // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
+
+  const imageName = nanoid();
+  const { data: urlPath } = await supabase.storage.from('product-images').upload(`/${id}/${imageName}`, file);
+
+  // Promise.all로 처리하여 urlPath라는 변수에 담습니다.
+
+  // getPublicUrl이라는 메소드가 동기 함수입니다;; 당황함 그래서 그냥 async await을 사용하지 않았습니다.
+  const { data: storageImage } = supabase.storage.from('talk-channel-images').getPublicUrl(`${urlPath?.path}`);
+  const storagePath = storageImage.publicUrl;
+
+  // product에다가 다시 넣어줬습니다.
+  const { error } = await supabase
+    .from('chat_messages')
+    .update({
+      img_src: storagePath,
+    })
+    .eq('id', id); // product_id를 찾는 eq입니다.
+
+  if (error) {
+    throw console.log(error);
+  }
 };

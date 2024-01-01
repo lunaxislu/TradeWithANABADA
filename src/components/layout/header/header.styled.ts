@@ -34,6 +34,9 @@ export const Header = styled.header`
     right: 2rem;
     bottom: 2rem;
     padding: 1rem;
+    & > figure {
+      cursor: pointer;
+    }
   }
 `;
 

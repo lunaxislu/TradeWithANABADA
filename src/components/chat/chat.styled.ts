@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 
-export const TalkContainer = styled.div`
+export const TalkContainer = styled.div<{ $talkOpen: boolean }>`
   position: absolute;
   top: 0;
   left: 0%;
+  opacity: ${(props) => (props.$talkOpen ? 1 : 0)};
   transform: translate(-100%, -100%);
-  width: 30rem;
-  height: 50rem;
+  width: ${(props) => (props.$talkOpen ? '30rem' : '0')};
+  height: ${(props) => (props.$talkOpen ? '50rem' : '0')};
   background-color: beige;
   border-radius: 10px;
+  transition: 0.5s ease-in-out;
+  overflow: hidden;
 `;
 
 export const TalkListContainer = styled.div<{ $talkChannelOpen: boolean }>`

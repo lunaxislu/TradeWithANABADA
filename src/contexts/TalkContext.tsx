@@ -3,12 +3,14 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { ChannelInfo, getCurrentUserChatChannel, getSelectChatMessages, getUserSession } from '../API/supabase.api';
 
 type Messages = {
-  message_id: number;
+  message_id: string;
   message_created_at: string;
   current_chat_id: number;
   content: string;
   author_id: string;
   visible: boolean;
+  type: string;
+  img_src: string;
 };
 
 type initStateType = {
@@ -177,7 +179,6 @@ const TalkContextProvider = ({ children }: React.PropsWithChildren) => {
 
 export default TalkContextProvider;
 
-// export const useToggleContext = () => useContext(ToggleContext);
 export const useTalkContext = () => {
   const context = useContext(TalkContext);
   if (!context) {
