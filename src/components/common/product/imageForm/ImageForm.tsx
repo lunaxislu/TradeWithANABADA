@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { listToBlob } from '../../../../API/supabase.api';
-import { CommonProductInfoType } from '../inputform/InputForm';
+
+import { CommonProductInfoType } from '../Form/Form';
 import * as St from './ImageForm.styled';
 import BigImgCard from './bigImgCard/BigImgCard';
 import SmImgCard from './smImgCard/SmImgCard';

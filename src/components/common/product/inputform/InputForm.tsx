@@ -1,19 +1,10 @@
+import { CommonProductInfoType } from '../Form/Form';
 import * as St from './InputForm.styled';
 import CategoryInput from './categoryInput/CategoryInput';
 import HashTagInput from './hashTagInput/HashTagInput';
 import InfoInput from './infoInput/InfoInput';
 import TextInput from './textInput/TextInput';
-export type CommonProductInfoType = {
-  content: string;
-  created_at: string;
-  hash_tags: string[];
-  like_count: number;
-  price: string;
-  product_id: number;
-  product_img: string[];
-  title: string;
-  user_id: string;
-};
+
 type InputFormPropsType = {
   tags: string[];
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
