@@ -11,6 +11,7 @@ const LikeAndTalk = ({ post_id, user_id }: PropsOfLikeAndTalk) => {
   const userIdRef = useRef(user_id);
   const likeIdRef = useRef<number | null>(null);
   const validRef = useRef(false);
+
   useEffect(() => {
     if (user_id && post_id) {
       findLike(user_id, post_id).then((result) => {
@@ -19,8 +20,8 @@ const LikeAndTalk = ({ post_id, user_id }: PropsOfLikeAndTalk) => {
           likeIdRef.current = result?.[0].id!;
         }
       });
-      userIdRef.current = user_id;
     }
+    userIdRef.current = user_id;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user_id]);
@@ -31,6 +32,7 @@ const LikeAndTalk = ({ post_id, user_id }: PropsOfLikeAndTalk) => {
     return () => {
       if (typeof userIdRef.current === 'string' && typeof post_id === 'number') {
         // validRef를 준 이유는 좋아요가 있는 상태에서 수정하기로 컴포넌트 전환되면 없는 상태가 되고 좋아요가 없으면 그 반대가 되므로 넣어줬습니다.
+
         if (!validRef.current) return;
         if (likeRef.current && likeIdRef.current === null) {
           registLike(userIdRef.current, post_id);
@@ -43,7 +45,7 @@ const LikeAndTalk = ({ post_id, user_id }: PropsOfLikeAndTalk) => {
   }, []);
 
   return (
-    <St.Container>
+    <St.Container className="like-talk">
       <St.LikeButton
         $like={isLike}
         onClick={() => {

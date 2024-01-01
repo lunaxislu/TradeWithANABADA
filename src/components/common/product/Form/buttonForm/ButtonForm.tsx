@@ -18,12 +18,12 @@ export type CommonPropsOfButtonType = {
 };
 
 const ButtonForm = ({ userData, productInfo, isEdit, setIsEdit }: CommonPropsOfButtonType) => {
-  if (isEdit === undefined || !productInfo) return <RegistButton />;
+  if (isEdit === undefined || !productInfo || !userData) return <RegistButton />;
 
-  if (isEdit === false && productInfo)
+  if (isEdit === false)
     return (
       <St.EditFalse>
-        <LikeAndTalk post_id={productInfo?.product_id} user_id={userData?.user_id} />
+        <LikeAndTalk post_id={productInfo?.product_id} user_id={userData.id} />
         <EditButton userData={userData} productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} />
       </St.EditFalse>
     );
@@ -32,7 +32,7 @@ const ButtonForm = ({ userData, productInfo, isEdit, setIsEdit }: CommonPropsOfB
     return (
       <St.EditTrue>
         <EditButton userData={userData} productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} />
-        <DeleteButton productInfo={productInfo} />
+        {isEdit && <DeleteButton productInfo={productInfo} />}
       </St.EditTrue>
     );
   return <></>;
