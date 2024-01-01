@@ -28,14 +28,14 @@ export const ProfileBox = styled.div`
   display: flex;
   border: solid 0.2rem #dcdcdc;
   width: 100%;
-  height: 20rem;
+  height: 25rem;
   ${({ theme }) => theme.mediaQuery.sm`
       width : 35rem;
-      height: 17.5rem;
+      height: 25rem;
   `}
   ${({ theme }) => theme.mediaQuery.lg`
       width : 45rem;
-      height: 24.5rem;
+      height: 25rem;
   `};
 `;
 export const ProfileImg = styled.div`
@@ -64,10 +64,12 @@ export const ProfileInfo = styled.div`
   `}
 `;
 export const Nickname = styled.div`
-  padding: 2rem;
+  padding: 3rem 2rem;
   & input {
     border: none;
     border-bottom: 0.1rem solid #dcdcdc;
+    font-size: 2rem;
+    width: 100%;
   }
   & p {
     font-size: 2rem;
@@ -80,35 +82,43 @@ export const Nickname = styled.div`
     cursor: pointer;
   }
 `;
-export const UploadImg = styled.label`
+export const Grade = styled.div`
+  background-color: transparent;
+  color: #aaaaaa;
+  padding-top: 0.8rem;
+`;
+export const UploadLabel = styled.label`
   text-align: center;
   padding-top: 1.4rem;
   font-size: 1.3rem;
   border: none;
   background-color: #dcdcdc;
   margin: 0 auto;
+  margin-bottom: 1rem;
   width: 80%;
   height: 4rem;
   cursor: pointer;
 `;
-export const ProfileEdit = styled.button`
+
+export const ProfileBtn = styled.button`
   border: none;
   background-color: #dcdcdc;
-  margin: 1rem auto;
+  margin: 0 auto;
+  margin-bottom: 1rem;
   width: 80%;
   height: 4rem;
   cursor: pointer;
+  font-size: 1.3rem;
+  text-align: center;
+  &.empty {
+    background-color: transparent;
+    cursor: auto;
+  }
 `;
-export const ProfileReview = styled.button`
-  border: none;
-  background-color: #dcdcdc;
-  margin: 1rem auto;
-  width: 80%;
-  height: 4rem;
-  cursor: pointer;
-`;
+
 export const ReviewBox = styled.div`
   width: 100%;
+  height: 25rem;
   padding: 1rem;
   border: 0.2rem solid #dcdcdc;
   display: flex;
@@ -155,25 +165,26 @@ export const ListTitle = styled.div`
   flex-direction: row;
   background-color: beige;
   justify-content: center;
+`;
 
-  div:nth-of-type(1) {
-    background-color: #7bd3ea;
+export const ListBtn = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  cursor: pointer;
+  text-align: center;
+  border-bottom: 0.2rem solid black;
+  &:hover {
+    background-color: white;
   }
-  div:nth-of-type(2) {
-    background-color: #f2afef;
-  }
-
-  div {
-    width: 100%;
-    padding: 2rem;
-    cursor: pointer;
-    text-align: center;
-
-    &:hover {
-      background-color: white;
-    }
+  &.active {
+    background-color: white;
+    border: 0.2rem solid black;
+    border-bottom: none;
   }
 `;
+
 export const ListWrapper = styled.div`
   height: 80rem;
   overflow: scroll;
@@ -188,7 +199,14 @@ export const ListWrapper = styled.div`
 
     li {
       padding: 2rem;
+      cursor: pointer;
       border: 0.2rem solid #dcdcdc;
+
+      // 임시 hover: 테스트 끝나면 제거해야 합니다.
+      &:hover {
+        background-color: #dcdcdc;
+      }
+
       span {
         font-size: 1.5rem;
         float: right;
