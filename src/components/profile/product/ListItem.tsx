@@ -45,14 +45,24 @@ const ListItem = ({ name, list }: ListItemProps) => {
 
               <St.PriceWrapper>
                 <span>{date}</span>
-                {name === 'onSale' && (
-                  <Button color="primary" onClick={() => update(item.product_id)}>
-                    완료
-                  </Button>
-                  // <Button color="primary" onClick={() => remove(item.product_id)}>
-                  //   삭제
-                  // </Button>
-                )}
+                {(() => {
+                  switch (name) {
+                    case 'wish':
+                      return (
+                        <Button color="primary" onClick={() => remove(item.product_id)}>
+                          삭제
+                        </Button>
+                      );
+                    case 'onSale':
+                      return (
+                        <Button color="success" onClick={() => update(item.product_id)}>
+                          완료
+                        </Button>
+                      );
+                    default:
+                      break;
+                  }
+                })()}
               </St.PriceWrapper>
             </div>
           </li>

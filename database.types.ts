@@ -289,7 +289,7 @@ export interface Database {
           product_img?: string[] | null;
           title?: string | null;
           user_id?: string;
-          status: boolean;
+          status?: boolean;
         };
         Relationships: [
           {
@@ -517,6 +517,24 @@ export interface Database {
           input_chat_id: number;
         };
         Returns: undefined;
+      };
+      get_product: {
+        Args: {
+          input_post_id: number;
+        };
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          created_at: string;
+          price: string;
+          product_img: string[];
+          user_id: string;
+          like_count: number;
+          hash_tags: string[];
+          category1_name: string;
+          category2_name: string;
+        }[];
       };
     };
     Enums: {
