@@ -31,6 +31,7 @@ export const List = styled.ul`
     gap: 2rem;
     padding: 10px;
     display: flex;
+    cursor: pointer;
     position: relative;
     border-radius: 10px;
     flex-direction: column;

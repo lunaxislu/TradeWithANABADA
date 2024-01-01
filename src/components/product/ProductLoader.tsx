@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useInfiniteProducts } from '../../hooks/uiHook/useInfiniteProducts';
 import { useInfiniteScroll } from '../../hooks/uiHook/useInfiniteScroll';
 import { ReactComponent as Heart } from '../../styles/assets/heart.svg';
@@ -7,6 +7,7 @@ import { displayCreateAt } from '../../utils/date';
 import * as St from './ProductLoader.styled';
 
 const ProductLoader = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams('');
   const search = searchParams.get('search');
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -36,7 +37,7 @@ const ProductLoader = () => {
                   {page.map((item, i) => {
                     const date = displayCreateAt(item.created_at);
                     return (
-                      <li key={i}>
+                      <li key={i} onClick={() => navigate(`/detail/${item.product_id}`, { state: item })}>
                         {item.product_img ? <img src={item.product_img[0]} alt="" /> : <img src="" alt="" />}
                         <St.HeartBox>
                           <Heart />

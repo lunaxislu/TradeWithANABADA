@@ -48,10 +48,8 @@ const Form = () => {
     <St.Container>
       <St.Wrapper>
         <ImageForm imgFiles={imgFiles} setImgFiles={setImgFiles} />
-        {/* <ImageInput imgFiles={imgFiles} setImgFiles={setImgFiles} /> */}
         <St.Form onSubmit={registProduct}>
           <InputForm tags={tags} setTags={setTags} />
-          {/* <InputForm tags={tags} setTags={setTags} /> */}
         </St.Form>
       </St.Wrapper>
     </St.Container>

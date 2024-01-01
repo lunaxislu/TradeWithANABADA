@@ -17,6 +17,7 @@ export type ProductInfoType = {
   product_img: string[];
   title: string;
   user_id: string;
+  category2_id: number;
 };
 type PropsType = {
   productInfo: ProductInfoType;
