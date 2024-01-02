@@ -370,7 +370,7 @@ export const getLatestProducts = async (limitNum: number) => {
   if (limitNum === 0) {
     if (newNum === 4) {
       const { data, error } = await supabase.rpc('get_latest_products').limit(newNum);
-      console.log(error);
+      // console.log(error);
       if (error) throw error;
 
       return data;

@@ -17,7 +17,6 @@ const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) =>
   const [input4, setInput4] = useState(0);
   const [input5, setInput5] = useState(0);
   const [data, setData] = useState<Tables<'review'>[] | null>();
-  console.log(paramUid);
 
   const reviewArr = [
     '거래가 수월해요',

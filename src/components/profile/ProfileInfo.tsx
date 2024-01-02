@@ -77,7 +77,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   const updateNickname = () => {
     // 변경사항이 있는 경우에만 업뎃하고 아닌 경우엔 리턴;
     if (userSessionNickname === nickname) {
-      alert('프로필 변경사항이 없습니다.');
       return;
     } else {
       updateUserNickname(nickname);
@@ -87,18 +86,24 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   };
   // 프로필 이미지 업데이트
   const updateProfileImg = async () => {
-    if (imgRef.current === null) {
-      return;
-    }
-    try {
-      await deleteStorageImage(uid);
-      await uploadStorageProfileImg(uid, uploadFile as File);
-      const publicUrl = await imgPublicUrl(uid);
-      await insertProfileImg(uid, publicUrl.publicUrl);
-      // updateFollowTargetUser(uid, nickname, publicUrl.publicUrl);
-      await updateUserProfile(publicUrl.publicUrl);
-    } catch (error) {
-      showBoundary(error);
+    // console.log(imgRef.current);
+    if (imgRef.current) {
+      if (imgRef.current.files) {
+        try {
+          await deleteStorageImage(uid);
+          await uploadStorageProfileImg(uid, uploadFile as File);
+          const publicUrl = await imgPublicUrl(uid);
+          await insertProfileImg(uid, publicUrl.publicUrl);
+          // updateFollowTargetUser(uid, nickname, publicUrl.publicUrl);
+          await updateUserProfile(publicUrl.publicUrl);
+        } catch (error) {
+          showBoundary(error);
+        }
+      } else {
+        alert('프로필 변경사항이 없습니다.');
+        console.log(imgRef.current);
+        return;
+      }
     }
   };
   // 프로필 변경하기 핸들러
