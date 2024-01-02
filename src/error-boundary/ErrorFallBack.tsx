@@ -57,6 +57,7 @@ export const logError = async (error: Error, info: ErrorInfo) => {
   // info(객체) 에 {componentStack}이 있는데 에러가 발생한 컴포넌트의 stack을 나타냅니다. componentStack의 타입은 string
   console.log(info);
   console.log(error);
+
   await postSlackApiWithError(error, info);
 };
 
