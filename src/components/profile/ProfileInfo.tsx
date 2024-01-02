@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import {
   checkFollowId,
   deleteStorageImage,
@@ -33,7 +34,7 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   const [nickname, setNickname] = useState('');
   const [followId, setFolllowId] = useState('');
   const [followBtn, setFollowBtn] = useState(true);
-
+  const { showBoundary } = useErrorBoundary();
   // 세션에 있는 닉네임 가져오는 함수
   const getSession = async () => {
     const session = await getUserSession();
@@ -88,14 +89,16 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   const updateProfileImg = async () => {
     if (imgRef.current === null) {
       return;
-    } else {
-      deleteStorageImage(uid);
-      uploadStorageProfileImg(uid, uploadFile as File);
+    }
+    try {
+      await deleteStorageImage(uid);
+      await uploadStorageProfileImg(uid, uploadFile as File);
       const publicUrl = await imgPublicUrl(uid);
-      insertProfileImg(uid, publicUrl.publicUrl);
+      await insertProfileImg(uid, publicUrl.publicUrl);
       // updateFollowTargetUser(uid, nickname, publicUrl.publicUrl);
-      updateUserProfile(publicUrl.publicUrl);
-      return;
+      await updateUserProfile(publicUrl.publicUrl);
+    } catch (error) {
+      showBoundary(error);
     }
   };
   // 프로필 변경하기 핸들러
