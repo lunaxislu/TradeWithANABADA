@@ -519,6 +519,12 @@ type ReviewProps = {
   i4: number;
   i5: number;
 };
+// 리뷰삭제(update가 잘 먹지 않는 것 같아 삭제하고 insert)
+export const deleteReview = async (params: string) => {
+  const { error } = await supabase.from('review').delete().eq('user_id', params);
+  if (error) throw error;
+};
+
 // 리뷰등록(update)
 export const updateReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) => {
   const { data, error } = await supabase
@@ -536,25 +542,15 @@ export const insertReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) 
     .select();
   if (error) throw error;
 };
-// sales에서 user_id 비교하여 정보 가져오기 (product_id와 join 해야할 듯)
-// export const getPurchase = async (uid: string) => {
-//   const { data, error } = await supabase.from('sales').select('*').eq('user_id', uid);
-//   if (error) throw error;
-//   return data;
-// };
-
-export type PurchaseData = {
-  product_id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  price: string;
-  product_img: string[];
-  user_id: string;
-};
-
+// 구매목록 불러오는 함수
 export const getPurchaseLists = async (uid: string) => {
   const { data, error } = await supabase.rpc('get_purchase_lists', { input_user_id: uid });
+  if (error) throw error;
+  return data;
+};
+// 리뷰 폼에서 등록 시, paramUid이용하여 sales 상태 바꿔주기
+export const UpdateReviewStatus = async (uid: string) => {
+  const { data, error } = await supabase.from('sales').update({ review_status: true }).eq('user_id', uid);
   if (error) throw error;
   return data;
 };

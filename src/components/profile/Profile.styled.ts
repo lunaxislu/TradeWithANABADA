@@ -55,7 +55,6 @@ export const ProfileInfo = styled.div`
   width: 25rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   ${({ theme }) => theme.mediaQuery.sm`
       width : 17.5rem;
   `}
@@ -64,7 +63,9 @@ export const ProfileInfo = styled.div`
   `}
 `;
 export const Nickname = styled.div`
-  padding: 3rem 2rem;
+  padding: 6rem 3rem 5rem 3rem;
+  font-weight: 600;
+  border-bottom: 0.1rem solid #fafafa;
   & input {
     border: none;
     border-bottom: 0.1rem solid #dcdcdc;
@@ -72,7 +73,7 @@ export const Nickname = styled.div`
     width: 100%;
   }
   & p {
-    font-size: 2rem;
+    font-size: 2.3rem;
   }
   & button {
     padding-top: 0.5rem;
@@ -92,7 +93,7 @@ export const UploadLabel = styled.label`
   padding-top: 1.4rem;
   font-size: 1.3rem;
   border: none;
-  background-color: #dcdcdc;
+  background-color: #fafafa;
   margin: 0 auto;
   margin-bottom: 1rem;
   width: 80%;
@@ -102,9 +103,9 @@ export const UploadLabel = styled.label`
 
 export const ProfileBtn = styled.button`
   border: none;
-  background-color: #dcdcdc;
+  background-color: #dfdfdf;
   margin: 0 auto;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   width: 80%;
   height: 4rem;
   cursor: pointer;
@@ -119,11 +120,12 @@ export const ProfileBtn = styled.button`
 export const ReviewBox = styled.div`
   width: 100%;
   height: 25rem;
-  padding: 1rem;
+  padding: 1.5rem;
+  padding-top: 2.5rem;
   border: 0.2rem solid #dcdcdc;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   ${({ theme }) => theme.mediaQuery.sm`
       width : 35rem;
   `}
@@ -133,6 +135,7 @@ export const ReviewBox = styled.div`
   & p {
     font-size: 2rem;
     font-weight: bold;
+    padding-left: 1.5rem;
   }
 `;
 export const ProductListSection = styled.div`
@@ -162,7 +165,7 @@ export const ListTitle = styled.div`
   font-size: 2rem;
   align-items: center;
   flex-direction: row;
-  background-color: #f2f1f0;
+  background-color: #fafafa;
   justify-content: center;
   cursor: pointer;
 `;
@@ -259,10 +262,11 @@ export const PostsWrapper = styled.div`
 `;
 
 export const PriceWrapper = styled.div<{ $name: string; $review_status?: boolean }>`
-  width: 7%;
+  width: 10%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-end;
 
   span {
     text-align: center;
@@ -270,11 +274,12 @@ export const PriceWrapper = styled.div<{ $name: string; $review_status?: boolean
 
   button {
     display: none;
-    padding-left: 1.2rem;
+    text-align: center;
+    padding: 1rem 2rem;
 
     &:hover {
       color: white;
-      background-color: #e31c5f;
+      background-color: #3081d0;
     }
   }
   .wish {
@@ -288,6 +293,7 @@ export const PriceWrapper = styled.div<{ $name: string; $review_status?: boolean
     }}
   }
   .purchase {
+    padding: 1rem;
     ${(props) => {
       return (
         props.$name === 'purchase' &&
