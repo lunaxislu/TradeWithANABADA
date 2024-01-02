@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getLatestProducts, getPopularProducts, searchProducts } from '../../API/supabase.api';
+import { getCategoryWithOneDepth, getLatestProducts, getPopularProducts, searchProducts } from '../../API/supabase.api';
 
 export const useInfiniteProducts = (keyword: string) => {
   return useInfiniteQuery({
@@ -11,12 +11,26 @@ export const useInfiniteProducts = (keyword: string) => {
           return await getLatestProducts(pageParam);
         case '실시간 인기 상품':
           return await getPopularProducts(pageParam);
+        case '여성의류':
+          return await getCategoryWithOneDepth(pageParam, keyword);
+        case '남성의류':
+          return await getCategoryWithOneDepth(pageParam, keyword);
+        case '신발':
+          return await getCategoryWithOneDepth(pageParam, keyword);
+        case '쥬얼리':
+          return await getCategoryWithOneDepth(pageParam, keyword);
+        case '디지털':
+          return await getCategoryWithOneDepth(pageParam, keyword);
+        case '가전의류':
+          return await getCategoryWithOneDepth(pageParam, keyword);
+        case '도서':
+          return await getCategoryWithOneDepth(pageParam, keyword);
         default:
           return await searchProducts(pageParam, keyword);
       }
     },
     getNextPageParam: (lastPage, allPage) => {
-      if (lastPage.length === 0) {
+      if (lastPage?.length === 0) {
         return;
       } else {
         return allPage.length + 1;
