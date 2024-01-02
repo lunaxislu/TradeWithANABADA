@@ -10,7 +10,7 @@ export const Header = styled.header`
   align-items: center;
   background-color: #d9d9d9;
   padding: 3rem;
-  z-index: 20;
+  z-index: 999;
 
   & > h1 {
     position: absolute;
