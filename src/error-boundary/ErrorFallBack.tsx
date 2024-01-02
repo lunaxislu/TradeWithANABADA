@@ -2,6 +2,14 @@ import { ErrorInfo } from 'react';
 import { FallbackProps } from 'react-error-boundary';
 import * as St from './withErrorBound.styled';
 
+// import {PostgrestError } from '@supabase/supabase-js'
+// interface PostgrestError  {
+//   message: string
+//   details: string
+//   hint: string
+//   code: string
+// }
+
 const ErrorFallBack = ({ error, resetErrorBoundary }: FallbackProps) => {
   console.log(error);
   return (
