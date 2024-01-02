@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import withErrorBound from '../../error-boundary/withErrorBound';
+import useWithErrorBound from '../../error-boundary/withErrorBound';
 import { Footer, Header } from './';
 
 const EmptyContainer = styled.div`
@@ -14,7 +14,7 @@ const EmptyContainer = styled.div`
 `;
 
 const Layout = () => {
-  return withErrorBound(
+  return useWithErrorBound(
     <>
       <Header />
       <EmptyContainer>

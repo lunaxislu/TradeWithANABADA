@@ -1,5 +1,6 @@
 import { UserMetadata } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { Link } from 'react-router-dom';
 import { getUserInfoInProduct } from '../../../../API/supabase.api';
 import { displayCreateAt } from '../../../../utils/date';
@@ -20,13 +21,15 @@ type UserStateType = {
 };
 const ProductInfo = ({ userData, productInfo, isEdit }: PropsType) => {
   const [userState, setUserState] = useState<null | UserStateType>(null);
-
+  const { showBoundary } = useErrorBoundary();
   useEffect(() => {
-    getUserInfoInProduct(productInfo.user_id).then((result) => {
-      if (result && result[0]) {
-        setUserState(result[0]);
-      }
-    });
+    getUserInfoInProduct(productInfo.user_id)
+      .then((result) => {
+        if (result && result[0]) {
+          setUserState(result[0]);
+        }
+      })
+      .catch((error) => showBoundary(error));
     return () => {};
   }, []);
 

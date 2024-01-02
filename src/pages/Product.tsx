@@ -1,6 +1,6 @@
 import ProductLoader from '../components/product/ProductLoader';
-import withErrorBound from '../error-boundary/withErrorBound';
+import useWithErrorBound from '../error-boundary/withErrorBound';
 
-const Product = () => withErrorBound(<ProductLoader />);
+const Product = () => useWithErrorBound(<ProductLoader />);
 
 export default Product;

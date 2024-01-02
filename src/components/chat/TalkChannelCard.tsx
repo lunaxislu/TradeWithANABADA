@@ -21,7 +21,6 @@ const initialUser = {
 };
 
 const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
-  // console.log(channel);
   const { TalkChannelSubscribeSetting, currentUserInfo, changeCurrentChannel } = useTalkContext();
 
   const [otherUserInPage, isOtherUserInPage] = useState<boolean>(false);

@@ -268,34 +268,42 @@ const insertHashTag = async (post_id: number, hash_tag: string[]) => {
  * @param uuid
  */
 const insertImageStorage = async (id: number, files: (File | Blob)[], date: string, uuid: string) => {
-  // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
-  const uploadImage = files.map(async (file) => {
-    // nano id를 사용해서 이미지 고유 이름으로 넣습니다.
-    const imageName = nanoid();
-    const { data } = await supabase.storage.from('product-images').upload(`${uuid}/${id}/${date}/${imageName}`, file);
-    return data;
-  });
+  try {
+    // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
+    const uploadImage = files.map(async (file) => {
+      // nano id를 사용해서 이미지 고유 이름으로 넣습니다.
+      const imageName = nanoid();
+      const { data, error } = await supabase.storage
+        .from('product-images')
+        .upload(`${uuid}/${id}/${date}/${imageName}`, file);
+      if (error) throw error;
 
-  // Promise.all로 처리하여 urlPath라는 변수에 담습니다.
-  const urlPath = await Promise.all(uploadImage);
+      return data;
+    });
 
-  // getPublicUrl이라는 메소드가 동기 함수입니다;; 당황함 그래서 그냥 async await을 사용하지 않았습니다.
-  const urls = urlPath.map((url) => {
-    const { data } = supabase.storage.from('product-images').getPublicUrl(`${url?.path}`);
-    return data.publicUrl;
-  });
+    // Promise.all로 처리하여 urlPath라는 변수에 담습니다.
+    const urlPath = await Promise.all(uploadImage);
 
-  // product에다가 다시 넣어줬습니다.
-  const { data, error } = await supabase
-    .from('products')
-    .update({
-      product_img: urls,
-      status: false,
-    })
-    .eq('id', id) // product_id를 찾는 eq입니다.
-    .select();
+    // getPublicUrl이라는 메소드가 동기 함수입니다;; 당황함 그래서 그냥 async await을 사용하지 않았습니다.
+    const urls = urlPath.map((url) => {
+      const { data } = supabase.storage.from('product-images').getPublicUrl(`${url?.path}`);
+      return data.publicUrl;
+    });
 
-  if (error) {
+    // product에다가 다시 넣어줬습니다.
+    const { data, error } = await supabase
+      .from('products')
+      .update({
+        product_img: urls,
+        status: false,
+      })
+      .eq('id', id) // product_id를 찾는 eq입니다.
+      .select();
+
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
     throw error;
   }
 };
@@ -346,10 +354,13 @@ const searchInColumn = async (page: number, keyword: string, column: string) => 
 };
 
 export const searchProducts = async (page: number, keyword: string) => {
-  const titleData = await searchInColumn(page, keyword, 'title');
-  const contentData = await searchInColumn(page, keyword, 'content');
-
-  return [...titleData, ...contentData];
+  try {
+    const titleData = await searchInColumn(page, keyword, 'title');
+    const contentData = await searchInColumn(page, keyword, 'content');
+    return [...titleData, ...contentData];
+  } catch (error) {
+    throw error;
+  }
 };
 
 // 최신 게시물 가져오기 (메인)
@@ -359,6 +370,7 @@ export const getLatestProducts = async (limitNum: number) => {
   if (limitNum === 0) {
     if (newNum === 4) {
       const { data, error } = await supabase.rpc('get_latest_products').limit(newNum);
+      console.log(error);
       if (error) throw error;
 
       return data;
@@ -367,6 +379,7 @@ export const getLatestProducts = async (limitNum: number) => {
     }
   } else {
     const { data, error } = await supabase.rpc('get_latest_products').range(newNum * 10 - 10, newNum * 10 - 1);
+    console.log('tn', error);
     if (error) throw error;
     return data;
   }
@@ -436,9 +449,12 @@ export const insertProfileImg = async (uid: string, url: string) => {
 };
 // 유저 프로필 사진 publicUrl 받아오기 (users 테이블에 넣어줄 url string)
 export const imgPublicUrl = async (uid: string) => {
-  const { data } = await supabase.storage.from(`profile-images`).getPublicUrl(`${uid}/img`);
-
-  return data;
+  try {
+    const { data } = supabase.storage.from(`profile-images`).getPublicUrl(`${uid}/img`);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 // 유저 프로필 사진 url auth에 넣어주기
 export const updateUserProfile = async (url: string) => {
