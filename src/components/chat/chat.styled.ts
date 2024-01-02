@@ -133,7 +133,7 @@ export const TalkMessage = styled.li<{ $subStyle: style }>`
   position: relative;
   margin: 0.8rem 0;
   padding: 1rem;
-  max-width: 60%;
+  max-width: 70%;
   border-radius: 10px 10px ${(props) => (props.$subStyle['x-position'] === 'start' ? '10px 0px' : '0px 10px')};
 
   font-size: 1.3rem;
@@ -224,7 +224,26 @@ export const InputArea = styled.div`
 `;
 
 export const SelectImageSection = styled.section`
+  display: flex;
+  align-items: center;
   & button {
     margin-left: 1rem;
+    cursor: pointer;
   }
+`;
+
+export const DoneProduct = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 `;

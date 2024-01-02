@@ -460,8 +460,8 @@ export interface Database {
           author_id: string;
           visible: boolean;
           type: string;
-          request_answer: boolean;
           img_src: string;
+          request_answer: boolean;
         }[];
       };
       get_latest_products: {
