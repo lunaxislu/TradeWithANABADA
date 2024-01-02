@@ -1,3 +1,4 @@
+import { useErrorBoundary } from 'react-error-boundary';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { resetPasswordHandler, signInWithProvider } from '../../API/supabase.api';
 import { useAuth } from '../../hooks/userHook/useAuth';
@@ -16,6 +17,7 @@ const Form = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { signup, login, updatePassword } = useAuth();
+  const { showBoundary } = useErrorBoundary();
   const { value, onChange, reset, isValid, emailErrorMessage, passwordErrorMessage } = useInput({
     email: '',
     password: '',
@@ -51,9 +53,13 @@ const Form = () => {
                     type="submit"
                     disabled={!isValid}
                     onClick={(e) => {
-                      e.preventDefault();
-                      reset();
-                      login(value);
+                      try {
+                        e.preventDefault();
+                        reset();
+                        login(value);
+                      } catch (error) {
+                        showBoundary(error);
+                      }
                     }}
                   >
                     로그인
@@ -128,9 +134,13 @@ const Form = () => {
                     type="submit"
                     disabled={!isValid}
                     onClick={(e) => {
-                      e.preventDefault();
-                      reset();
-                      signup(value);
+                      try {
+                        e.preventDefault();
+                        reset();
+                        signup(value);
+                      } catch (error) {
+                        showBoundary(error);
+                      }
                     }}
                   >
                     회원가입

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { Tables } from '../../../database.types';
 import { getUserInfo, sendMessage, supabase, updateVisibleTrue } from '../../API/supabase.api';
 import { useTalkContext } from '../../contexts/TalkContext';
@@ -38,6 +39,8 @@ const TalkForm = () => {
   const fileRef = useRef<HTMLInputElement>(null);
   const currentChannelInfo = userAllChannelInfo.find((channelInfo) => channelInfo.chat_id === currentChannel)!;
 
+  const { showBoundary } = useErrorBoundary();
+
   //  메세지 보내기 (type=message/image)
   const sendMessageHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,40 +53,52 @@ const TalkForm = () => {
         alert('메시지를 입력하세요.');
         return;
       }
-      // 메시지 형식 : type message
-      await sendMessage({
-        currentChannel,
-        message,
-        otherUserIn,
-        image: null,
-        type: 'message',
-      });
-      inputRef.current.value = '';
-      return;
+      try {
+        // 메시지 형식 : type message
+        await sendMessage({
+          currentChannel,
+          message,
+          otherUserIn,
+          image: null,
+          type: 'message',
+        });
+        inputRef.current.value = '';
+        return;
+      } catch (error) {
+        showBoundary(error);
+      }
     }
     // 이미지가 있을 때 : type image
     else {
-      await sendMessage({
-        currentChannel,
-        message: message ? message : null,
-        otherUserIn,
-        image: selectImage[0],
-        type: 'image',
-      });
-      if (inputRef.current) inputRef.current.value = '';
-      fileDeleteHandler();
+      try {
+        await sendMessage({
+          currentChannel,
+          message: message ? message : null,
+          otherUserIn,
+          image: selectImage[0],
+          type: 'image',
+        });
+        if (inputRef.current) inputRef.current.value = '';
+        fileDeleteHandler();
+      } catch (error) {
+        showBoundary(error);
+      }
     }
   };
 
   //  메세지 보내기 (type=request)
   const sendRequestMessageHandler = async () => {
-    await sendMessage({
-      currentChannel,
-      message: null,
-      otherUserIn,
-      image: null,
-      type: 'request',
-    });
+    try {
+      await sendMessage({
+        currentChannel,
+        message: null,
+        otherUserIn,
+        image: null,
+        type: 'request',
+      });
+    } catch (error) {
+      showBoundary(error);
+    }
   };
 
   useEffect(() => {
@@ -91,25 +106,38 @@ const TalkForm = () => {
   }, [talkMessages]);
 
   const updateVisibleInfo = async () => {
-    await updateVisibleTrue(currentUserInfo.session?.user.id!, currentChannel);
+    try {
+      await updateVisibleTrue(currentUserInfo.session?.user.id!, currentChannel);
+    } catch (error) {
+      showBoundary(error);
+    }
   };
 
   const getOtherUserInfo = async () => {
-    // currentChannelInfo.product_status
-    if (currentChannelInfo?.user1_id === currentUserInfo.session?.user.id) {
-      const userData = await getUserInfo(currentChannelInfo?.user2_id);
-      setOtherUserInfo(userData![0]);
-      return;
-    }
+    try {
+      // currentChannelInfo.product_status
+      if (currentChannelInfo?.user1_id === currentUserInfo.session?.user.id) {
+        const userData = await getUserInfo(currentChannelInfo?.user2_id);
+        setOtherUserInfo(userData![0]);
+        return;
+      }
 
-    const userData = await getUserInfo(currentChannelInfo?.user1_id);
-    setOtherUserInfo(userData![0]);
+      const userData = await getUserInfo(currentChannelInfo?.user1_id);
+      setOtherUserInfo(userData![0]);
+    } catch (error) {
+      showBoundary(error);
+    }
   };
 
   const initMessageSetting = async () => {
-    await updateVisibleInfo();
-    await getOtherUserInfo();
-    await getCurrentChannelAllMessage();
+    try {
+      await updateVisibleInfo();
+      await getOtherUserInfo();
+      await getCurrentChannelAllMessage();
+    } catch (error) {
+      showBoundary(error);
+    }
+
     scrollMessageSection();
   };
 
@@ -146,7 +174,11 @@ const TalkForm = () => {
       });
 
     const removeChannel = async () => {
-      await supabase.removeChannel(messageChannel);
+      try {
+        await supabase.removeChannel(messageChannel);
+      } catch (error) {
+        showBoundary(error);
+      }
     };
 
     return () => {
