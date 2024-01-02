@@ -832,3 +832,7 @@ export const createTalkChannel = async (user1_id: string, user2_id: string, prod
     return talkChannelInfo[0].id;
   }
 };
+
+export const updateSales = async (user_id: string, product_id: number) => {
+  await supabase.from('sales').insert([{ user_id, product_id, review_status: false }]);
+};
