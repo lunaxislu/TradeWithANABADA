@@ -12,6 +12,7 @@ const ProductLoader = () => {
   const search = searchParams.get('search');
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const { data: products, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteProducts(search || '');
+  console.log('products: ', products);
 
   useInfiniteScroll({
     target: loadMoreRef,
@@ -23,14 +24,18 @@ const ProductLoader = () => {
   return (
     <>
       <St.Container>
-        <St.TitleWrapper>
-          <span>{search}</span>
-        </St.TitleWrapper>
+        <St.TitleWrapper>{/* <span>{search}</span> */}</St.TitleWrapper>
 
         <div>
           <St.List>
             {products?.pages.map((page, i) => {
-              if (page?.length === 0) return null;
+              if (!page || (page.length === 0 && i === 0)) {
+                return (
+                  <div key={i}>
+                    <p>검색 결과가 없습니다.</p>
+                  </div>
+                );
+              }
 
               return (
                 <React.Fragment key={i}>
