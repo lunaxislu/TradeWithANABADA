@@ -630,10 +630,10 @@ export type ChannelInfo = {
   chat_created_at: string;
   user1_id: string;
   user2_id: string;
-  messages: ChatMessage[];
+  top_message: ChatMessage;
   invisible_count: number;
-  enter_user: string[];
   product_status: boolean;
+  product_id: number;
 };
 
 // 현재 유저 정보에 따른 채팅방 가져오기
@@ -651,7 +651,6 @@ export const getCurrentUserChatChannel = async (userId: string): Promise<Channel
 
 // 선택한 채팅방 내역 가져오기
 export const getSelectChatMessages = async (channel: number): Promise<ChatMessage[] | []> => {
-  console.log(channel);
   const { data, error } = await supabase.rpc('get_channel_messages', { input_channel_id: channel });
 
   if (error) throw error;
@@ -742,7 +741,10 @@ const uploadTalkMessageImage = async (id: string, file: File | Blob) => {
   // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
 
   const imageName = nanoid();
-  const { data: urlPath } = await supabase.storage.from('product-images').upload(`/${id}/${imageName}`, file);
+
+  const { data: urlPath, error } = await supabase.storage
+    .from('talk-channel-images')
+    .upload(`${id}/${imageName}`, file);
 
   // Promise.all로 처리하여 urlPath라는 변수에 담습니다.
 
@@ -751,14 +753,10 @@ const uploadTalkMessageImage = async (id: string, file: File | Blob) => {
   const storagePath = storageImage.publicUrl;
 
   // product에다가 다시 넣어줬습니다.
-  const { error } = await supabase
+  await supabase
     .from('chat_messages')
     .update({
       img_src: storagePath,
     })
     .eq('id', id); // product_id를 찾는 eq입니다.
-
-  if (error) {
-    throw console.log(error);
-  }
 };

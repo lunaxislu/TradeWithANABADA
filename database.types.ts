@@ -518,10 +518,10 @@ export interface Database {
           chat_created_at: string;
           user1_id: string;
           user2_id: string;
-          enter_users: string[];
-          messages: Json[];
+          top_message: Json[];
           invisible_count: number;
           product_status: boolean;
+          product_id: number;
         }[];
       };
       update_visible: {

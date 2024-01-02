@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Tables } from '../../../database.types';
 import { getUserInfo, sendMessage, supabase, updateVisibleTrue } from '../../API/supabase.api';
 import { useTalkContext } from '../../contexts/TalkContext';
+import { ReactComponent as Cancel } from '../../styles/assets/cancel.svg';
+import { ReactComponent as ImageSelector } from '../../styles/assets/imageSelector.svg';
+import { ReactComponent as SendMessage } from '../../styles/assets/sendMessage.svg';
 import TalkMessage from './TalkMessage';
 import * as St from './chat.styled';
 
@@ -30,16 +33,17 @@ const TalkForm = () => {
 
   const messageListRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [selectImage, setSelectImage] = useState<File[] | null>(null);
+
   const fileRef = useRef<HTMLInputElement>(null);
 
   //  메세지 보내기 (type=message/image)
   const sendMessageHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const message = inputRef.current?.value;
-    const imgFile = fileRef.current?.files;
 
     // 이미지가 없을 때
-    if (imgFile?.length === 0) {
+    if (!selectImage) {
       // 메시지가 없다 => 입력값이 없다.
       if (!message) {
         alert('메시지를 입력하세요.');
@@ -62,9 +66,11 @@ const TalkForm = () => {
         currentChannel,
         message: message ? message : null,
         otherUserIn,
-        image: imgFile![0],
+        image: selectImage[0],
         type: 'image',
       });
+      if (inputRef.current) inputRef.current.value = '';
+      fileDeleteHandler();
     }
   };
 
@@ -81,7 +87,6 @@ const TalkForm = () => {
 
   useEffect(() => {
     scrollMessageSection();
-    console.log(talkMessages);
   }, [talkMessages]);
 
   const updateVisibleInfo = async () => {
@@ -149,6 +154,21 @@ const TalkForm = () => {
     };
   }, []);
 
+  const fileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.length === 0) {
+      setSelectImage(null);
+      return;
+    } else {
+      const convertArray = Array.from(e.target.files!);
+      setSelectImage(convertArray);
+    }
+  };
+
+  const fileDeleteHandler = () => {
+    setSelectImage(null);
+    if (fileRef.current) fileRef.current.value = '';
+  };
+
   return (
     <St.TalkMessageContainer>
       <button
@@ -177,14 +197,33 @@ const TalkForm = () => {
         })}
       </ul>
 
-      <form onSubmit={sendMessageHandler}>
+      <St.InputForm onSubmit={sendMessageHandler}>
         <button type="button" onClick={sendRequestMessageHandler}>
           물품교환 신청하기
         </button>
-        <input ref={inputRef} placeholder="채팅 입력" />
-        <button type="submit">입력</button>
-        <input type="file" ref={fileRef} />
-      </form>
+
+        <St.InputArea>
+          <label htmlFor="file-selector">
+            <ImageSelector />
+          </label>
+          <div>
+            <input ref={inputRef} placeholder="채팅 입력" />
+            <button type="submit">
+              <SendMessage />
+            </button>
+          </div>
+          <input type="file" id="file-selector" onChange={fileChangeHandler} ref={fileRef} accept="image/*" />
+        </St.InputArea>
+
+        {!!selectImage && (
+          <St.SelectImageSection>
+            <span>선택된 이미지 : {selectImage[0].name}</span>
+            <button onClick={fileDeleteHandler}>
+              <Cancel />
+            </button>
+          </St.SelectImageSection>
+        )}
+      </St.InputForm>
     </St.TalkMessageContainer>
   );
 };
