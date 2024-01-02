@@ -218,6 +218,8 @@ export const insertProduct = async (info: ParamForRegist) => {
         price: info.price,
         user_id: info.user_id,
         status: false,
+        customer_id: null,
+        review_status: true,
       },
     ])
     .select();
@@ -511,6 +513,10 @@ export const insertReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) 
     .from('review')
     .insert([{ user_id: params, res_fast: i1, kind: i2, good_product: i3, same_product: i4, good_time: i5 }])
     .select();
+};
+// products에서 customer_id 비교하여 정보 가져오기
+export const getPurchase = async (uid: string) => {
+  const { data, error } = await supabase.from('products').select('*').eq('customer_id', uid);
 };
 
 /**

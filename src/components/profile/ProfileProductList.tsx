@@ -14,10 +14,11 @@ const buttonData = [
   { label: '찜 목록', state: 'wish' },
   { label: '판매 중인 상품', state: 'onSale' },
   { label: '판매 완료 상품', state: 'soldOut' },
+  { label: '나의 구매 내역', state: 'purchase' },
 ];
 
 export type ProductDataExtends = ProductData & { status: boolean };
-export type ProductStatus = 'wish' | 'onSale' | 'soldOut';
+export type ProductStatus = 'wish' | 'onSale' | 'soldOut' | 'purchase';
 
 const ProfileProductList = ({ uid, params }: Props) => {
   const [list, setList] = useState<ProductStatus>('wish');
@@ -26,6 +27,8 @@ const ProfileProductList = ({ uid, params }: Props) => {
   const onSaleList = salesList?.filter((item) => item.status === false);
   // 판매 완료
   const soldOutList = salesList?.filter((item) => item.status === true);
+  // 나의 구매 내역
+  // const purchaseList =
 
   if (wishListLoading) return <div>로딩중...</div>;
   if (salesListLoading) return <div>로딩중...</div>;
@@ -64,6 +67,8 @@ const ProfileProductList = ({ uid, params }: Props) => {
               case 'onSale':
                 return <ListItem name={list} list={onSaleList!} />;
               case 'soldOut':
+                return <ListItem name={list} list={soldOutList!} />;
+              case 'purchase':
                 return <ListItem name={list} list={soldOutList!} />;
               default:
                 return null;

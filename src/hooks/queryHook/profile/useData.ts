@@ -28,5 +28,7 @@ export const useData = () => {
     },
   });
 
+  // 구매 목록 불러오기
+
   return { wishList, wishListLoading, salesList, salesListLoading };
 };

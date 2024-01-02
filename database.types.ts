@@ -277,6 +277,8 @@ export interface Database {
           title: string | null;
           user_id: string;
           status: boolean;
+          customer_id: string | null;
+          review_status: boolean;
         };
         Insert: {
           category2_id?: number;
@@ -288,6 +290,8 @@ export interface Database {
           title?: string | null;
           user_id: string;
           status: boolean;
+          customer_id: string | null;
+          review_status: boolean;
         };
         Update: {
           category2_id?: number;
@@ -299,6 +303,8 @@ export interface Database {
           title?: string | null;
           user_id?: string;
           status?: boolean;
+          customer_id?: string | null;
+          review_status?: boolean;
         };
         Relationships: [
           {
