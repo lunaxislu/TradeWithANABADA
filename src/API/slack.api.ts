@@ -1,17 +1,17 @@
 import axios from 'axios';
 import { ErrorInfo } from 'react';
 
-// Error의 프로퍼티중 statusCode가 있는 Error도 있어서 override 했습니다.
-interface Error {
+// 아... 시간이 좀만더 있더라면 ...
+type SlackWithError = {
   statusCode?: string;
   message?: string;
   code?: number;
   status?: number;
   name?: string;
   stack?: string;
-}
+};
 
-export const postSlackApiWithError = async (error: Error, info: ErrorInfo, whose?: string) => {
+export const postSlackApiWithError = async (error: SlackWithError, info: ErrorInfo, whose?: string) => {
   const errorTarget = info.componentStack?.split('\n')[1].trim();
   console.log(error);
   console.log(info);
