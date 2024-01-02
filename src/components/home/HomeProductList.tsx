@@ -16,6 +16,8 @@ export type ProductData = {
   price: string;
   product_img: string[];
   user_id: string;
+  status: boolean;
+  category1_id: number;
   like_count: number;
   hash_tags: string[];
   category1_name: string;
