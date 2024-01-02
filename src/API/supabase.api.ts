@@ -59,7 +59,6 @@ export const getSalesList = async (userId: string) => {
  * @param productId 상품 아이디
  */
 export const updateOnSaleToSoldOut = async (productId: number) => {
-  console.log('productId: ', productId);
   const { data, error } = await supabase.from('products').update({ status: true }).eq('id', productId);
   if (error) throw error;
   return data;
@@ -638,6 +637,7 @@ export type ChatMessage = {
   visible: boolean;
   type: string;
   img_src: string;
+  request_answer: boolean;
 };
 
 export type ChannelInfo = {
@@ -774,4 +774,13 @@ const uploadTalkMessageImage = async (id: string, file: File | Blob) => {
       img_src: storagePath,
     })
     .eq('id', id); // product_id를 찾는 eq입니다.
+};
+
+export const updateMessageUpdate = async (messageId: string, answer: boolean) => {
+  await supabase
+    .from('chat_messages')
+    .update({
+      request_answer: answer,
+    })
+    .eq('id', messageId); // product_id를 찾는 eq입니다.
 };
