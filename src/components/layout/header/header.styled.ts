@@ -67,8 +67,8 @@ export const SideBar = styled.nav<{ $isOpen: boolean }>`
   height: 100vh;
   width: ${(props) => (props.$isOpen ? '30rem' : '0')};
   transition: width 0.5s ease-in-out;
-  background: #027402;
-  /* border-right: 1px solid gray; */
+  background: #191919;
+  color: white;
   overflow: hidden;
 
   white-space: nowrap;
