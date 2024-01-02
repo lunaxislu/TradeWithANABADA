@@ -22,6 +22,7 @@ type Props = {
 };
 
 export const ReviewChart = ({ params }: Props) => {
+  // console.log(paramUid);
   // 리뷰 불러오기
   const { data: reviewList, isLoading: reviewLoading } = useQuery({
     queryKey: [QueryKey.REVIEW_LIST], // 수정
@@ -94,7 +95,6 @@ export const ReviewChart = ({ params }: Props) => {
       },
     ],
   };
-
   return (
     <St.ReviewWrapper>
       <div>

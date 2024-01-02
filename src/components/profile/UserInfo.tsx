@@ -8,9 +8,10 @@ type Props = {
   params: string | undefined;
   setFollowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
+  paramUid: string;
 };
 
-const UserInfo = ({ uid, params, setFollowModal, setReviewModal }: Props) => {
+const UserInfo = ({ uid, params, paramUid, setFollowModal, setReviewModal }: Props) => {
   return (
     <St.ProfileReviewWrapper>
       <St.ProfileBox>

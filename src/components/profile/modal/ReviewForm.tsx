@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Tables } from '../../../../database.types';
-import { filteredReview, getReviews, insertReview, updateReview } from '../../../API/supabase.api';
+import { UpdateReviewStatus, deleteReview, filteredReview, getReviews, insertReview } from '../../../API/supabase.api';
 import * as St from './modal.styled';
 
 type Props = {
@@ -17,6 +17,7 @@ const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) =>
   const [input4, setInput4] = useState(0);
   const [input5, setInput5] = useState(0);
   const [data, setData] = useState<Tables<'review'>[] | null>();
+  console.log(paramUid);
 
   const reviewArr = [
     '거래가 수월해요',
@@ -27,17 +28,21 @@ const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) =>
   ];
 
   const onSubmitReviewHandler = async () => {
-    const checkUser = await getReviews(params as string);
+    const checkUser = await getReviews(paramUid as string);
     if (checkUser.data.length > 0) {
-      const filteredData = await filteredReview(params as string);
+      const filteredData = await filteredReview(paramUid as string);
+      console.log(filteredData);
       setData(filteredData);
+      console.log(data);
       if (data) {
         const a = data[0].res_fast;
         const b = data[0].kind;
         const c = data[0].good_product;
         const d = data[0].same_product;
         const e = data[0].good_time;
-        await updateReview({
+        await deleteReview(paramUid);
+        console.log('삭제완료');
+        await insertReview({
           params: paramUid!,
           i1: a! + input1,
           i2: b! + input2,
@@ -64,6 +69,8 @@ const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) =>
     setInput4(0);
     setInput5(0);
     setReviewModal(false);
+    // 후기 상태 false -> true로 바꿔주기
+    await UpdateReviewStatus(paramUid);
   };
 
   return (
