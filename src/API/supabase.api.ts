@@ -814,7 +814,7 @@ export const updateMessageUpdate = async (messageId: string, answer: boolean) =>
 export const getTalkChannel = async (id: number) => {
   const { data } = await supabase.from('chats').select(`*, chat_user(*)`).eq('product_id', id);
 
-  return data;
+  return data ? data : [];
 };
 
 export const createTalkChannel = async (user1_id: string, user2_id: string, product_id: number) => {
@@ -822,6 +822,12 @@ export const createTalkChannel = async (user1_id: string, user2_id: string, prod
 
   if (talkChannelInfo) {
     await supabase.from('chat_user').insert([{ chat_id: talkChannelInfo[0].id, user1_id, user2_id }]);
+
+    await supabase
+      .from('chat_messages')
+      .insert([{ author_id: user1_id, chat_id: talkChannelInfo[0].id, content: '', id: 'dummy', type: 'message' }]);
+
+    await supabase.from('chat_messages').delete().eq('id', 'dummy');
 
     return talkChannelInfo[0].id;
   }
