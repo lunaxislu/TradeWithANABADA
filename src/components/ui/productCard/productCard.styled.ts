@@ -12,6 +12,7 @@ export const CardContainer = styled.div`
   `}
   ${({ theme }) => theme.mediaQuery.lg`
   `}; */
+  cursor: pointer;
 `;
 
 export const CardImage = styled.section`

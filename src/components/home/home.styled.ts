@@ -3,6 +3,12 @@ import styled from 'styled-components';
 export const HomeWrapper = styled.div`
   width: 100rem;
   margin: auto;
+
+  a {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 export const SlideContainer = styled.div`
   position: relative;
