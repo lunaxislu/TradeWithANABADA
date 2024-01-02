@@ -27,9 +27,9 @@ const Router = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={SuspenseWrapper(Home)} />
           <Route path="/post" element={SuspenseWrapper(Post)} />
-          <Route path="/detail" element={SuspenseWrapper(Detail)} />
+          <Route path="/detail/:id" element={SuspenseWrapper(Detail)} />
           <Route path="/product" element={SuspenseWrapper(Product)} />
-          <Route path="/profile" element={SuspenseWrapper(Profile)} />
+          <Route path="/profile/:id" element={SuspenseWrapper(Profile)} />
         </Route>
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
