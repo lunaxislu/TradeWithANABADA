@@ -1,5 +1,6 @@
 import React, { ErrorInfo } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { postSlackApiWithError } from '../API/slack.api';
 import ErrorFallBack from './ErrorFallBack';
 
 const withErrorBound = (component: React.ReactNode) => {
@@ -16,7 +17,7 @@ const withErrorBound = (component: React.ReactNode) => {
 const logError = async (error: Error, info: ErrorInfo) => {
   console.log(info); // info(객체) 에 {componentStack}이 있는데 에러가 발생한 컴포넌트의 stack을 나타냅니다. componentStack의 타입은 string
   console.log(error);
-  // await postSlackApiWithError(error, info);
+  await postSlackApiWithError(error, info);
 };
 
 // // Error boundary 컴포넌트의 FallbackComponent
