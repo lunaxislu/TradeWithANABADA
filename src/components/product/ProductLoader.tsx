@@ -34,7 +34,7 @@ const ProductLoader = () => {
 
               return (
                 <React.Fragment key={i}>
-                  {page.map((item, i) => {
+                  {page?.map((item, i) => {
                     const date = displayCreateAt(item.created_at);
                     return (
                       <li key={i} onClick={() => navigate(`/detail/${item.product_id}`, { state: item })}>

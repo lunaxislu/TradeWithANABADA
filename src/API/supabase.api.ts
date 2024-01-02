@@ -387,6 +387,21 @@ export const getPopularProducts = async (limitNum: number) => {
   }
 };
 
+/**
+ * 카테고리 1depth 가져오기
+ * @param page 페이지 번호
+ * @param name 카테고리 이름
+ * @returns 카테고리에 해당하는 상품 목록
+ */
+export const getCategoryWithOneDepth = async (page: number, name: string) => {
+  // rpc 함수 사용
+  const { data, error } = await supabase
+    .rpc('get_category_products', { input_category_name: name })
+    .range(page * 10 - 10, page * 10 - 1);
+  if (error) console.log(error);
+  return data;
+};
+
 // 유저 닉네임 변경(auth)
 export const updateUserNickname = async (nickname: string) => {
   const { data, error } = await supabase.auth.updateUser({ data: { full_name: `${nickname}` } });

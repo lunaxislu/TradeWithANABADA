@@ -9,8 +9,7 @@ type CategoryItemProps = {
 const CategoryItem = ({ children, query }: PropsWithChildren<CategoryItemProps>) => {
   return (
     <St.CategoryLi>
-      {/* TODO: to= "" > to= {`detail/${query}`} */}
-      <Link to="">{children}</Link>
+      <Link to={`/product?search=${query}`}>{children}</Link>
     </St.CategoryLi>
   );
 };

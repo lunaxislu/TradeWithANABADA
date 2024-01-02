@@ -32,7 +32,7 @@ const CategoryNav = () => {
         <span>전체 카테고리</span>
         <ul>
           {categoryList.map((category, index) => (
-            <CategoryItem key={index} query={category.query}>
+            <CategoryItem key={index} query={category.text}>
               {category.text}
             </CategoryItem>
           ))}
