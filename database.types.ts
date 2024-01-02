@@ -127,7 +127,7 @@ export interface Database {
           {
             foreignKeyName: 'chat_user_chat_id_fkey';
             columns: ['chat_id'];
-            isOneToOne: false;
+            isOneToOne: true;
             referencedRelation: 'chats';
             referencedColumns: ['id'];
           },

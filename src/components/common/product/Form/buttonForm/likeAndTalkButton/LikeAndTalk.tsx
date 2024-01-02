@@ -4,6 +4,7 @@ import {
   createTalkChannel,
   findLike,
   getTalkChannel,
+  getUserSession,
   registLike,
 } from '../../../../../../API/supabase.api';
 import { ReactComponent as Heart } from '../../../../../../styles/assets/heart.svg';
@@ -27,7 +28,7 @@ const LikeAndTalk = ({ productInfo, user_id }: PropsOfLikeAndTalk) => {
     console.log(productInfo?.user_id, user_id, productInfo?.product_id);
     const allChannel = await getTalkChannel(productInfo?.product_id!);
     const targetChannelInfo = allChannel?.find((channel) => {
-      return channel.chat_user[0].user1_id === user_id || channel.chat_user[0].user2_id === user_id;
+      if (channel.chat_user) return channel.chat_user.user1_id === user_id || channel.chat_user.user2_id === user_id;
     });
 
     const channelId = targetChannelInfo?.id;
@@ -36,13 +37,19 @@ const LikeAndTalk = ({ productInfo, user_id }: PropsOfLikeAndTalk) => {
   // 전체 채팅방 정보 가져오기 join해서 chat, chat_uesrs
   useEffect(() => {
     const getChannel = async () => {
+      const userData = await getUserSession();
+      const currentUserId = userData.session?.user.id!;
       if (productInfo) {
         const allChannel = await getTalkChannel(productInfo?.product_id);
-        const isAlready = allChannel?.some((channel) => {
-          return channel.chat_user[0].user1_id! === user_id! || channel.chat_user[0]?.user2_id! === user_id!;
-        });
 
-        isTalkChannelAlready(isAlready!);
+        if (allChannel) {
+          const isAlready = allChannel?.some((channel) => {
+            if (channel.chat_user) {
+              return channel.chat_user?.user1_id! === currentUserId || channel.chat_user?.user2_id! === currentUserId;
+            }
+          });
+          isTalkChannelAlready(isAlready!);
+        }
       }
     };
     getChannel();
