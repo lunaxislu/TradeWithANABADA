@@ -7,7 +7,7 @@ import EditButton from './editButton/EditButton';
 import LikeAndTalk from './likeAndTalkButton/LikeAndTalk';
 import RegistButton from './registButton/RegistButton';
 export type PropsOfLikeAndTalk = {
-  post_id?: number;
+  productInfo?: CommonProductInfoType;
   user_id?: string;
 };
 export type CommonPropsOfButtonType = {
@@ -23,7 +23,7 @@ const ButtonForm = ({ userData, productInfo, isEdit, setIsEdit }: CommonPropsOfB
   if (isEdit === false)
     return (
       <St.EditFalse>
-        <LikeAndTalk post_id={productInfo?.product_id} user_id={userData.id} />
+        <LikeAndTalk productInfo={productInfo} user_id={userData.id} />
         <EditButton userData={userData} productInfo={productInfo} isEdit={isEdit} setIsEdit={setIsEdit} />
       </St.EditFalse>
     );

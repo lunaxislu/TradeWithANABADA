@@ -645,7 +645,7 @@ export type ChannelInfo = {
   chat_created_at: string;
   user1_id: string;
   user2_id: string;
-  top_message: ChatMessage;
+  top_message: ChatMessage | null;
   invisible_count: number;
   product_status: boolean;
   product_id: number;
@@ -783,4 +783,20 @@ export const updateMessageUpdate = async (messageId: string, answer: boolean) =>
       request_answer: answer,
     })
     .eq('id', messageId); // product_id를 찾는 eq입니다.
+};
+
+export const getTalkChannel = async (id: number) => {
+  const { data } = await supabase.from('chats').select(`*, chat_user(*)`).eq('product_id', id);
+
+  return data;
+};
+
+export const createTalkChannel = async (user1_id: string, user2_id: string, product_id: number) => {
+  const { data: talkChannelInfo } = await supabase.from('chats').insert([{ product_id }]).select('*');
+
+  if (talkChannelInfo) {
+    await supabase.from('chat_user').insert([{ chat_id: talkChannelInfo[0].id, user1_id, user2_id }]);
+
+    return talkChannelInfo[0].id;
+  }
 };

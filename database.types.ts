@@ -111,8 +111,8 @@ export interface Database {
         };
         Insert: {
           chat_id?: number | null;
-          created_at?: string;
-          id?: number;
+          // created_at?: string;
+          // id?: number;
           user1_id: string;
           user2_id: string;
         };
@@ -151,16 +151,27 @@ export interface Database {
         Row: {
           created_at: string;
           id: number;
+          product_id: number;
         };
         Insert: {
-          created_at?: string;
-          id?: number;
+          // created_at?: string;
+          // id?: number;
+          product_id: number;
         };
         Update: {
           created_at?: string;
           id?: number;
+          product_id?: number;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'chats_product_id_fkey';
+            columns: ['product_id'];
+            isOneToOne: false;
+            referencedRelation: 'products';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       follow: {
         Row: {
