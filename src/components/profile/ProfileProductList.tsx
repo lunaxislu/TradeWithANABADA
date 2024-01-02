@@ -33,7 +33,6 @@ const ProfileProductList = ({ uid, params, setParamUid, setReviewModal }: Props)
   // 나의 구매 내역
   const func = async () => {
     const purchaseData = await getPurchaseLists(uid);
-    console.log('purchaseData => ', purchaseData);
   };
   func();
 

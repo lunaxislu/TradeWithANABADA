@@ -170,7 +170,7 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
           {edit ? (
             <input
               type="text"
-              maxLength={10}
+              maxLength={8}
               value={nickname}
               onChange={(e) => {
                 setNickname(e.target.value);
@@ -179,12 +179,10 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
           ) : (
             <p>{nickname}</p>
           )}{' '}
-          <St.Grade>{nickname}님의 점수</St.Grade>
         </St.Nickname>
         {uid === params ? (
           // 마이페이지의 버튼 구역
           <>
-            <St.ProfileBtn className="empty"></St.ProfileBtn>
             {edit ? (
               <>
                 <St.UploadLabel htmlFor="img">이미지 업로드</St.UploadLabel>
@@ -213,7 +211,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
           <>
             <St.ProfileBtn onClick={showFollowModal}>팔로워 목록 보기</St.ProfileBtn>
             <St.ProfileBtn onClick={onClickFollowHandler}>{followBtn ? '팔로우하기' : '팔로우 취소하기'}</St.ProfileBtn>
-            <St.ProfileBtn onClick={showReviewModal}>후기 등록하기</St.ProfileBtn>
           </>
         )}
       </St.ProfileInfo>

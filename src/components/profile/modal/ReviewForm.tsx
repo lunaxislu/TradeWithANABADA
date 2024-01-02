@@ -64,6 +64,7 @@ const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) =>
     setInput4(0);
     setInput5(0);
     setReviewModal(false);
+    // 후기 상태 false -> true로 바꿔주기
   };
 
   return (

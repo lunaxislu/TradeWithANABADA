@@ -8,9 +8,10 @@ type Props = {
   params: string | undefined;
   setFollowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
+  paramUid: string;
 };
 
-const UserInfo = ({ uid, params, setFollowModal, setReviewModal }: Props) => {
+const UserInfo = ({ uid, params, paramUid, setFollowModal, setReviewModal }: Props) => {
   return (
     <St.ProfileReviewWrapper>
       <St.ProfileBox>
@@ -19,7 +20,7 @@ const UserInfo = ({ uid, params, setFollowModal, setReviewModal }: Props) => {
       </St.ProfileBox>
       <St.ReviewBox>
         <p>거래한 고객분이 리뷰를 달아주셨어요 👍</p>
-        <ReviewChart params={params} />
+        <ReviewChart paramUid={paramUid} />
       </St.ReviewBox>
     </St.ProfileReviewWrapper>
   );

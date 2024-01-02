@@ -5,9 +5,6 @@ import { ProductData } from '../../home/HomeProductList';
 import { Button } from '../../ui/Button';
 import * as St from '../Profile.styled';
 import { ProductDataExtends } from '../ProfileProductList';
-type ReviewStatus = {
-  review_status: boolean;
-};
 
 type ListItemProps = {
   name: string;
@@ -19,7 +16,6 @@ type ListItemProps = {
 const ListItem = ({ name, list, setParamUid, setReviewModal }: ListItemProps) => {
   const navigate = useNavigate();
   const { remove, update } = useProfile();
-  console.log(list);
 
   const moveToDetailPage = (item: ProductData) => navigate(`/detail/${item.product_id}`, { state: item });
 
@@ -55,7 +51,6 @@ const ListItem = ({ name, list, setParamUid, setReviewModal }: ListItemProps) =>
                 {(() => {
                   switch (name) {
                     case 'wish':
-                      console.log('wish의', name);
                       return (
                         <Button className="wish" color="primary" onClick={() => remove(item.product_id)}>
                           삭제
@@ -66,19 +61,18 @@ const ListItem = ({ name, list, setParamUid, setReviewModal }: ListItemProps) =>
                         return (
                           <Button
                             className="purchase"
-                            color="success"
+                            color="primary"
                             onClick={() => {
                               setReviewModal(true);
                               setParamUid(item.purchased_user_id!);
                             }}
                           >
-                            후기 남기기
+                            후기 등록
                           </Button>
                         );
                       } else {
                         return <></>;
                       }
-
                     default:
                       break;
                   }
