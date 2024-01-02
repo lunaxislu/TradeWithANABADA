@@ -23,7 +23,6 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/auth/:auth" element={<Auth />} />
-
         <Route path="/" element={<Layout />}>
           <Route path="/" element={SuspenseWrapper(Home)} />
           <Route path="/write" element={SuspenseWrapper(Post)} />

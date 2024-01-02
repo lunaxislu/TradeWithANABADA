@@ -1,13 +1,42 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.div<{ $status: boolean }>`
   width: 120rem;
-  height: 80rem;
+  /* height: 80rem; */
+  position: relative;
   .product-info {
     display: flex;
     height: 100%;
     gap: 4rem;
   }
+
+  ${(props) => {
+    if (props.$status) {
+      return css`
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.8);
+          z-index: 99;
+        }
+
+        &::after {
+          content: '판매완료';
+          font-size: 9rem;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          color: #fff;
+          z-index: 100;
+          transform: translate(-50%, -50%);
+        }
+      `;
+    }
+  }}
 `;
 export const Content = styled.div`
   margin-top: 2rem;

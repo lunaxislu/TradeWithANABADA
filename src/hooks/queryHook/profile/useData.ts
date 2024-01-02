@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { getSalesList, getUserSession, getWishList } from '../../../API/supabase.api';
+import { getPurchaseLists, getSalesList, getUserSession, getWishList } from '../../../API/supabase.api';
 
 export const enum QueryKey {
   SESSION = 'session',
   WISH_LIST = 'getWishList',
   SALES_LIST = 'getSalesList',
   REVIEW_LIST = 'getReviewList',
+  GET_PURCHASE_LIST = 'getPurchaseList',
 }
 
 export const useData = () => {
@@ -33,5 +34,15 @@ export const useData = () => {
     enabled: !!userId,
   });
 
-  return { wishList, wishListLoading, salesList, salesListLoading };
+  // 구매 목록 불러오기
+  const { data: purchaseList, isLoading: purchaseListLoading } = useQuery({
+    queryKey: [QueryKey.GET_PURCHASE_LIST],
+    queryFn: async () => {
+      const session = await getUserSession();
+      const userId = session.session?.user.id;
+      return userId ? await getPurchaseLists(userId) : [];
+    },
+  });
+
+  return { wishList, wishListLoading, salesList, salesListLoading, purchaseList };
 };

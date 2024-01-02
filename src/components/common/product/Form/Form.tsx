@@ -58,6 +58,7 @@ const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
         setIsEdit(false);
       }
     }
+    console.log(getProductFromDB);
     navigate(`/detail/${getProductFromDB.data?.[0].product_id}`, { state: getProductFromDB.data?.[0] });
   };
 
