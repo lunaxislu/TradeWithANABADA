@@ -354,18 +354,22 @@ export interface Database {
           id: number;
           product_id: number | null;
           user_id: string | null;
+          review_status: boolean;
+          products: Tables<'products'>[];
         };
         Insert: {
           created_at?: string;
           id?: number;
           product_id?: number | null;
           user_id?: string | null;
+          review_status: boolean;
         };
         Update: {
           created_at?: string;
           id?: number;
           product_id?: number | null;
           user_id?: string | null;
+          review_status: boolean;
         };
         Relationships: [
           {
@@ -576,6 +580,28 @@ export interface Database {
           hash_tags: string[];
           category1_name: string;
           category2_name: string;
+        }[];
+      };
+      get_purchase_lists: {
+        Args: {
+          input_user_id: string;
+        };
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          created_at: string;
+          price: string;
+          product_img: string[];
+          user_id: string;
+          status: boolean;
+          category1_id: number;
+          like_count: number;
+          hash_tags: string[];
+          category1_name: string;
+          category2_name: string;
+          review_status: boolean;
+          purchased_user_id: string;
         }[];
       };
     };
