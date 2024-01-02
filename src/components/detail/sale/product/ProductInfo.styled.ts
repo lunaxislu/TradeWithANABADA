@@ -6,6 +6,10 @@ export const Container = styled.div`
   border: 2px solid #ffae73;
   border-radius: 1.2rem;
   padding: 2.8rem 2.2rem;
+
+  .edit-complete {
+    display: none;
+  }
 `;
 
 export const CreatedDate = styled.span`

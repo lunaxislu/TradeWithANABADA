@@ -440,6 +440,8 @@ export interface Database {
           price: string;
           product_img: string[];
           user_id: string;
+          status: boolean;
+          category1_id: number;
           like_count: number;
           hash_tags: string[];
           category1_name: string;
@@ -472,6 +474,8 @@ export interface Database {
           price: string;
           product_img: string[];
           user_id: string;
+          status: boolean;
+          category1_id: number;
           like_count: number;
           hash_tags: string[];
           category1_name: string;
@@ -490,6 +494,8 @@ export interface Database {
           price: string;
           product_img: string[];
           user_id: string;
+          status: boolean;
+          category1_id: number;
           like_count: number;
           hash_tags: string[];
           category1_name: string;
@@ -506,6 +512,8 @@ export interface Database {
           price: string;
           product_img: string[];
           user_id: string;
+          status: boolean;
+          category1_id: number;
           like_count: number;
           hash_tags: string[];
           category1_name: string;
@@ -524,11 +532,12 @@ export interface Database {
           price: string;
           product_img: string[];
           user_id: string;
+          status: boolean;
+          category1_id: number;
           like_count: number;
           hash_tags: string[];
           category1_name: string;
           category2_name: string;
-          status: boolean;
         }[];
       };
       get_user_channel: {
@@ -565,6 +574,8 @@ export interface Database {
           price: string;
           product_img: string[];
           user_id: string;
+          status: boolean;
+          category1_id: number;
           like_count: number;
           hash_tags: string[];
           category1_name: string;

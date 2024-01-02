@@ -646,7 +646,7 @@ export const getMainCategory = async () => {
 };
 
 export const getSubCategory = async (id: number) => {
-  let { data: categories2, error } = await supabase.from('categories2').select('name').eq('category1_id', id);
+  let { data: categories2, error } = await supabase.from('categories2').select('name,id').eq('category1_id', id);
   if (error) {
     console.log('subCategory', error);
   }

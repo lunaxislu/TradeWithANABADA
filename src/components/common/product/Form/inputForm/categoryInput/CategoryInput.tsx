@@ -9,6 +9,7 @@ type MainCategoryType = {
 
 type SubCategoryType = {
   name: string;
+  id: number;
 }[];
 /**
  *
@@ -33,6 +34,7 @@ const CategoryInput = () => {
       setSubCategory(result!);
     });
   }, [mainIndex]);
+
   return (
     <St.Container>
       <select
@@ -46,7 +48,7 @@ const CategoryInput = () => {
         <option value="">선택하기</option>
         {category?.map((option, idx) => {
           return (
-            <option key={option.id} value={idx + 1}>
+            <option key={option.id} value={option.id}>
               {option.name}
             </option>
           );
@@ -65,7 +67,7 @@ const CategoryInput = () => {
           <option value="">선택하기</option>
 
           {subCategory?.map((subOption, idx) => {
-            return <option value={idx + 1}>{subOption.name}</option>;
+            return <option value={subOption.id}>{subOption.name}</option>;
           })}
         </select>
       )}

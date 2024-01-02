@@ -23,11 +23,10 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/auth/:auth" element={<Auth />} />
-
         <Route path="/" element={<Layout />}>
           <Route path="/" element={SuspenseWrapper(Home)} />
-          <Route path="/post" element={SuspenseWrapper(Post)} />
-          <Route path="/detail" element={SuspenseWrapper(Detail)} />
+          <Route path="/write" element={SuspenseWrapper(Post)} />
+          <Route path="/detail/:id" element={SuspenseWrapper(Detail)} />
           <Route path="/product" element={SuspenseWrapper(Product)} />
           <Route path="/profile/:id" element={SuspenseWrapper(Profile)} />
         </Route>

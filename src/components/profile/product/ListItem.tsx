@@ -4,14 +4,13 @@ import { displayCreateAt } from '../../../utils/date';
 import { ProductData } from '../../home/HomeProductList';
 import { Button } from '../../ui/Button';
 import * as St from '../Profile.styled';
-import { ProductDataExtends } from '../ProfileProductList';
 type ReviewStatus = {
   review_status: boolean;
 };
 
 type ListItemProps = {
   name: string;
-  list: ProductDataExtends[];
+  list: ProductData[];
 };
 
 const ListItem = ({ name, list }: ListItemProps) => {

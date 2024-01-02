@@ -18,7 +18,7 @@ const buttonData = [
   { label: '나의 구매 내역', state: 'purchase' },
 ];
 
-export type ProductDataExtends = ProductData & { status: boolean };
+// export type ProductDataExtends = ProductData & { status: boolean };
 export type ProductStatus = 'wish' | 'onSale' | 'soldOut' | 'purchase';
 
 const ProfileProductList = ({ uid, params }: Props) => {
@@ -61,7 +61,7 @@ const ProfileProductList = ({ uid, params }: Props) => {
       <St.ListWrapper>
         <ul>
           {(() => {
-            const wishListExtends: ProductDataExtends[] = wishList!.map((item) => ({
+            const wishListExtends: ProductData[] = wishList!.map((item) => ({
               ...item,
               status: false,
             }));

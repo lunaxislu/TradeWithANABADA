@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ProfileWrapper = styled.div`
   box-sizing: border-box;
-  margin: 0 auto;
+  margin: 3rem auto;
   padding: 3rem;
   border: 0.2rem solid #dcdcdc;
   height: 100vh;
@@ -157,7 +157,6 @@ export const ProductListArea = styled.div`
   }
 `;
 
-// 예성 추가
 export const ListTitle = styled.div`
   display: flex;
   font-size: 2rem;

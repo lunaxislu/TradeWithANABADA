@@ -11,6 +11,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <Router />
+
         <GlobalStyle />
       </ThemeProvider>
     </QueryClientProvider>
