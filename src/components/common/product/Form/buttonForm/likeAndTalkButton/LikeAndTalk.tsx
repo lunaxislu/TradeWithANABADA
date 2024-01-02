@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import {
   cancelLike,
   createTalkChannel,
@@ -18,9 +19,13 @@ const LikeAndTalk = ({ productInfo, user_id }: PropsOfLikeAndTalk) => {
   const likeIdRef = useRef<number | null>(null);
   const validRef = useRef(false);
   const [talkChannelAlready, isTalkChannelAlready] = useState<boolean>(false);
-
+  const { showBoundary } = useErrorBoundary();
   const createTalkChannelHandler = async () => {
-    const channelId = await createTalkChannel(productInfo?.user_id!, user_id!, productInfo?.product_id!);
+    try {
+      const channelId = await createTalkChannel(productInfo?.user_id!, user_id!, productInfo?.product_id!);
+    } catch (error) {
+      showBoundary(error);
+    }
   };
 
   const openTalkChannelHandler = async () => {
@@ -36,28 +41,36 @@ const LikeAndTalk = ({ productInfo, user_id }: PropsOfLikeAndTalk) => {
   // 전체 채팅방 정보 가져오기 join해서 chat, chat_uesrs
   useEffect(() => {
     const getChannel = async () => {
-      if (productInfo) {
-        const allChannel = await getTalkChannel(productInfo?.product_id);
-        const isAlready = allChannel?.some((channel) => {
-          return channel.chat_user[0].user1_id! === user_id! || channel.chat_user[0]?.user2_id! === user_id!;
-        });
+      try {
+        if (productInfo) {
+          const allChannel = await getTalkChannel(productInfo?.product_id);
+          const isAlready = allChannel?.some((channel) => {
+            return channel.chat_user[0].user1_id! === user_id! || channel.chat_user[0]?.user2_id! === user_id!;
+          });
 
-        isTalkChannelAlready(isAlready!);
+          isTalkChannelAlready(isAlready!);
+        }
+      } catch (error) {
+        showBoundary(error);
       }
+      getChannel();
     };
-    getChannel();
   }, []);
 
   useEffect(() => {
-    if (user_id && productInfo?.product_id) {
-      findLike(user_id, productInfo?.product_id).then((result) => {
-        if (result?.[0]) {
-          setIsLike(true);
-          likeIdRef.current = result?.[0].id!;
-        }
-      });
+    try {
+      if (user_id && productInfo?.product_id) {
+        findLike(user_id, productInfo?.product_id).then((result) => {
+          if (result?.[0]) {
+            setIsLike(true);
+            likeIdRef.current = result?.[0].id!;
+          }
+        });
+      }
+      userIdRef.current = user_id;
+    } catch (error) {
+      showBoundary(error);
     }
-    userIdRef.current = user_id;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user_id]);
@@ -70,10 +83,14 @@ const LikeAndTalk = ({ productInfo, user_id }: PropsOfLikeAndTalk) => {
         // validRef를 준 이유는 좋아요가 있는 상태에서 수정하기로 컴포넌트 전환되면 없는 상태가 되고 좋아요가 없으면 그 반대가 되므로 넣어줬습니다.
 
         if (!validRef.current) return;
-        if (likeRef.current && likeIdRef.current === null) {
-          registLike(userIdRef.current, productInfo?.product_id);
-        } else if (!likeRef.current && likeIdRef.current) {
-          cancelLike(productInfo?.product_id);
+        try {
+          if (likeRef.current && likeIdRef.current === null) {
+            registLike(userIdRef.current, productInfo?.product_id);
+          } else if (!likeRef.current && likeIdRef.current) {
+            cancelLike(productInfo?.product_id);
+          }
+        } catch (error) {
+          showBoundary(error);
         }
       }
     };

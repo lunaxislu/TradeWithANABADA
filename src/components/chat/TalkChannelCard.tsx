@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { Tables } from '../../../database.types';
 import { ChannelInfo, getUserInfo, supabase } from '../../API/supabase.api';
 import { useTalkContext } from '../../contexts/TalkContext';
@@ -26,6 +27,7 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
   const [otherUserInPage, isOtherUserInPage] = useState<boolean>(false);
   const [otherUser, setOtherUser] = useState<Tables<'users'>>(initialUser);
 
+  const { showBoundary } = useErrorBoundary();
   useEffect(() => {
     // presence 정보 저장
     const userStatus = {
@@ -53,17 +55,29 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
         if (status !== 'SUBSCRIBED') {
           return;
         }
-        await trackChannel.track(userStatus);
+        try {
+          await trackChannel.track(userStatus);
+        } catch (error) {
+          showBoundary(error);
+        }
       });
 
     const getOtherUserInfo = async () => {
       if (channel.user1_id === currentUserInfo.session?.user.id) {
-        const otherUserData = await getUserInfo(channel.user2_id);
-        if (otherUserData) setOtherUser(otherUserData[0]);
+        try {
+          const otherUserData = await getUserInfo(channel.user2_id);
+          if (otherUserData) setOtherUser(otherUserData[0]);
+        } catch (error) {
+          showBoundary(error);
+        }
       }
       if (channel.user2_id === currentUserInfo.session?.user.id) {
-        const otherUserData = await getUserInfo(channel.user1_id);
-        if (otherUserData) setOtherUser(otherUserData[0]);
+        try {
+          const otherUserData = await getUserInfo(channel.user1_id);
+          if (otherUserData) setOtherUser(otherUserData[0]);
+        } catch (error) {
+          showBoundary(error);
+        }
       }
     };
     getOtherUserInfo();

@@ -1,12 +1,19 @@
 import { useEffect } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { useTalkContext } from '../../contexts/TalkContext';
 import TalkChannelCard from './TalkChannelCard';
 import * as St from './chat.styled';
 
 const TalkChannelList = () => {
   const { updateChannelStatus, userAllChannelInfo, currentChannel } = useTalkContext();
+
+  const { showBoundary } = useErrorBoundary();
   useEffect(() => {
-    updateChannelStatus();
+    try {
+      updateChannelStatus();
+    } catch (error) {
+      showBoundary(error);
+    }
   }, []);
 
   return (

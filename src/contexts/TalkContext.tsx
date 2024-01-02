@@ -86,8 +86,12 @@ const TalkContextProvider = ({ children }: React.PropsWithChildren) => {
   // func: 정보가 업데이트 될 때마다 채팅방 메시지를 업데이트 하는 함수
   const getCurrentChannelAllMessage = async () => {
     // 현재유저에 따른 전체 채팅방 정보 가져오기
-    const currentChannelAllMessage = await getSelectChatMessages(currentChannel);
-    setTalkMessages(currentChannelAllMessage);
+    try {
+      const currentChannelAllMessage = await getSelectChatMessages(currentChannel);
+      setTalkMessages(currentChannelAllMessage);
+    } catch (error) {
+      throw error;
+    }
   };
 
   // func: 전체 채팅방에서 읽지않은 메시지 개수를 저장하는 함수
