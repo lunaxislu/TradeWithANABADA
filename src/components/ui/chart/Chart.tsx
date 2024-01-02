@@ -1,8 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Tables } from '../../../../database.types';
 import { getReviews } from '../../../API/supabase.api';
+import { QueryKey } from '../../../hooks/queryHook/profile/useData';
 import * as St from './Chart.styled';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -21,31 +22,37 @@ type Props = {
 };
 
 export const ReviewChart = ({ params }: Props) => {
-  const [reviews, setReviews] = useState<Tables<'review'>[]>([]);
-  // console.log(reviews);
-  const reviewData = reviews
-    ? reviews.map((review) => {
-        const data: Record<string, number | undefined> = {};
-        for (let i = 0; i < DEFAULT_LABELS.length; i++) {
-          const label = DEFAULT_LABELS[i];
-          const value = Object.values(review)[i + 2];
-          data[label] = typeof value === 'number' ? value : undefined;
-        }
-        return data;
-      })
-    : [];
-  const fetchReviews = async () => {
-    // const session = await getUserData();
-    // console.log(session, session!.id);
-    // if (!session) return alert('로그인이 필요합니다.');
-    const review = await getReviews(params as string);
-    console.log(review.data[0]);
-    setReviews(review.data);
-  };
+  // 리뷰 불러오기
+  const { data: reviewList, isLoading: reviewLoading } = useQuery({
+    queryKey: [QueryKey.GET_REVIEW_LIST], // 수정
+    queryFn: async () => {
+      if (params) {
+        return await getReviews(params);
+      } else {
+        return [];
+      }
+    },
+  });
+
+  const [reviews, setReviews] = useState<typeof reviewList>([]);
 
   useEffect(() => {
-    fetchReviews();
-  }, []);
+    setReviews(reviewList);
+  }, [reviewList]);
+  console.log('reviewList: ', reviews);
+
+  const reviewData =
+    reviews && 'data' in reviews && reviews.data.length > 0
+      ? reviews.data.map((review) => {
+          const data: Record<string, number | undefined> = {};
+          for (let i = 0; i < DEFAULT_LABELS.length; i++) {
+            const label = DEFAULT_LABELS[i];
+            const value = Object.values(review)[i + 2];
+            data[label] = typeof value === 'number' ? value : undefined;
+          }
+          return data;
+        })
+      : [];
 
   const options = {
     indexAxis: 'y' as const,
