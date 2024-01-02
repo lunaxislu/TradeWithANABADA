@@ -47,7 +47,6 @@ const CategoryInput = () => {
       >
         <option value="">선택하기</option>
         {category?.map((option, idx) => {
-          console.log(option.id);
           return (
             <option key={option.id} value={option.id}>
               {option.name}
