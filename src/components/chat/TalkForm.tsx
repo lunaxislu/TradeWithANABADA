@@ -36,6 +36,7 @@ const TalkForm = () => {
   const [selectImage, setSelectImage] = useState<File[] | null>(null);
 
   const fileRef = useRef<HTMLInputElement>(null);
+  const currentChannelInfo = userAllChannelInfo.find((channelInfo) => channelInfo.chat_id === currentChannel)!;
 
   //  메세지 보내기 (type=message/image)
   const sendMessageHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -94,8 +95,7 @@ const TalkForm = () => {
   };
 
   const getOtherUserInfo = async () => {
-    const currentChannelInfo = userAllChannelInfo.find((channelInfo) => channelInfo.chat_id === currentChannel)!;
-
+    // currentChannelInfo.product_status
     if (currentChannelInfo?.user1_id === currentUserInfo.session?.user.id) {
       const userData = await getUserInfo(currentChannelInfo?.user2_id);
       setOtherUserInfo(userData![0]);
@@ -185,6 +185,8 @@ const TalkForm = () => {
         <h2>{otherUserInfo.nickname}</h2>
       </St.TalkFormUserInfo>
 
+      {currentChannelInfo.product_status && <span>물물교환이 완료된 상품입니다.</span>}
+
       <ul ref={messageListRef}>
         {talkMessages?.map((talk) => {
           if (talk.author_id === otherUserInfo.id) {
@@ -198,9 +200,11 @@ const TalkForm = () => {
       </ul>
 
       <St.InputForm onSubmit={sendMessageHandler}>
-        <button type="button" onClick={sendRequestMessageHandler}>
-          물품교환 신청하기
-        </button>
+        {!currentChannelInfo.product_status && (
+          <button type="button" onClick={sendRequestMessageHandler}>
+            물품교환 신청하기
+          </button>
+        )}
 
         <St.InputArea>
           <label htmlFor="file-selector">

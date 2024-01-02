@@ -75,6 +75,11 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
         changeCurrentChannel(channel.chat_id);
       }}
     >
+      {channel.product_status && (
+        <St.DoneProduct>
+          <span>거래가 종료된 상품입니다.</span>
+        </St.DoneProduct>
+      )}
       <figure>
         <img src={otherUser.avatar_img!} />
       </figure>

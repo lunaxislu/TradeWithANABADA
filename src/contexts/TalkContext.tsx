@@ -11,6 +11,7 @@ type Messages = {
   visible: boolean;
   type: string;
   img_src: string;
+  request_answer: boolean;
 };
 
 type initStateType = {
