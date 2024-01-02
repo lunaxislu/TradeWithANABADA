@@ -27,6 +27,7 @@ type Props = {
 const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) => {
   const imgRef = useRef<HTMLInputElement>(null);
   const [edit, setEdit] = useState(false);
+  const [userSessionNickname, setUserSessionNickname] = useState('');
   const [img, setImg] = useState(defaultImg);
   const [uploadFile, setUploadFile] = useState<File | undefined>();
   const [nickname, setNickname] = useState('');
@@ -39,6 +40,7 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
     if (session && session.session) {
       const sessionNickname = session.session.user.user_metadata.full_name;
       const sessionProfileImg = session.session.user.user_metadata.avatar_img;
+      setUserSessionNickname(sessionNickname);
       setNickname(sessionNickname);
       setImg(sessionProfileImg);
     }
@@ -71,17 +73,30 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
     }
   };
   // 닉네임 업데이트
-  const updateNickname = async () => {
-    updateUserNickname(nickname);
-    updateTableNickname(uid, nickname);
+  const updateNickname = () => {
+    // 변경사항이 있는 경우에만 업뎃하고 아닌 경우엔 리턴;
+    if (userSessionNickname === nickname) {
+      alert('프로필 변경사항이 없습니다.');
+      return;
+    } else {
+      updateUserNickname(nickname);
+      updateTableNickname(uid, nickname);
+      return;
+    }
   };
   // 프로필 이미지 업데이트
   const updateProfileImg = async () => {
-    deleteStorageImage(uid);
-    uploadStorageProfileImg(uid, uploadFile as File);
-    const publicUrl = await imgPublicUrl(uid);
-    insertProfileImg(uid, publicUrl.publicUrl);
-    updateUserProfile(publicUrl.publicUrl);
+    if (imgRef.current === null) {
+      return;
+    } else {
+      deleteStorageImage(uid);
+      uploadStorageProfileImg(uid, uploadFile as File);
+      const publicUrl = await imgPublicUrl(uid);
+      insertProfileImg(uid, publicUrl.publicUrl);
+      // updateFollowTargetUser(uid, nickname, publicUrl.publicUrl);
+      updateUserProfile(publicUrl.publicUrl);
+      return;
+    }
   };
   // 프로필 변경하기 핸들러
   const onClickChangeBtnHandler = () => {
