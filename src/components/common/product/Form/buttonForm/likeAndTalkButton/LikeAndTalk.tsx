@@ -7,12 +7,14 @@ import {
   getUserSession,
   registLike,
 } from '../../../../../../API/supabase.api';
+import { useMainContext } from '../../../../../../contexts/MainContext';
 import { ReactComponent as Heart } from '../../../../../../styles/assets/heart.svg';
 import { ReactComponent as Like } from '../../../../../../styles/assets/unlike.svg';
 import { PropsOfLikeAndTalk } from '../ButtonForm';
 import * as St from './LikeAndTalk.styled';
 
 const LikeAndTalk = ({ productInfo, user_id }: PropsOfLikeAndTalk) => {
+  const { openTalk } = useMainContext();
   const [isLike, setIsLike] = useState(false);
   const likeRef = useRef(isLike);
   const userIdRef = useRef(user_id);
@@ -21,17 +23,17 @@ const LikeAndTalk = ({ productInfo, user_id }: PropsOfLikeAndTalk) => {
   const [talkChannelAlready, isTalkChannelAlready] = useState<boolean>(false);
 
   const createTalkChannelHandler = async () => {
-    const channelId = await createTalkChannel(productInfo?.user_id!, user_id!, productInfo?.product_id!);
+    await createTalkChannel(productInfo?.user_id!, user_id!, productInfo?.product_id!);
+    openTalk();
   };
 
   const openTalkChannelHandler = async () => {
-    console.log(productInfo?.user_id, user_id, productInfo?.product_id);
-    const allChannel = await getTalkChannel(productInfo?.product_id!);
-    const targetChannelInfo = allChannel?.find((channel) => {
-      if (channel.chat_user) return channel.chat_user.user1_id === user_id || channel.chat_user.user2_id === user_id;
-    });
-
-    const channelId = targetChannelInfo?.id;
+    // const allChannel = await getTalkChannel(productInfo?.product_id!);
+    // const targetChannelInfo = allChannel?.find((channel) => {
+    //   if (channel.chat_user) return channel.chat_user.user1_id === user_id || channel.chat_user.user2_id === user_id;
+    // });
+    // targetChannelInfo?.product_id
+    openTalk();
   };
 
   // 전체 채팅방 정보 가져오기 join해서 chat, chat_uesrs

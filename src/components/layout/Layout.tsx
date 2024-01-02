@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+import MainContextProvider from '../../contexts/MainContext';
 import { Footer, Header } from './';
 
 const EmptyContainer = styled.div`
@@ -15,11 +16,13 @@ const EmptyContainer = styled.div`
 const Layout = () => {
   return (
     <>
-      <Header />
-      <EmptyContainer>
-        <Outlet />
-      </EmptyContainer>
-      <Footer />
+      <MainContextProvider>
+        <Header />
+        <EmptyContainer>
+          <Outlet />
+        </EmptyContainer>
+        <Footer />
+      </MainContextProvider>
     </>
   );
 };

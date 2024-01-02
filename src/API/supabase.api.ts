@@ -828,8 +828,6 @@ export const createTalkChannel = async (user1_id: string, user2_id: string, prod
       .insert([{ author_id: user1_id, chat_id: talkChannelInfo[0].id, content: '', id: 'dummy', type: 'message' }]);
 
     await supabase.from('chat_messages').delete().eq('id', 'dummy');
-
-    return talkChannelInfo[0].id;
   }
 };
 
