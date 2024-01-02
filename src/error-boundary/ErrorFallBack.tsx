@@ -4,7 +4,13 @@ import { postSlackApiWithError } from '../API/slack.api';
 import { Button } from '../components/ui/Button';
 import * as St from './withErrorBound.styled';
 
+/**
+ * 코드 분할을 하지 못해 너무 아쉽습니다.. by 최문길...
+ * @param param0
+ * @returns
+ */
 export const ErrorFallBack = ({ error, resetErrorBoundary }: FallbackProps) => {
+  console.log(error.statusCode);
   if (error.name === 'AuthApiError') {
     return (
       <St.ErrorUi>
@@ -39,6 +45,23 @@ export const ErrorFallBack = ({ error, resetErrorBoundary }: FallbackProps) => {
       </St.ErrorUi>
     );
   }
+  if (error.statusCode) {
+    return (
+      <St.ErrorUi>
+        <St.Wrapper>
+          <div>서버와 연결중...</div>
+          <div>{error.message}라는 문제가 발생하였습니다.</div>
+          <p>
+            음.. 저희쪽 문제내요
+            <br /> 이건.... 잠시만 기다려주시면 담당자가 호다다닥 해결하겠습니다. <br /> 그때까지 참아주세여 ㅜㅜ
+          </p>
+          <Button color="warning" onClick={() => resetErrorBoundary()}>
+            홈으로 이동
+          </Button>
+        </St.Wrapper>
+      </St.ErrorUi>
+    );
+  }
   return (
     <St.ErrorUi role="alert">
       <St.Wrapper>
@@ -55,8 +78,8 @@ export const ErrorFallBack = ({ error, resetErrorBoundary }: FallbackProps) => {
 
 export const logError = async (error: Error, info: ErrorInfo) => {
   // info(객체) 에 {componentStack}이 있는데 에러가 발생한 컴포넌트의 stack을 나타냅니다. componentStack의 타입은 string
-  console.log(info);
-  console.log(error);
+  // console.log(info);
+  // console.log(error);
 
   await postSlackApiWithError(error, info);
 };

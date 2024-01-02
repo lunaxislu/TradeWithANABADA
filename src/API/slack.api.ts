@@ -16,12 +16,29 @@ export const postSlackApiWithError = async (error: SlackWithError, info: ErrorIn
   console.log(error);
   console.log(info);
   console.log(errorTarget);
-  if (error.code) {
+  if (error.code || error.statusCode) {
     const alertErrorText = JSON.stringify({
       text:
         '서버와의 통신중 \n 에러 : ' +
         error.message +
         ` 발생했습니다. \n Component는 \n ${errorTarget}에서 발생했습니다. \n 에러 Code = ${error.code} 입니다.
+        `,
+    });
+
+    await axios({
+      method: 'post',
+      url: process.env.REACT_APP_SLACK_URL,
+      // json 형태로 data를 입력해야 합니다.
+      // data: `{"text":"${error.message} 발생했습니다. \n Component는 \n ${errorTarget}에서 발생했습니다."}`,
+      data: `${alertErrorText} `,
+    });
+  }
+  if (error.statusCode) {
+    const alertErrorText = JSON.stringify({
+      text:
+        '서버와의 통신중에... \n 에러 : ' +
+        error.message +
+        ` 발생했습니다. \n \n 네 저희쪽문제입니다. ㅜㅜ \n Component는 \n ${errorTarget}에서 발생했습니다. \n 에러 Code = ${error.statusCode} 입니다.
         `,
     });
 

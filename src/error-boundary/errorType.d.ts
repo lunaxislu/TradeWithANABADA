@@ -14,3 +14,5 @@ type PostgrestError = {
 type ErrorInComponent = {
   stack: string;
 };
+
+type ClientError = { error: 'invalid_mime_type'; message: 'mime type not supported'; statusCode: '422' };
