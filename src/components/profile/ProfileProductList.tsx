@@ -37,8 +37,6 @@ const ProfileProductList = ({ uid, params, setParamUid, setReviewModal }: Props)
     try {
       const purchaseData = await getPurchaseLists(uid);
     } catch (error) {
-      console.log('dffff');
-      console.log(error);
       showBoundary(error);
     }
   };

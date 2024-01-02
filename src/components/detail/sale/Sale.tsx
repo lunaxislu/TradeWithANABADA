@@ -38,7 +38,6 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
       })
       .catch((error) => {
         showBoundary(error);
-        console.log(error);
       });
   }, []);
   /**

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { Link } from 'react-router-dom';
 import { getLatestProducts, getPopularProducts } from '../../API/supabase.api';
 import ProductCard from '../ui/productCard/ProductCard';
@@ -42,10 +43,14 @@ const productSectionInfos: Record<string, ProductSectionInfoType> = {
 
 const HomeProductList = ({ type }: ProductListProps) => {
   const [products, setProducts] = useState<ProductData[]>();
-
+  const { showBoundary } = useErrorBoundary();
   const getProductsData = async () => {
-    const data = await productSectionInfos[type].getProductHandler(0);
-    setProducts(data);
+    try {
+      const data = await productSectionInfos[type].getProductHandler(0);
+      setProducts(data);
+    } catch (error) {
+      showBoundary(error);
+    }
   };
 
   useEffect(() => {
