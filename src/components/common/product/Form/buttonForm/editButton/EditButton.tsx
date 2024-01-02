@@ -14,7 +14,7 @@ const EditButton = ({ userData, productInfo, isEdit, setIsEdit }: CommonPropsOfB
     );
 
   return (
-    <St.Container>
+    <St.Container className="edit-complete">
       {userData?.id === productInfo?.user_id && (
         <St.EditButton type="submit" $isEdit={isEdit as boolean}>
           수정완료
