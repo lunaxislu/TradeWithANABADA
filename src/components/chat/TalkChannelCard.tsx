@@ -88,8 +88,8 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
 
         {/* preview */}
         <div>
-          <span>{channel.messages[0].content}</span>
-          <span>{displayCreateAt(channel.messages[0].message_created_at)}</span>
+          <span>{channel.top_message.content}</span>
+          <span>{displayCreateAt(channel.top_message.message_created_at)}</span>
         </div>
       </div>
       {!!channel.invisible_count && <St.InvisibleMessage>{channel.invisible_count}</St.InvisibleMessage>}

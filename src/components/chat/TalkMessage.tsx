@@ -1,4 +1,5 @@
-import { ChatMessage } from '../../API/supabase.api';
+import { ChatMessage, updateOnSaleToSoldOut } from '../../API/supabase.api';
+import { useTalkContext } from '../../contexts/TalkContext';
 import * as St from './chat.styled';
 
 type style = { 'x-position': string; color: string };
@@ -7,6 +8,8 @@ type TalkMessageProps = {
   $style: style;
 };
 const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
+  const { userAllChannelInfo } = useTalkContext();
+
   const convertDate = () => {
     const currentDate = new Date();
 
@@ -31,6 +34,12 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
     } ${Math.floor(hour / 10) ? hour : `0${hour}`}:${Math.floor(minutes / 10) ? minutes : `0${minutes}`}:${
       Math.floor(seconds / 10) ? seconds : `0${seconds}`
     }`;
+  };
+
+  const acceptTradeHandler = () => {
+    const currentChannelInfo = userAllChannelInfo.find((channelInfo) => channelInfo.chat_id === chat.current_chat_id)!;
+    console.log(currentChannelInfo);
+    updateOnSaleToSoldOut(currentChannelInfo.product_id);
   };
 
   switch (chat.type) {
@@ -59,7 +68,7 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
         <St.TalkMessage key={chat.message_id} $subStyle={$style}>
           {!chat.visible && $style['x-position'] === 'end' && <St.VisibleChecker>1</St.VisibleChecker>}
           <span>물품교환을 신청하였습니다.</span>
-          <button>수락</button>
+          <button onClick={acceptTradeHandler}>수락</button>
           <button>취소</button>
           <St.MessageDate>{convertDate()}</St.MessageDate>
         </St.TalkMessage>
