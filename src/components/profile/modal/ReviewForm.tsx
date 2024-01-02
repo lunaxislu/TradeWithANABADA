@@ -16,7 +16,6 @@ const ReviewForm = ({ params, reviewModal, setReviewModal }: Props) => {
   const [input4, setInput4] = useState(0);
   const [input5, setInput5] = useState(0);
   const [data, setData] = useState<Tables<'review'>[] | null>();
-  console.log(input1, input2, input3, input4, input5);
 
   const reviewArr = [
     '거래가 수월해요',
@@ -28,11 +27,9 @@ const ReviewForm = ({ params, reviewModal, setReviewModal }: Props) => {
 
   const onSubmitReviewHandler = async () => {
     const checkUser = await getReviews(params as string);
-    console.log(checkUser.data.length);
     if (checkUser.data.length > 0) {
       const filteredData = await filteredReview(params as string);
       setData(filteredData);
-      console.log(data);
       if (data) {
         const a = data[0].res_fast;
         const b = data[0].kind;

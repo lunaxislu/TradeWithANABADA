@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { getSalesList, getUserSession, getWishList } from '../../../API/supabase.api';
 
-export enum QueryKey {
+export const enum QueryKey {
   GET_WISH_LIST = 'getWishList',
   GET_SALES_LIST = 'getSalesList',
+  GET_REVIEW_LIST = 'getReviewList',
 }
 
 export const useData = () => {
