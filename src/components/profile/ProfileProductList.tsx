@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { getPurchaseLists } from '../../API/supabase.api';
 import { useData } from '../../hooks/queryHook/profile/useData';
+import { ProductData } from '../home/HomeProductList';
 import * as St from './Profile.styled';
 import ListButton from './product/ListButton';
 import ListItem from './product/ListItem';
@@ -8,6 +9,8 @@ import ListItem from './product/ListItem';
 type Props = {
   uid: string;
   params: string | undefined;
+  setParamUid: React.Dispatch<React.SetStateAction<string>>;
+  setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const buttonData = [
@@ -17,10 +20,10 @@ const buttonData = [
   { label: '나의 구매 내역', state: 'purchase' },
 ];
 
-// export type ProductDataExtends = ProductData & { status: boolean };
+export type ProductDataExtends = ProductData & { status: boolean; review_status?: boolean; purchased_user_id?: string };
 export type ProductStatus = 'wish' | 'onSale' | 'soldOut' | 'purchase';
 
-const ProfileProductList = ({ uid, params }: Props) => {
+const ProfileProductList = ({ uid, params, setParamUid, setReviewModal }: Props) => {
   const [list, setList] = useState<ProductStatus>('wish');
   const { wishList, wishListLoading, salesList, salesListLoading, purchaseList } = useData();
   // 판매 중
@@ -71,7 +74,14 @@ const ProfileProductList = ({ uid, params }: Props) => {
               case 'soldOut':
                 return <ListItem name={list} list={soldOutList!} />;
               case 'purchase':
-                return <ListItem name={list} list={purchaseList!} />;
+                return (
+                  <ListItem
+                    name={list}
+                    list={purchaseList!}
+                    setParamUid={setParamUid}
+                    setReviewModal={setReviewModal}
+                  />
+                );
               default:
                 return null;
             }

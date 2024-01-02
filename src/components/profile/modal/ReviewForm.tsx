@@ -7,9 +7,10 @@ type Props = {
   params: string | undefined;
   reviewModal: boolean;
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
+  paramUid: string;
 };
 
-const ReviewForm = ({ params, reviewModal, setReviewModal }: Props) => {
+const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) => {
   const [input1, setInput1] = useState(0);
   const [input2, setInput2] = useState(0);
   const [input3, setInput3] = useState(0);
@@ -37,7 +38,7 @@ const ReviewForm = ({ params, reviewModal, setReviewModal }: Props) => {
         const d = data[0].same_product;
         const e = data[0].good_time;
         await updateReview({
-          params: params!,
+          params: paramUid!,
           i1: a! + input1,
           i2: b! + input2,
           i3: c! + input3,
@@ -48,7 +49,7 @@ const ReviewForm = ({ params, reviewModal, setReviewModal }: Props) => {
       console.log('user정보가 이미 있어 업데이트가 되었습니다.');
     } else {
       await insertReview({
-        params: params!,
+        params: paramUid!,
         i1: input1,
         i2: input2,
         i3: input3,

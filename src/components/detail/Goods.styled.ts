@@ -17,4 +17,5 @@ export const Category = styled.span`
   top: -5rem;
   left: 0rem;
   font-size: 1.6rem;
+  cursor: pointer;
 `;
