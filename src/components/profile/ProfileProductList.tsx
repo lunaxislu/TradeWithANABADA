@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useData } from '../../hooks/queryHook/profile/useData';
-import { ProductData } from '../home/HomeProductList';
 import * as St from './Profile.styled';
 import ListButton from './product/ListButton';
 import ListItem from './product/ListItem';
@@ -53,14 +52,14 @@ const ProfileProductList = ({ uid, params }: Props) => {
       <St.ListWrapper>
         <ul>
           {(() => {
-            const wishListExtends: ProductData[] = wishList!.map((item) => ({
-              ...item,
-              status: false,
-            }));
+            // const wishListExtends: ProductData[] = wishList!.map((item) => ({
+            //   ...item,
+            //   status: false,
+            // }));
 
             switch (list) {
               case 'wish':
-                return <ListItem name={list} list={wishListExtends!} />;
+                return <ListItem name={list} list={wishList!} />;
               case 'onSale':
                 return <ListItem name={list} list={onSaleList!} />;
               case 'soldOut':

@@ -24,7 +24,7 @@ type Props = {
 export const ReviewChart = ({ params }: Props) => {
   // 리뷰 불러오기
   const { data: reviewList, isLoading: reviewLoading } = useQuery({
-    queryKey: [QueryKey.GET_REVIEW_LIST], // 수정
+    queryKey: [QueryKey.REVIEW_LIST], // 수정
     queryFn: async () => {
       if (params) {
         return await getReviews(params);
@@ -39,7 +39,6 @@ export const ReviewChart = ({ params }: Props) => {
   useEffect(() => {
     setReviews(reviewList);
   }, [reviewList]);
-  console.log('reviewList: ', reviews);
 
   const reviewData =
     reviews && 'data' in reviews && reviews.data.length > 0
