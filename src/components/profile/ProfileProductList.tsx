@@ -49,6 +49,9 @@ const ProfileProductList = ({ uid, params }: Props) => {
               state={button.state as ProductStatus}
               currentList={list}
               onClick={setList}
+              wishListData={wishList!}
+              onSaleListData={onSaleList!}
+              soldOutListData={soldOutList!}
             />
           ))
         ) : (
@@ -60,11 +63,6 @@ const ProfileProductList = ({ uid, params }: Props) => {
       <St.ListWrapper>
         <ul>
           {(() => {
-            // const wishListExtends: ProductData[] = wishList!.map((item) => ({
-            //   ...item,
-            //   status: false,
-            // }));
-
             switch (list) {
               case 'wish':
                 return <ListItem name={list} list={wishList!} />;

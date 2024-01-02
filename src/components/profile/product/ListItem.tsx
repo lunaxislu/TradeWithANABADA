@@ -4,9 +4,6 @@ import { displayCreateAt } from '../../../utils/date';
 import { ProductData } from '../../home/HomeProductList';
 import { Button } from '../../ui/Button';
 import * as St from '../Profile.styled';
-type ReviewStatus = {
-  review_status: boolean;
-};
 
 type ListItemProps = {
   name: string;
@@ -55,12 +52,6 @@ const ListItem = ({ name, list }: ListItemProps) => {
                       return (
                         <Button color="primary" onClick={() => remove(item.product_id)}>
                           삭제
-                        </Button>
-                      );
-                    case 'onSale':
-                      return (
-                        <Button color="success" onClick={() => update(item.product_id)}>
-                          완료
                         </Button>
                       );
                     case 'purchase':
