@@ -20,7 +20,6 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
     const day = `${dates.getFullYear()}${month}${date}`;
     const currentDay = `${currentDate.getFullYear()}${currentDate.getMonth() + 1}${currentDate.getDate()}`;
 
-    console.log(day, currentDay);
     if (day === currentDay) {
       return `${Math.floor(hour / 10) ? hour : `0${hour}`}:${Math.floor(minutes / 10) ? minutes : `0${minutes}`}:${
         Math.floor(seconds / 10) ? seconds : `0${seconds}`
@@ -48,8 +47,8 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
         <St.TalkMessage key={chat.message_id} $subStyle={$style}>
           {!chat.visible && $style['x-position'] === 'end' && <St.VisibleChecker>1</St.VisibleChecker>}
           <figure>
-            {/* <img src={chat.img_src} /> */}
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8b5iaWK_fEHa_j9WB0qlhlr6HgSD_XqZxY06oyOaNHw&s" />
+            <img src={chat.img_src} />
+            {/* <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8b5iaWK_fEHa_j9WB0qlhlr6HgSD_XqZxY06oyOaNHw&s" /> */}
           </figure>
           <St.MessageContext>{chat.content}</St.MessageContext>
           <St.MessageDate>{convertDate()}</St.MessageDate>
