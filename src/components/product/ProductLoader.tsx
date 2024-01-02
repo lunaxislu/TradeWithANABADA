@@ -24,7 +24,7 @@ const ProductLoader = () => {
     <>
       <St.Container>
         <St.TitleWrapper>
-          <span>{`${search}에 대한 결과`}</span>
+          <span>{search}</span>
         </St.TitleWrapper>
 
         <div>
@@ -43,13 +43,15 @@ const ProductLoader = () => {
                           <Heart />
                           <span>{item.like_count}</span>
                         </St.HeartBox>
-                        <St.Date>{date}</St.Date>
                         <St.Content>
                           <p>{item.title}</p>
                           <p>{item.content}</p>
                           <div>
-                            <p>{item.price}</p>
-                            <p>원의 가치</p>
+                            <div>
+                              <p>{item.price}</p>
+                              <p>원의 가치</p>
+                            </div>
+                            <span>{date}</span>
                           </div>
                         </St.Content>
                       </li>

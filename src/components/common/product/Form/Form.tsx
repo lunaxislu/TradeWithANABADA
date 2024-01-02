@@ -23,6 +23,7 @@ export type CommonProductInfoType = {
   user_id: string;
   category2_id: number;
 };
+
 const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
   const [tags, setTags] = useState<string[]>(productInfo ? productInfo.hash_tags : []);
   const [userData, setUserData] = useState<UserMetadata>({});
