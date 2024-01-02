@@ -1,5 +1,6 @@
 import { UserMetadata } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { getUserSession } from '../../../API/supabase.api';
 import ButtonForm from '../../common/product/Form/buttonForm/ButtonForm';
 import * as St from './Sale.styled';
@@ -26,7 +27,7 @@ type PropsType = {
 };
 const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
   const [userData, setUserData] = useState<UserMetadata>({});
-
+  const { showBoundary } = useErrorBoundary();
   useEffect(() => {
     getUserSession()
       .then((data) => {
@@ -35,6 +36,8 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
         }
       })
       .catch((error) => {
+        console.log('sdfssssssssssssssssssssssssssss');
+        showBoundary(error);
         console.log(error);
       });
   }, []);

@@ -6,7 +6,6 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/auth/:auth" element={<Auth />} />
-
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/detail/:id" element={<Detail />} />

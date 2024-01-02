@@ -47,6 +47,7 @@ const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
       category2_id: parseInt(e.currentTarget['category_2'].value),
     };
     const result = await insertProduct(product);
+    console.log(result);
     const getProductFromDB = await supabase.rpc('get_product', { input_post_id: result[0].id });
 
     if (productInfo) {
@@ -57,6 +58,7 @@ const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
         setIsEdit(false);
       }
     }
+    console.log(getProductFromDB);
     navigate(`/detail/${getProductFromDB.data?.[0].product_id}`, { state: getProductFromDB.data?.[0] });
   };
 

@@ -1,31 +1,30 @@
 import { ErrorInfo } from 'react';
-import { ErrorBoundary, FallbackProps, useErrorBoundary } from 'react-error-boundary';
+import { FallbackProps, useErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Goods from '../components/detail/Goods';
 
 const Detail = () => {
   const navigate = useNavigate();
-  return (
-    <ErrorBoundary onReset={(error) => console.log(error)} onError={logError} FallbackComponent={ErrorFallback}>
-      <Goods />
-    </ErrorBoundary>
-  );
+  return <Goods />;
 };
 
 export default Detail;
 
-// Error boundary 컴포넌트의 onError 타입을 보면 error 발생시 doSomething 해주면 됩니다.
+// onError라는 속성에 들어있는 함수입니다. onError는 에러가 발생되면 호출되는 함수입니다.
 const logError = async (error: Error, info: ErrorInfo) => {
+  console.log(info); // info(객체) 에 {componentStack}이 있는데 에러가 발생한 컴포넌트의 stack을 나타냅니다. componentStack의 타입은 string
+  console.log(error);
   // await postSlackApiWithError(error, info);
 };
 
 // Error boundary 컴포넌트의 FallbackComponent
 // resetErrorBoundary라는 property는 결국 onReset이라는 ErrorBoundary의 속성값과 일치합니다.
 const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
-  const { resetBoundary, showBoundary } = useErrorBoundary();
-  console.log(error);
+  const { resetBoundary, showBoundary } = useErrorBoundary(); // 비동기 error를 잡을 때 catch 부분에서 사용합니다.
+  // resetErrorBoundary('???????') - onReset의 인자 값으로 error 안에'???????'이 들어있습니다.
 
+  console.log(error);
   return (
     <div role="alert" style={{ display: 'grid', minHeight: '100vh', minWidth: '100vw', placeContent: 'center' }}>
       <Div>
