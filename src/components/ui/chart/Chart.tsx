@@ -18,18 +18,17 @@ const DEFAULT_LABELS = [
 const DEFAULT_DATAS = [0, 0, 0, 0, 0];
 
 type Props = {
-  paramUid: string;
+  params: string | undefined;
 };
 
-export const ReviewChart = ({ paramUid }: Props) => {
+export const ReviewChart = ({ params }: Props) => {
   // console.log(paramUid);
   // 리뷰 불러오기
   const { data: reviewList, isLoading: reviewLoading } = useQuery({
     queryKey: [QueryKey.REVIEW_LIST], // 수정
     queryFn: async () => {
-      if (paramUid) {
-        console.log(paramUid);
-        return await getReviews(paramUid);
+      if (params) {
+        return await getReviews(params);
       } else {
         return [];
       }
@@ -96,10 +95,6 @@ export const ReviewChart = ({ paramUid }: Props) => {
       },
     ],
   };
-
-  useEffect(() => {
-    console.log(paramUid);
-  }, [paramUid]);
   return (
     <St.ReviewWrapper>
       <div>

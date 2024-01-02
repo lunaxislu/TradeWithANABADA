@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useErrorBoundary } from 'react-error-boundary';
-import { getPurchaseLists } from '../../API/supabase.api';
+import { getSalesList } from '../../API/supabase.api';
 import { useData } from '../../hooks/queryHook/profile/useData';
 import { ProductData } from '../home/HomeProductList';
 import * as St from './Profile.styled';
@@ -26,21 +26,22 @@ export type ProductStatus = 'wish' | 'onSale' | 'soldOut' | 'purchase';
 
 const ProfileProductList = ({ uid, params, setParamUid, setReviewModal }: Props) => {
   const [list, setList] = useState<ProductStatus>('wish');
+  const [targetUserList, setTargetUserList] = useState<ProductDataExtends[]>();
   const { wishList, wishListLoading, salesList, salesListLoading, purchaseList } = useData();
   const { showBoundary } = useErrorBoundary();
   // 판매 중
   const onSaleList = salesList?.filter((item) => item.status === false);
   // 판매 완료
   const soldOutList = salesList?.filter((item) => item.status === true);
-  // 나의 구매 내역
-  const func = async () => {
-    try {
-      const purchaseData = await getPurchaseLists(uid);
-    } catch (error) {
-      showBoundary(error);
-    }
+
+  const getTargetUserSalesList = async () => {
+    const targetUserSalesList = await getSalesList(params as string);
+    setTargetUserList(targetUserSalesList);
+    return;
   };
-  func();
+  useEffect(() => {
+    getTargetUserSalesList();
+  }, []);
 
   if (wishListLoading) return <div>로딩중...</div>;
   if (salesListLoading) return <div>로딩중...</div>;
@@ -69,29 +70,35 @@ const ProfileProductList = ({ uid, params, setParamUid, setReviewModal }: Props)
 
       {/* 리스트 영역 */}
       <St.ListWrapper>
-        <ul>
-          {(() => {
-            switch (list) {
-              case 'wish':
-                return <ListItem name={list} list={wishList!} />;
-              case 'onSale':
-                return <ListItem name={list} list={onSaleList!} />;
-              case 'soldOut':
-                return <ListItem name={list} list={soldOutList!} />;
-              case 'purchase':
-                return (
-                  <ListItem
-                    name={list}
-                    list={purchaseList!}
-                    setParamUid={setParamUid}
-                    setReviewModal={setReviewModal}
-                  />
-                );
-              default:
-                return null;
-            }
-          })()}
-        </ul>
+        {uid === params ? (
+          <ul>
+            {(() => {
+              switch (list) {
+                case 'wish':
+                  return <ListItem name={list} list={wishList!} />;
+                case 'onSale':
+                  return <ListItem name={list} list={onSaleList!} />;
+                case 'soldOut':
+                  return <ListItem name={list} list={soldOutList!} />;
+                case 'purchase':
+                  return (
+                    <ListItem
+                      name={list}
+                      list={purchaseList!}
+                      setParamUid={setParamUid}
+                      setReviewModal={setReviewModal}
+                    />
+                  );
+                default:
+                  return null;
+              }
+            })()}{' '}
+          </ul>
+        ) : (
+          <ul>
+            <ListItem name={list} list={targetUserList!} />
+          </ul>
+        )}
       </St.ListWrapper>
     </St.ProductListSection>
   );
