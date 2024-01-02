@@ -4,6 +4,9 @@ import { displayCreateAt } from '../../../utils/date';
 import { ProductData } from '../../home/HomeProductList';
 import { Button } from '../../ui/Button';
 import * as St from '../Profile.styled';
+type ReviewStatus = {
+  review_status: boolean;
+};
 
 type ListItemProps = {
   name: string;
@@ -13,6 +16,7 @@ type ListItemProps = {
 const ListItem = ({ name, list }: ListItemProps) => {
   const navigate = useNavigate();
   const { remove, update } = useProfile();
+  console.log(list);
 
   const moveToDetailPage = (item: ProductData) => navigate(`/detail/${item.product_id}`, { state: item });
 
@@ -20,6 +24,7 @@ const ListItem = ({ name, list }: ListItemProps) => {
     <>
       {list?.map((item, i) => {
         const date = displayCreateAt(item.created_at);
+
         return (
           <li key={item.product_id}>
             <div>
@@ -56,6 +61,12 @@ const ListItem = ({ name, list }: ListItemProps) => {
                       return (
                         <Button color="success" onClick={() => update(item.product_id)}>
                           완료
+                        </Button>
+                      );
+                    case 'purchase':
+                      return (
+                        <Button color="success" onClick={() => {}}>
+                          후기 남기기
                         </Button>
                       );
                     default:
