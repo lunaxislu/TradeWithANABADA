@@ -29,7 +29,7 @@ const ProductInfo = ({ userData, productInfo, isEdit }: PropsType) => {
     });
     return () => {};
   }, []);
-  console.log(productInfo);
+
   return (
     <St.Container>
       {/* 상품 제목과 상품의 가치를 등록한 유저가 측정내용입니다.  */}
@@ -66,7 +66,7 @@ const ProductInfo = ({ userData, productInfo, isEdit }: PropsType) => {
       <St.HashTag>
         <h4>희망 교환 품목</h4>
         <div className="tag-wrapper">
-          {productInfo.hash_tags.map((tag, idx) => {
+          {productInfo.hash_tags.map((tag) => {
             return <span key={tag}>{tag}</span>;
           })}
         </div>
