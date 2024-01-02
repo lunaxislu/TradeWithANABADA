@@ -36,9 +36,9 @@ export const postSlackApiWithError = async (error: SlackWithError, info: ErrorIn
   if (error.statusCode) {
     const alertErrorText = JSON.stringify({
       text:
-        '서버와의 통신중에... \n 에러 : ' +
+        '저희 쪽 user 잘못일 수도 아닐수도 있는 \n 에러 : ' +
         error.message +
-        ` 발생했습니다. \n \n 네 저희쪽문제입니다. ㅜㅜ \n Component는 \n ${errorTarget}에서 발생했습니다. \n 에러 Code = ${error.statusCode} 입니다.
+        ` 발생했습니다. \n \n ㅜㅜ \n Component는 \n ${errorTarget}에서 발생했습니다. \n 에러 Code = ${error.statusCode} 입니다.
         `,
     });
 
