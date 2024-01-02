@@ -93,7 +93,7 @@ export const TalkMessageContainer = styled.section`
   padding: 2rem 1rem;
 
   & ul {
-    margin: 3rem 0;
+    margin: 3rem 0 1rem 0;
     padding: 0 0.5rem;
     height: 35rem;
     overflow-y: scroll;
@@ -173,4 +173,58 @@ export const MessageDate = styled.span`
   bottom: 0;
   white-space: nowrap;
   color: gray;
+`;
+
+export const InputForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  & input:last-child {
+    display: none;
+  }
+  & > button {
+    font-size: 1.3rem;
+    padding: 1rem 0;
+    text-align: center;
+    background-color: gray;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+export const InputArea = styled.div`
+  background-color: white;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  & > label {
+    cursor: pointer;
+  }
+
+  & > div {
+    width: 100%;
+    position: relative;
+    & button {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      cursor: pointer;
+    }
+    & input {
+      font-size: 1.5rem;
+      width: 100%;
+      outline: none;
+      height: 3rem;
+      border: none;
+      background: none;
+      padding-right: 3rem;
+    }
+  }
+`;
+
+export const SelectImageSection = styled.section`
+  & button {
+    margin-left: 1rem;
+  }
 `;
