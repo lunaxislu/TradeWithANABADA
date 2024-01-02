@@ -19,6 +19,7 @@ export type ProductInfoType = {
   title: string;
   user_id: string;
   category2_id: number;
+  status: boolean;
 };
 type PropsType = {
   productInfo: ProductInfoType;
@@ -45,7 +46,8 @@ const Sale = ({ productInfo, setIsEdit, isEdit }: PropsType) => {
    * productInfo.user_id는 상품등록한 user의 아이디 입니다.
    */
   return (
-    <St.Container>
+    //$status 의 상태에 따라서 판매완료 ui를 보여줍니다.
+    <St.Container $status={productInfo.status}>
       <div className="product-info">
         <ImgCard imgUrl={productInfo.product_img} />
         <ProductInfo userData={userData} productInfo={productInfo} isEdit={isEdit} />
