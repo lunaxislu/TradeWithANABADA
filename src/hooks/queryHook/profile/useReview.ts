@@ -8,14 +8,14 @@ export const useReview = () => {
   const updateReviewMutation = useMutation({
     mutationFn: updateReview,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKey.GET_REVIEW_LIST] });
+      queryClient.invalidateQueries({ queryKey: [QueryKey.REVIEW_LIST] });
     },
   });
 
   const insertReviewMutation = useMutation({
     mutationFn: insertReview,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKey.GET_REVIEW_LIST] });
+      queryClient.invalidateQueries({ queryKey: [QueryKey.REVIEW_LIST] });
     },
   });
 

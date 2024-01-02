@@ -30,6 +30,7 @@ export const List = styled.ul`
 
   li {
     gap: 2rem;
+    width: 24.7rem;
     display: flex;
     cursor: pointer;
     position: relative;
@@ -40,7 +41,7 @@ export const List = styled.ul`
   }
 
   img {
-    margin: 0 auto;
+    /* margin: 0 auto; */
     border-radius: 1rem;
     width: 24.7rem;
     height: 25rem;
@@ -59,10 +60,8 @@ export const List = styled.ul`
 export const HeartBox = styled.section`
   width: 3rem;
   gap: 0.5rem;
-  top: -15rem;
-  right: 2rem;
   display: flex;
-  position: absolute;
+  margin-left: 20rem;
   align-items: center;
 
   span {

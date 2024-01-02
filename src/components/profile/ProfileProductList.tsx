@@ -52,6 +52,9 @@ const ProfileProductList = ({ uid, params, setParamUid, setReviewModal }: Props)
               state={button.state as ProductStatus}
               currentList={list}
               onClick={setList}
+              wishListData={wishList!}
+              onSaleListData={onSaleList!}
+              soldOutListData={soldOutList!}
             />
           ))
         ) : (
@@ -63,13 +66,9 @@ const ProfileProductList = ({ uid, params, setParamUid, setReviewModal }: Props)
       <St.ListWrapper>
         <ul>
           {(() => {
-            const wishListExtends: ProductData[] = wishList!.map((item) => ({
-              ...item,
-              status: false,
-            }));
             switch (list) {
               case 'wish':
-                return <ListItem name={list} list={wishListExtends!} />;
+                return <ListItem name={list} list={wishList!} />;
               case 'onSale':
                 return <ListItem name={list} list={onSaleList!} />;
               case 'soldOut':

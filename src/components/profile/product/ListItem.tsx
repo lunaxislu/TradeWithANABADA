@@ -61,13 +61,6 @@ const ListItem = ({ name, list, setParamUid, setReviewModal }: ListItemProps) =>
                           삭제
                         </Button>
                       );
-                    case 'onSale':
-                      console.log('onSale', name);
-                      return (
-                        <Button className="onSale" color="success" onClick={() => update(item.product_id)}>
-                          완료
-                        </Button>
-                      );
                     case 'purchase':
                       if (!item.review_status && setParamUid && setReviewModal) {
                         return (
