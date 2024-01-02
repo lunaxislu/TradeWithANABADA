@@ -20,6 +20,7 @@ const initialUser = {
 };
 
 const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
+  console.log(channel);
   const { TalkChannelSubscribeSetting, currentUserInfo, changeCurrentChannel } = useTalkContext();
 
   const [otherUserInPage, isOtherUserInPage] = useState<boolean>(false);
@@ -93,8 +94,12 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
 
         {/* preview */}
         <div>
-          <span>{channel.top_message.content}</span>
-          <span>{displayCreateAt(channel.top_message.message_created_at)}</span>
+          {channel.top_message && (
+            <>
+              <span>{channel.top_message.content}</span>
+              <span>{displayCreateAt(channel.top_message.message_created_at)}</span>
+            </>
+          )}
         </div>
       </div>
       {!!channel.invisible_count && <St.InvisibleMessage>{channel.invisible_count}</St.InvisibleMessage>}
