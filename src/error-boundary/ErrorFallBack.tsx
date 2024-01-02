@@ -32,7 +32,7 @@ export const ErrorFallBack = ({ error, resetErrorBoundary }: FallbackProps) => {
             잠시만 기다려주시면 담당자가 호다다닥 해결하겠습니다. <br /> 그때까지 참아주쇼 <br />
             홈으로 돌아가서
           </p>
-          <Button color="warning" onClick={resetErrorBoundary}>
+          <Button color="warning" onClick={() => resetErrorBoundary()}>
             홈으로 이동
           </Button>
         </St.Wrapper>
@@ -45,7 +45,7 @@ export const ErrorFallBack = ({ error, resetErrorBoundary }: FallbackProps) => {
         <div>컴포넌트 내부에서 발생한 </div>
         <div>{error.message} 로인해 </div>
         <p>문제가 발생하였습니다.</p>
-        <Button color="warning" onClick={resetErrorBoundary}>
+        <Button color="warning" onClick={() => resetErrorBoundary()}>
           홈으로 이동
         </Button>
       </St.Wrapper>
