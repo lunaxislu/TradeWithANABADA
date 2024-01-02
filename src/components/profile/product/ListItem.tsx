@@ -4,15 +4,22 @@ import { displayCreateAt } from '../../../utils/date';
 import { ProductData } from '../../home/HomeProductList';
 import { Button } from '../../ui/Button';
 import * as St from '../Profile.styled';
+import { ProductDataExtends } from '../ProfileProductList';
+type ReviewStatus = {
+  review_status: boolean;
+};
 
 type ListItemProps = {
   name: string;
-  list: ProductData[];
+  list: ProductDataExtends[];
+  setParamUid?: React.Dispatch<React.SetStateAction<string>>;
+  setReviewModal?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ListItem = ({ name, list }: ListItemProps) => {
+const ListItem = ({ name, list, setParamUid, setReviewModal }: ListItemProps) => {
   const navigate = useNavigate();
   const { remove, update } = useProfile();
+  console.log(list);
 
   const moveToDetailPage = (item: ProductData) => navigate(`/detail/${item.product_id}`, { state: item });
 
@@ -20,6 +27,7 @@ const ListItem = ({ name, list }: ListItemProps) => {
     <>
       {list?.map((item, i) => {
         const date = displayCreateAt(item.created_at);
+
         return (
           <li key={item.product_id}>
             <div>
@@ -42,22 +50,35 @@ const ListItem = ({ name, list }: ListItemProps) => {
                 </div>
               </St.PostsWrapper>
 
-              <St.PriceWrapper>
+              <St.PriceWrapper $name={name} $review_status={item.review_status}>
                 <span>{date}</span>
                 {(() => {
                   switch (name) {
                     case 'wish':
+                      console.log('wish의', name);
                       return (
-                        <Button color="primary" onClick={() => remove(item.product_id)}>
+                        <Button className="wish" color="primary" onClick={() => remove(item.product_id)}>
                           삭제
                         </Button>
                       );
-                    case 'onSale':
-                      return (
-                        <Button color="success" onClick={() => update(item.product_id)}>
-                          완료
-                        </Button>
-                      );
+                    case 'purchase':
+                      if (!item.review_status && setParamUid && setReviewModal) {
+                        return (
+                          <Button
+                            className="purchase"
+                            color="success"
+                            onClick={() => {
+                              setReviewModal(true);
+                              setParamUid(item.purchased_user_id!);
+                            }}
+                          >
+                            후기 남기기
+                          </Button>
+                        );
+                      } else {
+                        return <></>;
+                      }
+
                     default:
                       break;
                   }

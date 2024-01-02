@@ -3,6 +3,12 @@ import styled from 'styled-components';
 export const HomeWrapper = styled.div`
   width: 100rem;
   margin: auto;
+
+  a {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 export const SlideContainer = styled.div`
   position: relative;
@@ -79,6 +85,7 @@ export const ProductListArea = styled.div`
   width: 100%;
 
   & > ul {
+    gap: 2rem;
     width: 100%;
     display: flex;
     justify-content: space-between;

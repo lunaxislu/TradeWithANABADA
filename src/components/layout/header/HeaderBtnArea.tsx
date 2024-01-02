@@ -23,16 +23,18 @@ const HeaderBtnArea = ({ isLogin, setIsLogin }: HeaderBtnAreaProps) => {
 
   const checkUserSession = async () => {
     const userSession = await getUserSession();
-    setIsLogin(!!userSession.session);
     if (userSession !== null && userSession.session && userSession.session.user) {
       const userUid = userSession.session?.user.id;
+      setIsLogin(true);
       setUid(userUid);
+    } else {
+      setIsLogin(false);
     }
   };
 
   const logoutHandler = async () => {
-    logout();
     setIsLogin(false);
+    logout();
   };
 
   useEffect(() => {

@@ -1,7 +1,5 @@
 import Goods from '../components/detail/Goods';
 
-const Detail = () => {
-  return <Goods />;
-};
+const Detail = () => <Goods />;
 
 export default Detail;

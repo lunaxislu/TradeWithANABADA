@@ -5,27 +5,20 @@ export const Header = styled.header`
   left: 0;
   right: 0;
   height: 10rem;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   background-color: #d9d9d9;
-
-  padding: 0 3rem;
-
-  z-index: 20;
+  padding: 3rem;
+  z-index: 999;
 
   & > h1 {
     position: absolute;
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-
     font-size: 7rem;
     font-weight: bold;
-
     cursor: pointer;
   }
 
@@ -33,7 +26,8 @@ export const Header = styled.header`
     position: fixed;
     right: 2rem;
     bottom: 2rem;
-    padding: 1rem;
+    padding: 2rem;
+
     & > figure {
       cursor: pointer;
     }
@@ -47,9 +41,12 @@ export const HeaderSearchCategoryArea = styled.div`
 
 export const HeaderBtnSection = styled.section`
   & > button {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     color: black;
     margin-left: 2rem;
+    &:hover {
+      background-color: #d9d9d9;
+    }
   }
 `;
 
@@ -57,6 +54,10 @@ export const CategoryButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+
+  svg {
+    width: 3rem;
+  }
 `;
 
 export const SideBar = styled.nav<{ $isOpen: boolean }>`
@@ -101,6 +102,10 @@ export const SearchInput = styled.form<{ $isOpen: boolean }>`
   margin-left: 1rem;
   height: 5rem;
   padding-left: 1rem;
+
+  svg {
+    width: 2.8rem;
+  }
 
   & input {
     border: none;

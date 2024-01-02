@@ -9,7 +9,7 @@ export const useProfile = () => {
   const deleteWishListMutation = useMutation({
     mutationFn: deleteWishList,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKey.GET_WISH_LIST] });
+      queryClient.invalidateQueries({ queryKey: [QueryKey.WISH_LIST] });
     },
   });
 
@@ -17,7 +17,7 @@ export const useProfile = () => {
   const updateOnSaleToSoldOutMutation = useMutation({
     mutationFn: updateOnSaleToSoldOut,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKey.GET_SALES_LIST] });
+      queryClient.invalidateQueries({ queryKey: [QueryKey.SALES_LIST] });
     },
   });
 

@@ -10,7 +10,7 @@ export const Container = styled.div`
 `;
 
 export const TitleWrapper = styled.div`
-  width: 100%;
+  width: 92%;
   display: flex;
   padding: 2rem;
   flex-direction: row;
@@ -30,7 +30,7 @@ export const List = styled.ul`
 
   li {
     gap: 2rem;
-    padding: 10px;
+    width: 24.7rem;
     display: flex;
     cursor: pointer;
     position: relative;
@@ -41,8 +41,10 @@ export const List = styled.ul`
   }
 
   img {
-    width: 30rem;
-    height: 30rem;
+    /* margin: 0 auto; */
+    border-radius: 1rem;
+    width: 24.7rem;
+    height: 25rem;
     object-fit: cover;
   }
 
@@ -56,20 +58,20 @@ export const List = styled.ul`
 `;
 
 export const HeartBox = styled.section`
+  width: 3rem;
   gap: 0.5rem;
-  top: -17rem;
-  right: 2rem;
   display: flex;
-  position: absolute;
+  margin-left: 20rem;
   align-items: center;
-`;
 
-export const Date = styled.div`
-  font-size: 1.2rem;
+  span {
+    font-size: 1.5rem;
+  }
 `;
 
 export const Content = styled.div`
   gap: 1rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
 
@@ -85,15 +87,23 @@ export const Content = styled.div`
     display: flex;
     font-size: 1.5rem;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 
-    p:nth-of-type(1) {
-      padding: 0.5rem;
-      font-size: 1.5rem;
-      font-weight: 700;
-      border-radius: 0.7rem;
-      background-color: #c3e2c2;
+    div {
+      p:nth-of-type(1) {
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-radius: 0.7rem;
+        background-color: #f4f27e;
+        padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+      }
+      p:nth-of-type(2) {
+        padding: 0.5rem;
+      }
     }
-    p:nth-of-type(2) {
+    span {
+      font-size: 1.3rem;
       padding: 0.5rem;
     }
   }

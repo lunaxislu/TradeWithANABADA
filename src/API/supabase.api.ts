@@ -502,7 +502,7 @@ export const updateReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) 
     .update({ res_fast: i1, kind: i2, good_product: i3, same_product: i4, good_time: i5 })
     .eq('user_id', params);
   if (error) throw error;
-  return { data };
+  return data;
 };
 // 리뷰등록(insert)
 export const insertReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) => {
@@ -510,6 +510,32 @@ export const insertReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) 
     .from('review')
     .insert([{ user_id: params, res_fast: i1, kind: i2, good_product: i3, same_product: i4, good_time: i5 }])
     .select();
+};
+// sales에서 user_id 비교하여 정보 가져오기 (product_id와 join 해야할 듯)
+// export const getPurchase = async (uid: string) => {
+//   const { data, error } = await supabase.from('sales').select('*').eq('user_id', uid);
+//   if (error) throw error;
+//   return data;
+// };
+
+export type PurchaseData = {
+  product_id: number;
+  title: string;
+  content: string;
+  created_at: string;
+  price: string;
+  product_img: string[];
+  user_id: string;
+};
+
+export const getPurchaseLists = async (uid: string) => {
+  try {
+    const { data, error } = await supabase.rpc('get_purchase_lists', { input_user_id: uid });
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 /**
@@ -620,7 +646,7 @@ export const getMainCategory = async () => {
 };
 
 export const getSubCategory = async (id: number) => {
-  let { data: categories2, error } = await supabase.from('categories2').select('name').eq('category1_id', id);
+  let { data: categories2, error } = await supabase.from('categories2').select('name,id').eq('category1_id', id);
   if (error) {
     console.log('subCategory', error);
   }

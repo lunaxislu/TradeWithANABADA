@@ -8,9 +8,14 @@ export const Container = styled.main`
   place-content: center center;
 `;
 
+export const Wrapper = styled.div`
+  position: relative;
+`;
+
 export const Category = styled.span`
   position: absolute;
-  top: 18rem;
-  left: 34rem;
+  top: -5rem;
+  left: 0rem;
   font-size: 1.6rem;
+  cursor: pointer;
 `;

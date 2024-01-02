@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ProfileWrapper = styled.div`
   box-sizing: border-box;
-  margin: 0 auto;
+  margin: 3rem auto;
   padding: 3rem;
   border: 0.2rem solid #dcdcdc;
-  height: 100vh;
+  height: 100%;
   width: 50rem;
   ${({ theme }) => theme.mediaQuery.sm`
     width : 80rem;
@@ -157,14 +157,14 @@ export const ProductListArea = styled.div`
   }
 `;
 
-// 예성 추가
 export const ListTitle = styled.div`
   display: flex;
   font-size: 2rem;
   align-items: center;
   flex-direction: row;
-  background-color: beige;
+  background-color: #f2f1f0;
   justify-content: center;
+  cursor: pointer;
 `;
 
 export const ListBtn = styled.div`
@@ -174,13 +174,13 @@ export const ListBtn = styled.div`
   padding: 2rem;
   cursor: pointer;
   text-align: center;
-  border-bottom: 0.2rem solid black;
-  &:hover {
-    background-color: white;
-  }
+  border-bottom: 0.2rem solid #3081d0;
+
   &.active {
+    font-weight: bold;
+    color: #3081d0;
     background-color: white;
-    border: 0.2rem solid black;
+    border: 0.2rem solid #3081d0;
     border-bottom: none;
   }
 `;
@@ -258,7 +258,7 @@ export const PostsWrapper = styled.div`
   }
 `;
 
-export const PriceWrapper = styled.div`
+export const PriceWrapper = styled.div<{ $name: string; $review_status?: boolean }>`
   width: 7%;
   display: flex;
   flex-direction: column;
@@ -269,13 +269,44 @@ export const PriceWrapper = styled.div`
   }
 
   button {
+    display: none;
     padding-left: 1.2rem;
-    border: 0.1rem solid black;
 
     &:hover {
       color: white;
       background-color: #e31c5f;
     }
+  }
+  .wish {
+    ${(props) => {
+      return (
+        props.$name === 'wish' &&
+        css`
+          display: block;
+        `
+      );
+    }}
+  }
+  .purchase {
+    ${(props) => {
+      return (
+        props.$name === 'purchase' &&
+        props.$review_status === false &&
+        css`
+          display: block;
+        `
+      );
+    }}
+  }
+  .onSale {
+    ${(props) => {
+      return (
+        props.$name === 'onSale' &&
+        css`
+          display: block;
+        `
+      );
+    }}
   }
 
   div {
