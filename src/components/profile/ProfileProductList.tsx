@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getPurchaseLists } from '../../API/supabase.api';
 import { useData } from '../../hooks/queryHook/profile/useData';
 import { ProductData } from '../home/HomeProductList';
 import * as St from './Profile.styled';
@@ -22,13 +23,17 @@ export type ProductStatus = 'wish' | 'onSale' | 'soldOut' | 'purchase';
 
 const ProfileProductList = ({ uid, params }: Props) => {
   const [list, setList] = useState<ProductStatus>('wish');
-  const { wishList, wishListLoading, salesList, salesListLoading } = useData();
+  const { wishList, wishListLoading, salesList, salesListLoading, purchaseList } = useData();
   // 판매 중
   const onSaleList = salesList?.filter((item) => item.status === false);
   // 판매 완료
   const soldOutList = salesList?.filter((item) => item.status === true);
   // 나의 구매 내역
-  // const purchaseList =
+  const func = async () => {
+    const purchaseData = await getPurchaseLists(uid);
+    console.log('purchaseData => ', purchaseData);
+  };
+  func();
 
   if (wishListLoading) return <div>로딩중...</div>;
   if (salesListLoading) return <div>로딩중...</div>;
@@ -69,7 +74,7 @@ const ProfileProductList = ({ uid, params }: Props) => {
               case 'soldOut':
                 return <ListItem name={list} list={soldOutList!} />;
               case 'purchase':
-                return <ListItem name={list} list={soldOutList!} />;
+                return <ListItem name={list} list={purchaseList!} />;
               default:
                 return null;
             }

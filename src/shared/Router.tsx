@@ -29,7 +29,7 @@ const Router = () => {
           <Route path="/post" element={SuspenseWrapper(Post)} />
           <Route path="/detail" element={SuspenseWrapper(Detail)} />
           <Route path="/product" element={SuspenseWrapper(Product)} />
-          <Route path="/profile" element={SuspenseWrapper(Profile)} />
+          <Route path="/profile/:id" element={SuspenseWrapper(Profile)} />
         </Route>
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
