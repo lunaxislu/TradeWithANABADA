@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ProfileWrapper = styled.div`
   box-sizing: border-box;
@@ -257,7 +257,7 @@ export const PostsWrapper = styled.div`
   }
 `;
 
-export const PriceWrapper = styled.div`
+export const PriceWrapper = styled.div<{ $name: string; $review_status?: boolean }>`
   width: 7%;
   display: flex;
   flex-direction: column;
@@ -268,6 +268,7 @@ export const PriceWrapper = styled.div`
   }
 
   button {
+    display: none;
     padding-left: 1.2rem;
     border: 0.1rem solid black;
 
@@ -275,6 +276,37 @@ export const PriceWrapper = styled.div`
       color: white;
       background-color: #e31c5f;
     }
+  }
+  .wish {
+    ${(props) => {
+      return (
+        props.$name === 'wish' &&
+        css`
+          display: block;
+        `
+      );
+    }}
+  }
+  .purchase {
+    ${(props) => {
+      return (
+        props.$name === 'purchase' &&
+        props.$review_status === false &&
+        css`
+          display: block;
+        `
+      );
+    }}
+  }
+  .onSale {
+    ${(props) => {
+      return (
+        props.$name === 'onSale' &&
+        css`
+          display: block;
+        `
+      );
+    }}
   }
 
   div {

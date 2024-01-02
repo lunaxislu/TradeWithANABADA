@@ -27,6 +27,7 @@ type ButtonColors = 'default' | 'success' | 'primary' | 'warning';
 type ButtonProps = {
   color: ButtonColors;
   onClick: () => void | Promise<void>;
+  className?: string;
 };
 
 const btnColors: Record<ButtonColors, string> = {
@@ -36,9 +37,9 @@ const btnColors: Record<ButtonColors, string> = {
   warning: '#ff4444',
 };
 
-export const Button = ({ children, color, onClick }: StricChildren<ButtonProps>) => {
+export const Button = ({ children, color, className, onClick }: StricChildren<ButtonProps>) => {
   return (
-    <CustomButton color={btnColors[color]} onClick={onClick}>
+    <CustomButton className={className} color={btnColors[color]} onClick={onClick}>
       {children}
     </CustomButton>
   );

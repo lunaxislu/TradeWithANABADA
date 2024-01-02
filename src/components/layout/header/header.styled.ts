@@ -19,7 +19,6 @@ export const Header = styled.header`
     transform: translate(-50%, -50%);
     font-size: 7rem;
     font-weight: bold;
-
     cursor: pointer;
   }
 
