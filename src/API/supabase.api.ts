@@ -59,7 +59,6 @@ export const getSalesList = async (userId: string) => {
  * @param productId 상품 아이디
  */
 export const updateOnSaleToSoldOut = async (productId: number) => {
-  console.log('productId: ', productId);
   const { data, error } = await supabase.from('products').update({ status: true }).eq('id', productId);
   if (error) throw error;
   return data;
@@ -388,6 +387,21 @@ export const getPopularProducts = async (limitNum: number) => {
   }
 };
 
+/**
+ * 카테고리 1depth 가져오기
+ * @param page 페이지 번호
+ * @param name 카테고리 이름
+ * @returns 카테고리에 해당하는 상품 목록
+ */
+export const getCategoryWithOneDepth = async (page: number, name: string) => {
+  // rpc 함수 사용
+  const { data, error } = await supabase
+    .rpc('get_category_products', { input_category_name: name })
+    .range(page * 10 - 10, page * 10 - 1);
+  if (error) console.log(error);
+  return data;
+};
+
 // 유저 닉네임 변경(auth)
 export const updateUserNickname = async (nickname: string) => {
   const { data, error } = await supabase.auth.updateUser({ data: { full_name: `${nickname}` } });
@@ -623,6 +637,7 @@ export type ChatMessage = {
   visible: boolean;
   type: string;
   img_src: string;
+  request_answer: boolean;
 };
 
 export type ChannelInfo = {
@@ -759,4 +774,13 @@ const uploadTalkMessageImage = async (id: string, file: File | Blob) => {
       img_src: storagePath,
     })
     .eq('id', id); // product_id를 찾는 eq입니다.
+};
+
+export const updateMessageUpdate = async (messageId: string, answer: boolean) => {
+  await supabase
+    .from('chat_messages')
+    .update({
+      request_answer: answer,
+    })
+    .eq('id', messageId); // product_id를 찾는 eq입니다.
 };

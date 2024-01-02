@@ -424,6 +424,24 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
+      get_category_products: {
+        Args: {
+          input_category_name: string;
+        };
+        Returns: {
+          product_id: number;
+          title: string;
+          content: string;
+          created_at: string;
+          price: string;
+          product_img: string[];
+          user_id: string;
+          like_count: number;
+          hash_tags: string[];
+          category1_name: string;
+          category2_name: string;
+        }[];
+      };
       get_channel_messages: {
         Args: {
           input_channel_id: number;
@@ -436,8 +454,8 @@ export interface Database {
           author_id: string;
           visible: boolean;
           type: string;
-          request_answer: boolean;
           img_src: string;
+          request_answer: boolean;
         }[];
       };
       get_latest_products: {

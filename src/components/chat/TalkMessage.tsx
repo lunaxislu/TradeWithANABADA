@@ -1,4 +1,4 @@
-import { ChatMessage, updateOnSaleToSoldOut } from '../../API/supabase.api';
+import { ChatMessage, updateMessageUpdate, updateOnSaleToSoldOut } from '../../API/supabase.api';
 import { useTalkContext } from '../../contexts/TalkContext';
 import * as St from './chat.styled';
 
@@ -8,7 +8,7 @@ type TalkMessageProps = {
   $style: style;
 };
 const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
-  const { userAllChannelInfo } = useTalkContext();
+  const { userAllChannelInfo, currentUserInfo } = useTalkContext();
 
   const convertDate = () => {
     const currentDate = new Date();
@@ -36,10 +36,35 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
     }`;
   };
 
-  const acceptTradeHandler = () => {
+  const acceptTradeHandler = async () => {
     const currentChannelInfo = userAllChannelInfo.find((channelInfo) => channelInfo.chat_id === chat.current_chat_id)!;
     console.log(currentChannelInfo);
-    updateOnSaleToSoldOut(currentChannelInfo.product_id);
+    await updateOnSaleToSoldOut(currentChannelInfo.product_id);
+    await updateMessageUpdate(chat.message_id, true);
+  };
+
+  const denyTradeHandler = async () => {
+    await updateMessageUpdate(chat.message_id, false);
+  };
+
+  const requestStatus = () => {
+    if (chat.request_answer === null) {
+      if (chat.author_id !== currentUserInfo.session?.user.id) {
+        return (
+          <>
+            <button onClick={acceptTradeHandler}>수락</button>
+            <button onClick={denyTradeHandler}>취소</button>
+          </>
+        );
+      }
+    }
+    if (chat.request_answer === false) {
+      return <span>거절하셨습니다.</span>;
+    }
+
+    if (chat.request_answer === true) {
+      return <span>수락하셨습니다.</span>;
+    }
   };
 
   switch (chat.type) {
@@ -57,7 +82,6 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
           {!chat.visible && $style['x-position'] === 'end' && <St.VisibleChecker>1</St.VisibleChecker>}
           <figure>
             <img src={chat.img_src} />
-            {/* <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8b5iaWK_fEHa_j9WB0qlhlr6HgSD_XqZxY06oyOaNHw&s" /> */}
           </figure>
           <St.MessageContext>{chat.content}</St.MessageContext>
           <St.MessageDate>{convertDate()}</St.MessageDate>
@@ -68,8 +92,7 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
         <St.TalkMessage key={chat.message_id} $subStyle={$style}>
           {!chat.visible && $style['x-position'] === 'end' && <St.VisibleChecker>1</St.VisibleChecker>}
           <span>물품교환을 신청하였습니다.</span>
-          <button onClick={acceptTradeHandler}>수락</button>
-          <button>취소</button>
+          <div>{requestStatus()}</div>
           <St.MessageDate>{convertDate()}</St.MessageDate>
         </St.TalkMessage>
       );

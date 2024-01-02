@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  width: 70%;
   padding: 5rem;
   display: flex;
   align-items: center;
@@ -9,8 +10,8 @@ export const Container = styled.div`
 `;
 
 export const TitleWrapper = styled.div`
-  display: flex;
   width: 100%;
+  display: flex;
   padding: 2rem;
   flex-direction: row;
 
