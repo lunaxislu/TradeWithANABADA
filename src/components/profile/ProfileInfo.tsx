@@ -101,7 +101,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
         }
       } else {
         alert('프로필 변경사항이 없습니다.');
-        console.log(imgRef.current);
         return;
       }
     }

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { ReactComponent as Left } from '../../styles/assets/LeftButton.svg';
 import { ReactComponent as Right } from '../../styles/assets/RightButton.svg';
+import banner1 from '../../styles/assets/banner1.svg';
 import * as St from './home.styled';
 
-const slideInfo = ['red', 'black', 'white', 'green', 'gray'];
+const slideInfo = [banner1, 'black', 'white', 'green', 'gray'];
 
 const HomeSlideBanner = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(1);

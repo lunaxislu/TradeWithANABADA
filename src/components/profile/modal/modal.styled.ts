@@ -125,6 +125,11 @@ export const ReviewLabel = styled.div`
     background-color: #ababab;
   }
   & label {
+    width: 100%;
+    height: 100%;
+    padding-top: 33%;
+    font-size: 1.6rem;
+    line-height: 2.5rem;
     margin: 0 auto;
     cursor: pointer;
   }
