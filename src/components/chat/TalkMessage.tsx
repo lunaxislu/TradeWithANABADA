@@ -1,4 +1,11 @@
-import { ChatMessage, updateMessageUpdate, updateOnSaleToSoldOut, updateSales } from '../../API/supabase.api';
+import {
+  ChatMessage,
+  checkSalesUser,
+  getProduct,
+  updateMessageUpdate,
+  updateOnSaleToSoldOut,
+  updateSales,
+} from '../../API/supabase.api';
 import { useTalkContext } from '../../contexts/TalkContext';
 import * as St from './chat.styled';
 
@@ -38,9 +45,16 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
 
   const acceptTradeHandler = async () => {
     const currentChannelInfo = userAllChannelInfo.find((channelInfo) => channelInfo.chat_id === chat.current_chat_id)!;
-    await updateOnSaleToSoldOut(currentChannelInfo.product_id);
     await updateMessageUpdate(chat.message_id, true);
-    await updateSales(currentUserInfo.session?.user.id!, currentChannelInfo.product_id);
+    const currentProduct = await getProduct(currentChannelInfo.product_id);
+
+    await updateOnSaleToSoldOut(currentChannelInfo.product_id);
+
+    if (currentProduct) {
+      // 구매자
+      const customer = await checkSalesUser(currentProduct[0].user_id, chat.current_chat_id);
+      await updateSales(customer!, currentChannelInfo.product_id);
+    }
   };
 
   const denyTradeHandler = async () => {
