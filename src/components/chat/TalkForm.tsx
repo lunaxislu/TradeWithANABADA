@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useErrorBoundary } from 'react-error-boundary';
 import { Tables } from '../../../database.types';
-import { getUserInfo, sendMessage, supabase, updateVisibleTrue } from '../../API/supabase.api';
+import { getProduct, getUserInfo, sendMessage, supabase, updateVisibleTrue } from '../../API/supabase.api';
 import { useMainContext } from '../../contexts/MainContext';
 import { useTalkContext } from '../../contexts/TalkContext';
 import { ReactComponent as Cancel } from '../../styles/assets/cancel.svg';
 import { ReactComponent as ImageSelector } from '../../styles/assets/imageSelector.svg';
 import { ReactComponent as SendMessage } from '../../styles/assets/sendMessage.svg';
+import { ReactComponent as TalkHome } from '../../styles/assets/talkHome.svg';
 import TalkMessage from './TalkMessage';
 import * as St from './chat.styled';
 
@@ -34,6 +35,7 @@ const TalkForm = () => {
 
   const [otherUserIn, onOtherUserIn] = useState<boolean>(false);
   const [otherUserInfo, setOtherUserInfo] = useState<Tables<'users'>>(initialUser);
+  const [productInfo, setProductInfo] = useState<Tables<'products'>[]>();
 
   const messageListRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -47,6 +49,14 @@ const TalkForm = () => {
   if (!talkOpen) {
     changeCurrentChannel(0);
   }
+
+  useEffect(() => {
+    const productInfo = async () => {
+      const info = await getProduct(currentChannelInfo.product_id);
+      if (info) setProductInfo(info);
+    };
+    productInfo();
+  }, []);
 
   //  메세지 보내기 (type=message/image)
   const sendMessageHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -210,23 +220,26 @@ const TalkForm = () => {
 
   return (
     <St.TalkMessageContainer>
-      <button
+      <St.PrevButton
         onClick={() => {
           changeCurrentChannel(0);
         }}
       >
-        홈으로
-      </button>
+        <TalkHome />
+      </St.PrevButton>
 
       {/* 상대방 user Info */}
       <St.TalkFormUserInfo>
         <figure>
-          <img src={otherUserInfo.avatar_img!}></img>
+          <img src={otherUserInfo.avatar_img!} />
         </figure>
-        <h2>{otherUserInfo.nickname}</h2>
+        <div>
+          <h2>{otherUserInfo.nickname}</h2>
+          <span>{!!productInfo && productInfo[0].title}</span>
+        </div>
       </St.TalkFormUserInfo>
 
-      {currentChannelInfo.product_status && <span>물물교환이 완료된 상품입니다.</span>}
+      {currentChannelInfo.product_status && <St.DoneMessage>물물교환이 완료된 상품입니다.</St.DoneMessage>}
 
       <ul ref={messageListRef}>
         {talkMessages?.map((talk) => {

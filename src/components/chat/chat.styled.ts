@@ -100,13 +100,14 @@ export const TalkMessageContainer = styled.section`
   padding: 2rem 1rem;
 
   & ul {
-    margin: 3rem 0 1rem 0;
+    margin: 1rem 0 1rem 0;
     padding: 0 0.5rem;
     height: 35rem;
     overflow-y: scroll;
     background: white;
     display: flex;
     flex-direction: column;
+    border-radius: 10px;
 
     &::-webkit-scrollbar {
       width: 0;
@@ -114,8 +115,11 @@ export const TalkMessageContainer = styled.section`
   }
 `;
 
+export const PrevButton = styled.button`
+  cursor: pointer;
+`;
+
 export const TalkCardUserInfo = styled.div`
-  display: flex;
   & > h3 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
@@ -125,10 +129,20 @@ export const TalkCardUserInfo = styled.div`
 
 export const TalkFormUserInfo = styled.section`
   display: flex;
-  align-items: center;
+  align-items: start;
+  margin-top: 0.3rem;
 
-  & > h2 {
+  & > figure {
+    margin-right: 1rem;
+  }
+  & h2 {
     font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  & span {
+    font-weight: bold;
+    text-decoration: underline;
   }
 
   & img {
@@ -206,6 +220,8 @@ export const InputArea = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
+  padding: 0.3rem;
+  border-radius: 5px;
 
   & > label {
     cursor: pointer;
@@ -228,6 +244,7 @@ export const InputArea = styled.div`
       height: 3rem;
       border: none;
       background: none;
+      padding-left: 0.2rem;
       padding-right: 3rem;
     }
   }
@@ -264,4 +281,11 @@ export const PreviewProductInfo = styled.span`
   font-weight: bold;
   text-decoration: underline;
   margin-bottom: 0.5rem;
+`;
+
+export const DoneMessage = styled.div`
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
