@@ -2,5 +2,8 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.configPath": ".prettierrc",
-  "editor.codeActionsOnSave": { "source.organizeImports": "explicit" }
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "commentTranslate.targetLanguage": "en"
 }
