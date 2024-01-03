@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 import {
   getUserData,
@@ -21,24 +22,28 @@ const enum queryKey {
 export const useAuth = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-
+  const { showBoundary } = useErrorBoundary();
   // 회원가입
   const signupMutation = useMutation({
     mutationFn: signupHandler,
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey.SIGNUP] });
-      const token = await getUserData();
-      console.log(token);
-      const info = {
-        id: token?.id,
-        email: token?.email,
-        created_at: new Date().toISOString(),
-        full_name: token?.user_metadata.full_name,
-        avatar_img: token?.user_metadata.avatar_img,
-      };
-      await saveUser(info as Users);
-      navigate('/auth/login');
+      try {
+        queryClient.invalidateQueries({ queryKey: [queryKey.SIGNUP] });
+        const token = await getUserData();
+        const info = {
+          id: token?.id,
+          email: token?.email,
+          created_at: new Date().toISOString(),
+          full_name: token?.user_metadata.full_name,
+          avatar_img: token?.user_metadata.avatar_img,
+        };
+        await saveUser(info as Users);
+        navigate('/auth/login');
+      } catch (error) {
+        showBoundary(error);
+      }
     },
+    onError: (error) => showBoundary(error),
   });
 
   // 로그인
@@ -47,6 +52,9 @@ export const useAuth = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.LOGIN] });
       navigate('/');
+    },
+    onError: (error) => {
+      showBoundary(error);
     },
   });
 
@@ -60,6 +68,9 @@ export const useAuth = () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.LOGOUT] });
       navigate('/');
     },
+    onError: (error) => {
+      showBoundary(error);
+    },
   });
 
   // 비밀번호 변경
@@ -68,6 +79,9 @@ export const useAuth = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey.UPDATE_PASSWORD] });
       navigate('/auth/login');
+    },
+    onError: (error) => {
+      showBoundary(error);
     },
   });
 

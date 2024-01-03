@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import {
   checkFollowId,
   deleteStorageImage,
@@ -29,11 +30,11 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   const [edit, setEdit] = useState(false);
   const [userSessionNickname, setUserSessionNickname] = useState('');
   const [img, setImg] = useState(defaultImg);
-  const [uploadFile, setUploadFile] = useState<File | undefined>();
+  const [uploadFile, setUploadFile] = useState<File>();
   const [nickname, setNickname] = useState('');
   const [followId, setFolllowId] = useState('');
   const [followBtn, setFollowBtn] = useState(true);
-
+  const { showBoundary } = useErrorBoundary();
   // 세션에 있는 닉네임 가져오는 함수
   const getSession = async () => {
     const session = await getUserSession();
@@ -88,14 +89,16 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   const updateProfileImg = async () => {
     if (imgRef.current === null) {
       return;
-    } else {
-      deleteStorageImage(uid);
-      uploadStorageProfileImg(uid, uploadFile as File);
+    }
+    try {
+      await deleteStorageImage(uid);
+      await uploadStorageProfileImg(uid, uploadFile as File);
       const publicUrl = await imgPublicUrl(uid);
-      insertProfileImg(uid, publicUrl.publicUrl);
+      await insertProfileImg(uid, publicUrl.publicUrl);
       // updateFollowTargetUser(uid, nickname, publicUrl.publicUrl);
-      updateUserProfile(publicUrl.publicUrl);
-      return;
+      await updateUserProfile(publicUrl.publicUrl);
+    } catch (error) {
+      showBoundary(error);
     }
   };
   // 프로필 변경하기 핸들러
@@ -131,7 +134,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   // 팔로우/언팔로우 체크(useEffect로 상태 체크하여 버튼 바꾸기 위함
   const checkFollowList = async () => {
     const check = await checkFollowId(followId);
-    // console.log(check);
     if (check.data) {
       if (check.data.length === 0) {
         setFollowBtn(true); // 팔로우 버튼
@@ -170,7 +172,7 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
           {edit ? (
             <input
               type="text"
-              maxLength={10}
+              maxLength={8}
               value={nickname}
               onChange={(e) => {
                 setNickname(e.target.value);
@@ -179,12 +181,10 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
           ) : (
             <p>{nickname}</p>
           )}{' '}
-          <St.Grade>{nickname}님의 점수</St.Grade>
         </St.Nickname>
         {uid === params ? (
           // 마이페이지의 버튼 구역
           <>
-            <St.ProfileBtn className="empty"></St.ProfileBtn>
             {edit ? (
               <>
                 <St.UploadLabel htmlFor="img">이미지 업로드</St.UploadLabel>
@@ -213,7 +213,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
           <>
             <St.ProfileBtn onClick={showFollowModal}>팔로워 목록 보기</St.ProfileBtn>
             <St.ProfileBtn onClick={onClickFollowHandler}>{followBtn ? '팔로우하기' : '팔로우 취소하기'}</St.ProfileBtn>
-            <St.ProfileBtn onClick={showReviewModal}>후기 등록하기</St.ProfileBtn>
           </>
         )}
       </St.ProfileInfo>

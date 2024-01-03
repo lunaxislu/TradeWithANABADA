@@ -84,7 +84,7 @@ export const signupHandler = async (values: users) => {
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
@@ -144,7 +144,9 @@ export const logoutHandler = async () => {
 export const getUserData = async () => {
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
+  if (error) throw error;
   return user;
 };
 
@@ -172,7 +174,7 @@ export const resetPasswordHandler = async (values: users) => {
       alert('메일이 전송되었습니다.');
     }
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
@@ -182,14 +184,16 @@ export const resetPasswordHandler = async (values: users) => {
  */
 export const updatePasswordHandler = async (values: users) => {
   const { password } = values;
-  console.log('password: ', password);
   const { data, error } = await supabase.auth.updateUser({
     password,
   });
   if (data) {
     alert('비밀번호 변경이 완료되었습니다.');
   }
-  if (error) alert('There was an error updating your password.');
+  if (error) {
+    alert('There was an error updating your password.');
+    throw error;
+  }
 };
 /**
  * 상품등록
@@ -228,7 +232,7 @@ export const insertProduct = async (info: ParamForRegist) => {
   await insertImageStorage(post_id, info.imgFiles, date, info.user_id);
 
   if (error) {
-    throw console.log(error);
+    throw error;
   }
 
   return data;
@@ -251,7 +255,7 @@ const insertHashTag = async (post_id: number, hash_tag: string[]) => {
     .select();
 
   if (error) {
-    throw console.log(error);
+    throw error;
   }
 };
 
@@ -263,35 +267,43 @@ const insertHashTag = async (post_id: number, hash_tag: string[]) => {
  * @param uuid
  */
 const insertImageStorage = async (id: number, files: (File | Blob)[], date: string, uuid: string) => {
-  // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
-  const uploadImage = files.map(async (file) => {
-    // nano id를 사용해서 이미지 고유 이름으로 넣습니다.
-    const imageName = nanoid();
-    const { data } = await supabase.storage.from('product-images').upload(`${uuid}/${id}/${date}/${imageName}`, file);
-    return data;
-  });
+  try {
+    // 이미지가 Array 형태로 담겨져 있으므로 promise All을 사용하려고 변수에 담았습니다.
+    const uploadImage = files.map(async (file) => {
+      // nano id를 사용해서 이미지 고유 이름으로 넣습니다.
+      const imageName = nanoid();
+      const { data, error } = await supabase.storage
+        .from('product-images')
+        .upload(`${uuid}/${id}/${date}/${imageName}`, file);
+      if (error) throw error;
 
-  // Promise.all로 처리하여 urlPath라는 변수에 담습니다.
-  const urlPath = await Promise.all(uploadImage);
+      return data;
+    });
 
-  // getPublicUrl이라는 메소드가 동기 함수입니다;; 당황함 그래서 그냥 async await을 사용하지 않았습니다.
-  const urls = urlPath.map((url) => {
-    const { data } = supabase.storage.from('product-images').getPublicUrl(`${url?.path}`);
-    return data.publicUrl;
-  });
+    // Promise.all로 처리하여 urlPath라는 변수에 담습니다.
+    const urlPath = await Promise.all(uploadImage);
 
-  // product에다가 다시 넣어줬습니다.
-  const { data, error } = await supabase
-    .from('products')
-    .update({
-      product_img: urls,
-      status: false,
-    })
-    .eq('id', id) // product_id를 찾는 eq입니다.
-    .select();
+    // getPublicUrl이라는 메소드가 동기 함수입니다;; 당황함 그래서 그냥 async await을 사용하지 않았습니다.
+    const urls = urlPath.map((url) => {
+      const { data } = supabase.storage.from('product-images').getPublicUrl(`${url?.path}`);
+      return data.publicUrl;
+    });
 
-  if (error) {
-    throw console.log(error);
+    // product에다가 다시 넣어줬습니다.
+    const { data, error } = await supabase
+      .from('products')
+      .update({
+        product_img: urls,
+        status: false,
+      })
+      .eq('id', id) // product_id를 찾는 eq입니다.
+      .select();
+
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -302,10 +314,8 @@ export const deleteImageFromStorage = async (info: ProductInfoType) => {
   const filesToRemove = lists?.map((list) => `${info.user_id}/${info.product_id}/${info.created_at}/${list.name}`);
 
   const { data, error } = await supabase.storage.from('product-images').remove(filesToRemove!);
-
-  console.log('product-images에 삭제되고', data);
   if (error) {
-    console.log('스토리지 폴더삭제에서', error);
+    throw error;
   }
 };
 
@@ -342,10 +352,13 @@ const searchInColumn = async (page: number, keyword: string, column: string) => 
 };
 
 export const searchProducts = async (page: number, keyword: string) => {
-  const titleData = await searchInColumn(page, keyword, 'title');
-  const contentData = await searchInColumn(page, keyword, 'content');
-
-  return [...titleData, ...contentData];
+  try {
+    const titleData = await searchInColumn(page, keyword, 'title');
+    const contentData = await searchInColumn(page, keyword, 'content');
+    return [...titleData, ...contentData];
+  } catch (error) {
+    throw error;
+  }
 };
 
 // 최신 게시물 가져오기 (메인)
@@ -398,7 +411,7 @@ export const getCategoryWithOneDepth = async (page: number, name: string) => {
   const { data, error } = await supabase
     .rpc('get_category_products', { input_category_name: name })
     .range(page * 10 - 10, page * 10 - 1);
-  if (error) console.log(error);
+  if (error) throw error;
   return data;
 };
 
@@ -432,9 +445,12 @@ export const insertProfileImg = async (uid: string, url: string) => {
 };
 // 유저 프로필 사진 publicUrl 받아오기 (users 테이블에 넣어줄 url string)
 export const imgPublicUrl = async (uid: string) => {
-  const { data } = await supabase.storage.from(`profile-images`).getPublicUrl(`${uid}/img`);
-
-  return data;
+  try {
+    const { data } = supabase.storage.from(`profile-images`).getPublicUrl(`${uid}/img`);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 // 유저 프로필 사진 url auth에 넣어주기
 export const updateUserProfile = async (url: string) => {
@@ -458,33 +474,37 @@ export const follow = async (id: string, uid: string, params: string, nickname: 
   const { data, error } = await supabase
     .from('follow')
     .insert([{ follow_id: id, from_user_id: uid, to_user_id: params, to_user_nickname: nickname, to_user_img: img }]);
+  if (error) throw error;
   return { data, error };
 };
 
 // 팔로우 목록 가져오기
 export const getFollowList = async (params: string) => {
   const { data, error } = await supabase.from('follow').select('*').eq('from_user_id', params);
+  if (error) throw error;
   return data;
 };
 // 팔로우 목록 확인하기(followId로)
 export const checkFollowId = async (followId: string) => {
   const { data, error } = await supabase.from('follow').select('follow_id').eq('follow_id', followId);
+  if (error) throw error;
   return { data, error };
 };
 // 팔로우 취소하기
 export const unfollow = async (followId: string) => {
   const { error } = await supabase.from('follow').delete().eq('follow_id', followId);
-  return error;
+  if (error) throw error;
 };
 // 팔로우 취소하기(마이페이지)
 export const mypageUnfollow = async (targetuser: string) => {
   const { error } = await supabase.from('follow').delete().eq('to_user_id', targetuser);
-  return error;
+  if (error) throw error;
 };
 
 // 유저의 리뷰 row 가져오기
 export const filteredReview = async (uid: string) => {
   const { data, error } = await supabase.from('review').select('*').eq('user_id', uid);
+  if (error) throw error;
   return data;
 };
 type ReviewProps = {
@@ -495,6 +515,12 @@ type ReviewProps = {
   i4: number;
   i5: number;
 };
+// 리뷰삭제(update가 잘 먹지 않는 것 같아 삭제하고 insert)
+export const deleteReview = async (params: string) => {
+  const { error } = await supabase.from('review').delete().eq('user_id', params);
+  if (error) throw error;
+};
+
 // 리뷰등록(update)
 export const updateReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) => {
   const { data, error } = await supabase
@@ -510,32 +536,19 @@ export const insertReview = async ({ params, i1, i2, i3, i4, i5 }: ReviewProps) 
     .from('review')
     .insert([{ user_id: params, res_fast: i1, kind: i2, good_product: i3, same_product: i4, good_time: i5 }])
     .select();
+  if (error) throw error;
 };
-// sales에서 user_id 비교하여 정보 가져오기 (product_id와 join 해야할 듯)
-// export const getPurchase = async (uid: string) => {
-//   const { data, error } = await supabase.from('sales').select('*').eq('user_id', uid);
-//   if (error) throw error;
-//   return data;
-// };
-
-export type PurchaseData = {
-  product_id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  price: string;
-  product_img: string[];
-  user_id: string;
-};
-
+// 구매목록 불러오는 함수
 export const getPurchaseLists = async (uid: string) => {
-  try {
-    const { data, error } = await supabase.rpc('get_purchase_lists', { input_user_id: uid });
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  const { data, error } = await supabase.rpc('get_purchase_lists', { input_user_id: uid });
+  if (error) throw error;
+  return data;
+};
+// 리뷰 폼에서 등록 시, paramUid이용하여 sales 상태 바꿔주기
+export const UpdateReviewStatus = async (uid: string) => {
+  const { data, error } = await supabase.from('sales').update({ review_status: true }).eq('user_id', uid);
+  if (error) throw error;
+  return data;
 };
 
 /**
@@ -552,19 +565,21 @@ export const getUserInfoInProduct = async (uid: string) => {
 
 export const findLike = async (user_id: string, post_id: number) => {
   if (user_id && post_id) {
-    const { data } = await supabase.from('likes').select().eq('user_id', user_id).eq('post_id', post_id);
+    const { data, error } = await supabase.from('likes').select().eq('user_id', user_id).eq('post_id', post_id);
+    if (error) throw error;
     return data;
   }
 };
 
 export const cancelLike = async (post_id: number) => {
   const { error } = await supabase.from('likes').delete().eq('post_id', post_id);
-  console.log('삭제완료');
+  if (error) throw error;
 };
 
 export const registLike = async (user_id: string, post_id: number) => {
   const { data, error } = await supabase.from('likes').insert([{ post_id, user_id }]).select();
-  console.log('찜하기 완료');
+
+  if (error) throw error;
 };
 
 /**
@@ -606,8 +621,10 @@ const downloadImageFiles = async (lists: FileObject[], info: ProductInfoType) =>
     const { data, error } = await supabase.storage
       .from('product-images')
       .download(`${info.user_id}/${info.product_id}/${info.created_at}/${list.name}`);
+    if (error) throw error;
     return data;
   });
+
   const blobs = await Promise.all(promiseBlob);
   return blobs;
 };
@@ -618,19 +635,21 @@ const getImageFileList = async (info: ProductInfoType) => {
   if (data) {
     return data;
   }
+  if (error) throw error;
 };
 export const updateTableRow = async (preInfo: ProductInfoType, currentInfo: NewProductType) => {
   const { data, error } = await supabase
     .from('likes')
     .update({ post_id: currentInfo[0].id })
     .eq('post_id', preInfo.product_id);
-  console.log(data);
+
   if (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const deleteProduct = async (info: ProductInfoType) => {
-  await supabase.from('products').delete().eq('id', info.product_id);
+  const { error } = await supabase.from('products').delete().eq('id', info.product_id);
+  if (error) throw error;
 };
 
 /**
@@ -640,7 +659,7 @@ export const deleteProduct = async (info: ProductInfoType) => {
 export const getMainCategory = async () => {
   let { data: categories1, error } = await supabase.from('categories1').select('*');
   if (error) {
-    console.log('mainCategory', error);
+    throw error;
   }
   return categories1;
 };
@@ -648,7 +667,7 @@ export const getMainCategory = async () => {
 export const getSubCategory = async (id: number) => {
   let { data: categories2, error } = await supabase.from('categories2').select('name,id').eq('category1_id', id);
   if (error) {
-    console.log('subCategory', error);
+    throw error;
   }
   return categories2;
 };
@@ -703,10 +722,12 @@ export const updateVisibleTrue = async (user_id: string, chat_id: number): Promi
 };
 
 export const getUserInfo = async (uid: string) => {
-  const { data } = await supabase.from('users').select('*').eq('id', uid);
+  const { data, error } = await supabase.from('users').select('*').eq('id', uid);
   if (data) {
     return data;
   }
+
+  if (error) throw error;
 };
 
 type sendMessageArgs = {
@@ -787,6 +808,7 @@ const uploadTalkMessageImage = async (id: string, file: File | Blob) => {
     .from('talk-channel-images')
     .upload(`${id}/${imageName}`, file);
 
+  if (error) throw error;
   // Promise.all로 처리하여 urlPath라는 변수에 담습니다.
 
   // getPublicUrl이라는 메소드가 동기 함수입니다;; 당황함 그래서 그냥 async await을 사용하지 않았습니다.
@@ -812,14 +834,16 @@ export const updateMessageUpdate = async (messageId: string, answer: boolean) =>
 };
 
 export const getTalkChannel = async (id: number) => {
-  const { data } = await supabase.from('chats').select(`*, chat_user(*)`).eq('product_id', id);
+  const { data, error } = await supabase.from('chats').select(`*, chat_user(*)`).eq('product_id', id);
 
+  if (error) throw error;
   return data ? data : [];
 };
 
 export const createTalkChannel = async (user1_id: string, user2_id: string, product_id: number) => {
-  const { data: talkChannelInfo } = await supabase.from('chats').insert([{ product_id }]).select('*');
+  const { data: talkChannelInfo, error } = await supabase.from('chats').insert([{ product_id }]).select('*');
 
+  if (error) throw error;
   if (talkChannelInfo) {
     await supabase.from('chat_user').insert([{ chat_id: talkChannelInfo[0].id, user1_id, user2_id }]);
 

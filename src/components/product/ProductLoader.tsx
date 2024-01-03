@@ -12,7 +12,6 @@ const ProductLoader = () => {
   const search = searchParams.get('search');
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const { data: products, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteProducts(search || '');
-  console.log('products: ', products);
 
   useInfiniteScroll({
     target: loadMoreRef,

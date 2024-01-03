@@ -94,7 +94,6 @@ export const ReviewChart = ({ params }: Props) => {
       },
     ],
   };
-
   return (
     <St.ReviewWrapper>
       <div>

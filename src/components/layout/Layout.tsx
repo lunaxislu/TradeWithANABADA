@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import MainContextProvider from '../../contexts/MainContext';
+import useWithErrorBound from '../../error-boundary/withErrorBound';
 import { Footer, Header } from './';
 
 const EmptyContainer = styled.div`
@@ -14,7 +15,7 @@ const EmptyContainer = styled.div`
 `;
 
 const Layout = () => {
-  return (
+  return useWithErrorBound(
     <>
       <MainContextProvider>
         <Header />
@@ -23,7 +24,7 @@ const Layout = () => {
         </EmptyContainer>
         <Footer />
       </MainContextProvider>
-    </>
+    </>,
   );
 };
 

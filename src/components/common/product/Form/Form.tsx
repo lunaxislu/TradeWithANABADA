@@ -1,5 +1,6 @@
 import { UserMetadata } from '@supabase/supabase-js';
 import React, { FormEvent, useEffect, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 import {
   deleteImageFromStorage,
@@ -35,31 +36,36 @@ const Form = ({ productInfo, isEdit, setIsEdit }: PropsOfEditProductType) => {
   const [tags, setTags] = useState<string[]>(productInfo ? productInfo.hash_tags : []);
   const [userData, setUserData] = useState<UserMetadata>({});
   const [imgFiles, setImgFiles] = useState<(Blob | File)[]>([]);
+  const { showBoundary } = useErrorBoundary();
   const navigate = useNavigate();
   const editProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const product = {
-      title: e.currentTarget['product_name'].value,
-      content: e.currentTarget['product_text'].value,
-      price: e.currentTarget['product_value'].value,
-      tags,
-      user_id: userData.id,
-      imgFiles,
-      category2_id: parseInt(e.currentTarget['category_2'].value),
-    };
-    const result = await insertProduct(product);
-    const getProductFromDB = await supabase.rpc('get_product', { input_post_id: result[0].id });
+    try {
+      const product = {
+        title: e.currentTarget['product_name'].value,
+        content: e.currentTarget['product_text'].value,
+        price: e.currentTarget['product_value'].value,
+        tags,
+        user_id: userData.id,
+        imgFiles,
+        category2_id: parseInt(e.currentTarget['category_2'].value),
+      };
+      const result = await insertProduct(product);
+      const getProductFromDB = await supabase.rpc('get_product', { input_post_id: result[0].id });
 
-    if (productInfo) {
-      await updateTableRow(productInfo, result);
-      await deleteImageFromStorage(productInfo);
-      await deleteProduct(productInfo);
-      if (setIsEdit) {
-        setIsEdit(false);
+      if (productInfo) {
+        await updateTableRow(productInfo, result);
+        await deleteImageFromStorage(productInfo);
+        await deleteProduct(productInfo);
+        if (setIsEdit) {
+          setIsEdit(false);
+        }
       }
+
+      navigate(`/detail/${getProductFromDB.data?.[0].product_id}`, { state: getProductFromDB.data?.[0] });
+    } catch (error) {
+      showBoundary(error);
     }
-    console.log(getProductFromDB);
-    navigate(`/detail/${getProductFromDB.data?.[0].product_id}`, { state: getProductFromDB.data?.[0] });
   };
 
   // 사용자의 고유 아이디 uid를 가져옵니다.

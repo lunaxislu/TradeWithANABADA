@@ -45,16 +45,16 @@ const HomeProductList = ({ type }: ProductListProps) => {
   const [products, setProducts] = useState<ProductData[]>();
   const { showBoundary } = useErrorBoundary();
   const getProductsData = async () => {
-    const data = await productSectionInfos[type].getProductHandler(0);
-    setProducts(data);
-  };
-
-  useEffect(() => {
     try {
-      getProductsData();
+      const data = await productSectionInfos[type].getProductHandler(0);
+      setProducts(data);
     } catch (error) {
       showBoundary(error);
     }
+  };
+
+  useEffect(() => {
+    getProductsData();
   }, []);
 
   return (
