@@ -6,11 +6,22 @@
 
 FE
 
-- React, TypeScript, React Query, React Context, Styled Components
+- React, TypeScript, React Query(tanstack query v5), React Context, Styled Components
 
 Be
 
 - Supabase (Bass)
+
+Lib
+
+- Slack
+- axios
+- Supabase
+- web-vitals
+- react-chartjs-2
+- react-error-bounder
+- react-router-dom v6
+- react-image-file-resizer
 
 ### 주요 기능
 
