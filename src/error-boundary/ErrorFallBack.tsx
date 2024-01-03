@@ -52,8 +52,8 @@ export const ErrorFallBack = ({ error, resetErrorBoundary }: FallbackProps) => {
           <div>서버와 연결중...</div>
           <div>{error.message}라는 문제가 발생하였습니다.</div>
           <p>
-            음.. 저희쪽 문제내요
-            <br /> 이건.... 잠시만 기다려주시면 담당자가 호다다닥 해결하겠습니다. <br /> 그때까지 참아주세여 ㅜㅜ
+            코드 상태가 422인데.. 혹시 아무것도 안하고 버튼누른것은 아닐까요?
+            <br /> 암튼 홈으로가서 조용히 자기 반성하죠
           </p>
           <Button color="warning" onClick={() => resetErrorBoundary()}>
             홈으로 이동

@@ -30,7 +30,7 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   const [edit, setEdit] = useState(false);
   const [userSessionNickname, setUserSessionNickname] = useState('');
   const [img, setImg] = useState(defaultImg);
-  const [uploadFile, setUploadFile] = useState<File | undefined>();
+  const [uploadFile, setUploadFile] = useState<File>();
   const [nickname, setNickname] = useState('');
   const [followId, setFolllowId] = useState('');
   const [followBtn, setFollowBtn] = useState(true);
