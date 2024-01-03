@@ -26,7 +26,6 @@ const ListItem = ({ name, list, setParamUid, setReviewModal, params }: ListItemP
   useEffect(() => {
     const getSession = async () => {
       const session = await getUserSession();
-      console.log('session: ', session);
       setSessionId(session.session?.user.id);
     };
     getSession();
