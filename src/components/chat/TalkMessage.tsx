@@ -52,8 +52,12 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
       if (chat.author_id !== currentUserInfo.session?.user.id) {
         return (
           <>
-            <button onClick={acceptTradeHandler}>수락</button>
-            <button onClick={denyTradeHandler}>취소</button>
+            <St.TalkAcceptButton $color="#b6b7f9" onClick={acceptTradeHandler}>
+              수락
+            </St.TalkAcceptButton>
+            <St.TalkAcceptButton $color="#ffa282" onClick={denyTradeHandler}>
+              취소
+            </St.TalkAcceptButton>
           </>
         );
       }
@@ -91,8 +95,8 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
       return (
         <St.TalkMessage key={chat.message_id} $subStyle={$style}>
           {!chat.visible && $style['x-position'] === 'end' && <St.VisibleChecker>1</St.VisibleChecker>}
-          <span>물품교환을 신청하였습니다.</span>
-          <div>{requestStatus()}</div>
+          <St.RequestMessage>물품교환을 신청하였습니다.</St.RequestMessage>
+          <St.RequestArea>{requestStatus()}</St.RequestArea>
           <St.MessageDate>{convertDate()}</St.MessageDate>
         </St.TalkMessage>
       );

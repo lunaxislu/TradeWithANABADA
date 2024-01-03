@@ -114,6 +114,7 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
           <h3>{otherUser.nickname}</h3>
           {otherUserInPage && <UserOn />}
         </St.TalkCardUserInfo>
+
         <St.PreviewProductInfo>{!!productInfo && productInfo[0].title}</St.PreviewProductInfo>
 
         {/* preview */}

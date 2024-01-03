@@ -120,6 +120,7 @@ export const PrevButton = styled.button`
 `;
 
 export const TalkCardUserInfo = styled.div`
+  display: flex;
   & > h3 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
@@ -212,6 +213,8 @@ export const InputForm = styled.form`
     background-color: gray;
     cursor: pointer;
     margin-bottom: 0.5rem;
+    font-weight: bold;
+    border-radius: 5px;
   }
 `;
 
@@ -288,4 +291,22 @@ export const DoneMessage = styled.div`
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
+`;
+export const TalkAcceptButton = styled.button<{ $color: string }>`
+  border-radius: 3px;
+  padding: 0.3rem;
+  cursor: pointer;
+  background-color: ${(props) => props.$color};
+  & + button {
+    margin-left: 1rem;
+  }
+`;
+export const RequestArea = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+`;
+export const RequestMessage = styled.span`
+  font-weight: bold;
+  text-decoration: underline;
 `;
