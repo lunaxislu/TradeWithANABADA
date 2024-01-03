@@ -3,7 +3,13 @@ import { ReactComponent as Left } from '../../styles/assets/LeftButton.svg';
 import { ReactComponent as Right } from '../../styles/assets/RightButton.svg';
 import * as St from './home.styled';
 
-const slideInfo = ['red', 'black', 'white', 'green', 'gray'];
+const slideInfo = [
+  process.env.PUBLIC_URL + '/asset/banner/banner1.png',
+  process.env.PUBLIC_URL + '/asset/banner/banner2.png',
+  process.env.PUBLIC_URL + '/asset/banner/banner3.jpg',
+  process.env.PUBLIC_URL + '/asset/banner/banner4.png',
+  process.env.PUBLIC_URL + '/asset/banner/banner5.png',
+];
 
 const HomeSlideBanner = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(1);
@@ -65,7 +71,7 @@ const HomeSlideBanner = () => {
       <St.SlideViewer>
         <St.SlideItems ref={slideRef} $translateX={(100 / targetSlide.length) * currentIndex}>
           {targetSlide.map((item, index) => (
-            <St.SlideItem key={index} $color={item} />
+            <St.SlideItem key={index} $url={item} />
           ))}
         </St.SlideItems>
       </St.SlideViewer>
