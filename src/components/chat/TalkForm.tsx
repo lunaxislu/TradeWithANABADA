@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useErrorBoundary } from 'react-error-boundary';
 import { Tables } from '../../../database.types';
 import { getUserInfo, sendMessage, supabase, updateVisibleTrue } from '../../API/supabase.api';
+import { useMainContext } from '../../contexts/MainContext';
 import { useTalkContext } from '../../contexts/TalkContext';
 import { ReactComponent as Cancel } from '../../styles/assets/cancel.svg';
 import { ReactComponent as ImageSelector } from '../../styles/assets/imageSelector.svg';
@@ -29,6 +30,8 @@ const TalkForm = () => {
     userAllChannelInfo,
   } = useTalkContext();
 
+  const { talkOpen } = useMainContext();
+
   const [otherUserIn, onOtherUserIn] = useState<boolean>(false);
   const [otherUserInfo, setOtherUserInfo] = useState<Tables<'users'>>(initialUser);
 
@@ -40,6 +43,10 @@ const TalkForm = () => {
   const currentChannelInfo = userAllChannelInfo.find((channelInfo) => channelInfo.chat_id === currentChannel)!;
 
   const { showBoundary } = useErrorBoundary();
+
+  if (!talkOpen) {
+    changeCurrentChannel(0);
+  }
 
   //  메세지 보내기 (type=message/image)
   const sendMessageHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -213,7 +220,9 @@ const TalkForm = () => {
 
       {/* 상대방 user Info */}
       <St.TalkFormUserInfo>
-        <img src={otherUserInfo.avatar_img!}></img>
+        <figure>
+          <img src={otherUserInfo.avatar_img!}></img>
+        </figure>
         <h2>{otherUserInfo.nickname}</h2>
       </St.TalkFormUserInfo>
 

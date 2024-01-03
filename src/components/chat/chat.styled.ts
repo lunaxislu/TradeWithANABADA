@@ -5,13 +5,17 @@ export const TalkContainer = styled.div<{ $talkOpen: boolean }>`
   top: 0;
   left: 0%;
   opacity: ${(props) => (props.$talkOpen ? 1 : 0)};
-  transform: translate(-100%, -100%);
+  transform: translate(-95%, -90%);
   width: ${(props) => (props.$talkOpen ? '30rem' : '0')};
   height: ${(props) => (props.$talkOpen ? '50rem' : '0')};
-  background-color: beige;
-  border-radius: 10px;
+  background-color: #eeeeee;
+  border-radius: 10px 10px 0 10px;
   transition: 0.5s ease-in-out;
   overflow: hidden;
+  box-shadow:
+    rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 `;
 
 export const TalkListContainer = styled.div<{ $talkChannelOpen: boolean }>`
@@ -52,13 +56,16 @@ export const TalkChannelCardItem = styled.li`
   position: relative;
   padding: 2rem 1rem;
   display: flex;
+  align-items: start;
   cursor: pointer;
   &:hover {
     background: gray;
   }
   & > figure {
     margin-right: 1rem;
+    border-radius: 50%;
     & > img {
+      border-radius: 50%;
       height: 5rem;
       width: 5rem;
       object-fit: cover;
@@ -79,11 +86,11 @@ export const TalkChannelCardItem = styled.li`
 
 export const InvisibleMessage = styled.span`
   position: absolute;
-  right: 1rem;
-  top: 1rem;
+  right: 2rem;
+  top: 2rem;
   font-weight: bold;
   color: red;
-  font-size: 1.5rem;
+  font-size: 2rem;
 `;
 
 export const TalkMessageContainer = styled.section`
@@ -123,8 +130,11 @@ export const TalkFormUserInfo = styled.section`
   & > h2 {
     font-size: 2rem;
   }
-  & > img {
+
+  & img {
+    border-radius: 50%;
     width: 5rem;
+    height: 5rem;
   }
 `;
 
@@ -234,16 +244,24 @@ export const SelectImageSection = styled.section`
 
 export const DoneProduct = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   font-size: 1.8rem;
   font-weight: bold;
-  color: white;
+  color: lightgrey;
   background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
 
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+`;
+
+export const PreviewProductInfo = styled.span`
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 0.5rem;
 `;

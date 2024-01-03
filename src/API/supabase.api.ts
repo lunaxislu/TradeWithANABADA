@@ -858,3 +858,7 @@ export const createTalkChannel = async (user1_id: string, user2_id: string, prod
 export const updateSales = async (user_id: string, product_id: number) => {
   await supabase.from('sales').insert([{ user_id, product_id, review_status: false }]);
 };
+export const getProduct = async (product_id: number) => {
+  const { data } = await supabase.from('products').select(`*`).eq('id', product_id);
+  if (data) return data;
+};

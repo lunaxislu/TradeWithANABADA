@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useErrorBoundary } from 'react-error-boundary';
 import { Tables } from '../../../database.types';
-import { ChannelInfo, getUserInfo, supabase } from '../../API/supabase.api';
+import { ChannelInfo, getProduct, getUserInfo, supabase } from '../../API/supabase.api';
 import { useTalkContext } from '../../contexts/TalkContext';
 import { ReactComponent as UserOn } from '../../styles/assets/userOn.svg';
 import { displayCreateAt } from '../../utils/date';
@@ -25,6 +25,16 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
 
   const [otherUserInPage, isOtherUserInPage] = useState<boolean>(false);
   const [otherUser, setOtherUser] = useState<Tables<'users'>>(initialUser);
+  const [productInfo, setProductInfo] = useState<Tables<'products'>[]>();
+
+  useEffect(() => {
+    const updateProductData = async () => {
+      const info = await getProduct(channel.product_id);
+      if (info) setProductInfo(info);
+      console.log(info);
+    };
+    updateProductData();
+  }, []);
 
   const { showBoundary } = useErrorBoundary();
   useEffect(() => {
@@ -91,7 +101,7 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
     >
       {channel.product_status && (
         <St.DoneProduct>
-          <span>거래가 종료된 상품입니다.</span>
+          <span>거래 종료 상품</span>
         </St.DoneProduct>
       )}
       <figure>
@@ -104,6 +114,7 @@ const TalkChannelCard = ({ channel }: TalkChannelCardProps) => {
           <h3>{otherUser.nickname}</h3>
           {otherUserInPage && <UserOn />}
         </St.TalkCardUserInfo>
+        <St.PreviewProductInfo>{!!productInfo && productInfo[0].title}</St.PreviewProductInfo>
 
         {/* preview */}
         <div>

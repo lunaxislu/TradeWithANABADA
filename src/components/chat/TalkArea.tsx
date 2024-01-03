@@ -14,9 +14,8 @@ const TalkArea = () => {
     <section>
       <figure onClick={toggleTalk}>
         <Talk />
-        <span>TALK</span>
       </figure>
-      <St.InvisibleMessage>{invisible}</St.InvisibleMessage>
+      {!!invisible && <St.InvisibleMessage>{invisible}</St.InvisibleMessage>}
 
       <TalkLayout>
         {
