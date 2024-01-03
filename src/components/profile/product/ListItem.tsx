@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUserSession } from '../../../API/supabase.api';
 import { useProfile } from '../../../hooks/profileHook/useProfile';
 import { displayCreateAt } from '../../../utils/date';
 import { ProductData } from '../../home/HomeProductList';
@@ -11,13 +13,24 @@ type ListItemProps = {
   list: ProductDataExtends[];
   setParamUid?: React.Dispatch<React.SetStateAction<string>>;
   setReviewModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  params?: string | undefined;
 };
 
-const ListItem = ({ name, list, setParamUid, setReviewModal }: ListItemProps) => {
+const ListItem = ({ name, list, setParamUid, setReviewModal, params }: ListItemProps) => {
   const navigate = useNavigate();
   const { remove, update } = useProfile();
+  const [sessionId, setSessionId] = useState<any>(null);
 
   const moveToDetailPage = (item: ProductData) => navigate(`/detail/${item.product_id}`, { state: item });
+
+  useEffect(() => {
+    const getSession = async () => {
+      const session = await getUserSession();
+      console.log('session: ', session);
+      setSessionId(session.session?.user.id);
+    };
+    getSession();
+  }, []);
 
   return (
     <>
@@ -51,11 +64,15 @@ const ListItem = ({ name, list, setParamUid, setReviewModal }: ListItemProps) =>
                 {(() => {
                   switch (name) {
                     case 'wish':
-                      return (
-                        <Button className="wish" color="primary" onClick={() => remove(item.product_id)}>
-                          삭제
-                        </Button>
-                      );
+                      if (sessionId === params) {
+                        return (
+                          <Button className="wish" color="primary" onClick={() => remove(item.product_id)}>
+                            삭제
+                          </Button>
+                        );
+                      } else {
+                        return null;
+                      }
                     case 'purchase':
                       if (!item.review_status && setParamUid && setReviewModal) {
                         return (

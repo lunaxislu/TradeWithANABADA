@@ -75,7 +75,7 @@ const ProfileProductList = ({ uid, params, setParamUid, setReviewModal }: Props)
             {(() => {
               switch (list) {
                 case 'wish':
-                  return <ListItem name={list} list={wishList!} />;
+                  return <ListItem name={list} list={wishList!} params={params} />;
                 case 'onSale':
                   return <ListItem name={list} list={onSaleList!} />;
                 case 'soldOut':
