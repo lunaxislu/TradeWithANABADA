@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ReactComponent as Left } from '../../styles/assets/LeftButton.svg';
 import { ReactComponent as Right } from '../../styles/assets/RightButton.svg';
+import banner1 from '../../styles/assets/banner1.svg';
 import * as St from './home.styled';
 
 const slideInfo = [

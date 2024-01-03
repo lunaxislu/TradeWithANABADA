@@ -85,6 +85,7 @@ export const SideBar = styled.nav<{ $isOpen: boolean }>`
 `;
 
 export const CategoryLi = styled.li`
+  cursor: pointer;
   &:hover {
     background: #012401;
   }

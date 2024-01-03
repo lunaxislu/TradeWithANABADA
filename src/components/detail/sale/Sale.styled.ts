@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 
 export const Container = styled.div<{ $status: boolean }>`
   width: 120rem;
-  /* height: 80rem; */
   position: relative;
   .product-info {
     display: flex;

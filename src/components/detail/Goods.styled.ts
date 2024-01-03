@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.main`
   position: relative;
   min-width: 100vw;
-  min-height: 100vh;
+  min-height: calc(100vh + 30rem);
   display: grid;
   place-content: center center;
 `;

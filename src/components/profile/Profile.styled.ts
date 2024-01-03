@@ -177,13 +177,13 @@ export const ListBtn = styled.div`
   padding: 2rem;
   cursor: pointer;
   text-align: center;
-  border-bottom: 0.2rem solid #3081d0;
+  border-bottom: 0.2rem solid black;
 
   &.active {
     font-weight: bold;
-    color: #3081d0;
+    color: black;
     background-color: white;
-    border: 0.2rem solid #3081d0;
+    border: 0.2rem solid black;
     border-bottom: none;
   }
 `;
@@ -279,7 +279,7 @@ export const PriceWrapper = styled.div<{ $name: string; $review_status?: boolean
 
     &:hover {
       color: white;
-      background-color: #3081d0;
+      background-color: black;
     }
   }
   .wish {
