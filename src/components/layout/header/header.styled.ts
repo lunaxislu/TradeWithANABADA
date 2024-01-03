@@ -4,20 +4,21 @@ export const Header = styled.header`
   position: fixed;
   left: 0;
   right: 0;
-  height: 10rem;
+  height: 8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #d9d9d9;
+  background-color: #eeeeee;
   padding: 3rem;
   z-index: 999;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 
   & > h1 {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 7rem;
+    font-size: 5rem;
     font-weight: bold;
     cursor: pointer;
   }
@@ -101,7 +102,7 @@ export const SearchInput = styled.form<{ $isOpen: boolean }>`
   display: flex;
   align-items: center;
   margin-left: 1rem;
-  height: 5rem;
+  height: 4rem;
   padding-left: 1rem;
 
   svg {
@@ -120,7 +121,7 @@ export const SearchInput = styled.form<{ $isOpen: boolean }>`
     height: 100%;
     overflow: hidden;
     animation: ${(props) => (props.$isOpen ? 'openInput 0s 0s forwards' : 'closeInput 0s 0.5s forwards')};
-    font-size: 2.5rem;
+    font-size: 2rem;
 
     @keyframes closeInput {
       to {

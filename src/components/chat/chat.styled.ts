@@ -5,13 +5,17 @@ export const TalkContainer = styled.div<{ $talkOpen: boolean }>`
   top: 0;
   left: 0%;
   opacity: ${(props) => (props.$talkOpen ? 1 : 0)};
-  transform: translate(-100%, -100%);
+  transform: translate(-95%, -90%);
   width: ${(props) => (props.$talkOpen ? '30rem' : '0')};
   height: ${(props) => (props.$talkOpen ? '50rem' : '0')};
-  background-color: beige;
-  border-radius: 10px;
+  background-color: #eeeeee;
+  border-radius: 10px 10px 0 10px;
   transition: 0.5s ease-in-out;
   overflow: hidden;
+  box-shadow:
+    rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 `;
 
 export const TalkListContainer = styled.div<{ $talkChannelOpen: boolean }>`
@@ -52,13 +56,16 @@ export const TalkChannelCardItem = styled.li`
   position: relative;
   padding: 2rem 1rem;
   display: flex;
+  align-items: start;
   cursor: pointer;
   &:hover {
     background: gray;
   }
   & > figure {
     margin-right: 1rem;
+    border-radius: 50%;
     & > img {
+      border-radius: 50%;
       height: 5rem;
       width: 5rem;
       object-fit: cover;
@@ -79,11 +86,11 @@ export const TalkChannelCardItem = styled.li`
 
 export const InvisibleMessage = styled.span`
   position: absolute;
-  right: 1rem;
-  top: 1rem;
+  right: 2rem;
+  top: 2rem;
   font-weight: bold;
   color: red;
-  font-size: 1.5rem;
+  font-size: 2rem;
 `;
 
 export const TalkMessageContainer = styled.section`
@@ -93,18 +100,23 @@ export const TalkMessageContainer = styled.section`
   padding: 2rem 1rem;
 
   & ul {
-    margin: 3rem 0 1rem 0;
+    margin: 1rem 0 1rem 0;
     padding: 0 0.5rem;
     height: 35rem;
     overflow-y: scroll;
     background: white;
     display: flex;
     flex-direction: column;
+    border-radius: 10px;
 
     &::-webkit-scrollbar {
       width: 0;
     }
   }
+`;
+
+export const PrevButton = styled.button`
+  cursor: pointer;
 `;
 
 export const TalkCardUserInfo = styled.div`
@@ -118,13 +130,26 @@ export const TalkCardUserInfo = styled.div`
 
 export const TalkFormUserInfo = styled.section`
   display: flex;
-  align-items: center;
+  align-items: start;
+  margin-top: 0.3rem;
 
-  & > h2 {
-    font-size: 2rem;
+  & > figure {
+    margin-right: 1rem;
   }
-  & > img {
+  & h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  & span {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  & img {
+    border-radius: 50%;
     width: 5rem;
+    height: 5rem;
   }
 `;
 
@@ -188,6 +213,8 @@ export const InputForm = styled.form`
     background-color: gray;
     cursor: pointer;
     margin-bottom: 0.5rem;
+    font-weight: bold;
+    border-radius: 5px;
   }
 `;
 
@@ -196,6 +223,8 @@ export const InputArea = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
+  padding: 0.3rem;
+  border-radius: 5px;
 
   & > label {
     cursor: pointer;
@@ -218,6 +247,7 @@ export const InputArea = styled.div`
       height: 3rem;
       border: none;
       background: none;
+      padding-left: 0.2rem;
       padding-right: 3rem;
     }
   }
@@ -234,16 +264,49 @@ export const SelectImageSection = styled.section`
 
 export const DoneProduct = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   font-size: 1.8rem;
   font-weight: bold;
-  color: white;
+  color: lightgrey;
   background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
 
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+`;
+
+export const PreviewProductInfo = styled.span`
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 0.5rem;
+`;
+
+export const DoneMessage = styled.div`
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+export const TalkAcceptButton = styled.button<{ $color: string }>`
+  border-radius: 3px;
+  padding: 0.3rem;
+  cursor: pointer;
+  background-color: ${(props) => props.$color};
+  & + button {
+    margin-left: 1rem;
+  }
+`;
+export const RequestArea = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+`;
+export const RequestMessage = styled.span`
+  font-weight: bold;
+  text-decoration: underline;
 `;
