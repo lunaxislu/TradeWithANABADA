@@ -48,7 +48,6 @@ const FollowList = ({ uid, params, followModal, setFollowModal }: Props) => {
                       e.stopPropagation();
                       await mypageUnfollow(item.to_user_id);
                       await filterFollowList();
-                      console.log('삭제 완료');
                     }}
                   >
                     팔로우 취소
