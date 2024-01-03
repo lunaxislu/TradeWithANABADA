@@ -13,9 +13,6 @@ type SlackWithError = {
 
 export const postSlackApiWithError = async (error: SlackWithError, info: ErrorInfo, whose?: string) => {
   const errorTarget = info.componentStack?.split('\n')[1].trim();
-  console.log(error);
-  console.log(info);
-  console.log(errorTarget);
   if (error.code || error.statusCode) {
     const alertErrorText = JSON.stringify({
       text:

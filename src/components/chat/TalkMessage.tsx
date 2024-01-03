@@ -38,7 +38,6 @@ const TalkMessage = ({ chat, $style }: TalkMessageProps) => {
 
   const acceptTradeHandler = async () => {
     const currentChannelInfo = userAllChannelInfo.find((channelInfo) => channelInfo.chat_id === chat.current_chat_id)!;
-    console.log(currentChannelInfo);
     await updateOnSaleToSoldOut(currentChannelInfo.product_id);
     await updateMessageUpdate(chat.message_id, true);
     await updateSales(currentUserInfo.session?.user.id!, currentChannelInfo.product_id);

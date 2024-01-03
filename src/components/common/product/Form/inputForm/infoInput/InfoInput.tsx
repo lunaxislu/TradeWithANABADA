@@ -20,7 +20,7 @@ const InfoInput = ({ productInfo }: { productInfo: CommonProductInfoType | undef
             setTitle(e.currentTarget.value);
           }}
         />
-        <label htmlFor="pr_name">Name</label>
+        <label htmlFor="pr_name">상품명</label>
         <St.Span />
       </St.InputWrapper>
       <St.InputWrapper>
@@ -35,7 +35,7 @@ const InfoInput = ({ productInfo }: { productInfo: CommonProductInfoType | undef
             setPrice(e.currentTarget.value);
           }}
         />
-        <label htmlFor="pr_value">Value</label>
+        <label htmlFor="pr_value">가치</label>
         <St.Span />
       </St.InputWrapper>
     </St.Container>

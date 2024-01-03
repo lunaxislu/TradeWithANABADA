@@ -134,7 +134,6 @@ const UpdateProfile = ({ uid, params, setFollowModal, setReviewModal }: Props) =
   // 팔로우/언팔로우 체크(useEffect로 상태 체크하여 버튼 바꾸기 위함
   const checkFollowList = async () => {
     const check = await checkFollowId(followId);
-    // console.log(check);
     if (check.data) {
       if (check.data.length === 0) {
         setFollowBtn(true); // 팔로우 버튼

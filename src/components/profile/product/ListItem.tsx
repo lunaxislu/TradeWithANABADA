@@ -65,7 +65,7 @@ const ListItem = ({ name, list, setParamUid, setReviewModal }: ListItemProps) =>
                             onClick={() => {
                               setReviewModal(true);
                               setParamUid(item.purchased_user_id!);
-                              console.log(item.purchased_user_id!);
+                              item.purchased_user_id!;
                             }}
                           >
                             후기 등록

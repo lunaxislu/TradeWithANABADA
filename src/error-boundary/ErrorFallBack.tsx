@@ -10,7 +10,7 @@ import * as St from './withErrorBound.styled';
  * @returns
  */
 export const ErrorFallBack = ({ error, resetErrorBoundary }: FallbackProps) => {
-  console.log(error.statusCode);
+  // console.log(error.statusCode);
   if (error.name === 'AuthApiError') {
     return (
       <St.ErrorUi>
