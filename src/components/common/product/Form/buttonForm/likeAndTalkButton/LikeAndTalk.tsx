@@ -30,7 +30,6 @@ const LikeAndTalk = ({ productInfo, user_id }: PropsOfLikeAndTalk) => {
   };
 
   const openTalkChannelHandler = async () => {
-    console.log(productInfo?.user_id, user_id, productInfo?.product_id);
     const allChannel = await getTalkChannel(productInfo?.product_id!);
     const targetChannelInfo = allChannel?.find((channel) => {
       if (channel.chat_user) return channel.chat_user.user1_id === user_id || channel.chat_user.user2_id === user_id;

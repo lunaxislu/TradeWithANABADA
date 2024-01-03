@@ -3,11 +3,12 @@ import { ReactComponent as HamburgMenu } from '../../../styles/assets/hamburgerM
 import CategoryItem from './CategoryItem';
 import * as St from './header.styled';
 
-type categoryType = {
+type CategoryType = {
   text: string;
   query: string;
 };
-const categoryList: Array<categoryType> = [
+
+const categoryList: CategoryType[] = [
   { text: '여성의류', query: '' },
   { text: '남성의류', query: '' },
   { text: '신발', query: '' },
@@ -19,7 +20,7 @@ const categoryList: Array<categoryType> = [
 
 const CategoryNav = () => {
   const [categoryOpen, setCategoryOpen] = useState<boolean>(false);
-  const sideBarRef = useRef<HTMLDivElement>(null);
+  const sideBarRef = useRef<HTMLButtonElement>(null);
 
   const categoryToggle = () => {
     setCategoryOpen((prev) => !prev);
@@ -39,10 +40,10 @@ const CategoryNav = () => {
   }, []);
   return (
     <section>
-      <St.CategoryButton onClick={categoryToggle}>
+      <St.CategoryButton onClick={categoryToggle} ref={sideBarRef}>
         <HamburgMenu />
       </St.CategoryButton>
-      <St.SideBar $isOpen={categoryOpen} ref={sideBarRef}>
+      <St.SideBar $isOpen={categoryOpen}>
         <span>전체 카테고리</span>
         <ul>
           {categoryList.map((category, index) => (

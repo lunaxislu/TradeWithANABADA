@@ -8,7 +8,6 @@ import Sale from './sale/Sale';
 const Goods = () => {
   const { state } = useLocation();
   const [isEdit, setIsEdit] = useState(false);
-  console.log(state);
 
   return (
     <St.Container>

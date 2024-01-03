@@ -184,7 +184,6 @@ export const resetPasswordHandler = async (values: users) => {
  */
 export const updatePasswordHandler = async (values: users) => {
   const { password } = values;
-  console.log('password: ', password);
   const { data, error } = await supabase.auth.updateUser({
     password,
   });
@@ -316,7 +315,6 @@ export const deleteImageFromStorage = async (info: ProductInfoType) => {
 
   const { data, error } = await supabase.storage.from('product-images').remove(filesToRemove!);
   if (error) {
-    console.log('스토리지 폴더삭제에서', error);
     throw error;
   }
 };
@@ -370,7 +368,6 @@ export const getLatestProducts = async (limitNum: number) => {
   if (limitNum === 0) {
     if (newNum === 4) {
       const { data, error } = await supabase.rpc('get_latest_products').limit(newNum);
-      // console.log(error);
       if (error) throw error;
 
       return data;
@@ -379,7 +376,6 @@ export const getLatestProducts = async (limitNum: number) => {
     }
   } else {
     const { data, error } = await supabase.rpc('get_latest_products').range(newNum * 10 - 10, newNum * 10 - 1);
-    console.log('tn', error);
     if (error) throw error;
     return data;
   }
@@ -578,14 +574,12 @@ export const findLike = async (user_id: string, post_id: number) => {
 export const cancelLike = async (post_id: number) => {
   const { error } = await supabase.from('likes').delete().eq('post_id', post_id);
   if (error) throw error;
-  console.log('삭제완료');
 };
 
 export const registLike = async (user_id: string, post_id: number) => {
   const { data, error } = await supabase.from('likes').insert([{ post_id, user_id }]).select();
 
   if (error) throw error;
-  console.log('찜하기 완료');
 };
 
 /**

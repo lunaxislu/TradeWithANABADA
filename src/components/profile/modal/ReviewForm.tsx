@@ -30,9 +30,7 @@ const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) =>
     const checkUser = await getReviews(paramUid as string);
     if (checkUser.data.length > 0) {
       const filteredData = await filteredReview(paramUid as string);
-      console.log(filteredData);
       setData(filteredData);
-      console.log(data);
       if (data) {
         const a = data[0].res_fast;
         const b = data[0].kind;
@@ -40,7 +38,6 @@ const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) =>
         const d = data[0].same_product;
         const e = data[0].good_time;
         await deleteReview(paramUid);
-        console.log('삭제완료');
         await insertReview({
           params: paramUid!,
           i1: a! + input1,
@@ -50,7 +47,6 @@ const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) =>
           i5: e! + input5,
         });
       }
-      console.log('user정보가 이미 있어 업데이트가 되었습니다.');
     } else {
       await insertReview({
         params: paramUid!,
@@ -60,7 +56,6 @@ const ReviewForm = ({ params, reviewModal, setReviewModal, paramUid }: Props) =>
         i4: input4,
         i5: input5,
       });
-      console.log('user정보가 없어서 추가되었습니다.');
     }
     setInput1(0);
     setInput2(0);
