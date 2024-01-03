@@ -6,7 +6,7 @@ export const Container = styled.div`
   justify-content: space-between;
   width: 66%;
   height: 100%;
-
+  gap: 1.6rem;
   .big-img_card {
     height: 86%;
 
