@@ -80,7 +80,10 @@ export const Content = styled.div`
     font-weight: 700;
   }
   p:nth-of-type(2) {
+    height: 3rem;
+    overflow: hidden;
     font-size: 1.5rem;
+    white-space: break-spaces;
   }
 
   div {
