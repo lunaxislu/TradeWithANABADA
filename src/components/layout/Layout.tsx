@@ -4,7 +4,7 @@ import useWithErrorBound from '../../error-boundary/withErrorBound';
 import { Footer, Header } from './';
 
 const EmptyContainer = styled.div`
-  padding-top: 10rem;
+  padding-top: 8rem;
   padding-bottom: 10rem;
   min-height: calc(100vh - 30rem);
   justify-content: center;
