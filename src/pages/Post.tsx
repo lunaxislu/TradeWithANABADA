@@ -1,6 +1,10 @@
 import Registration from '../components/post/Registration';
-import useWithErrorBound from '../error-boundary/withErrorBound';
+import ErrorBoundProvider from '../error-boundary/withErrorBound';
 
-const Post = () => useWithErrorBound(<Registration />);
+const Post = () => (
+  <ErrorBoundProvider>
+    <Registration />
+  </ErrorBoundProvider>
+);
 
 export default Post;

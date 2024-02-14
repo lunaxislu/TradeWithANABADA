@@ -1,6 +1,10 @@
 import Form from '../components/user/Form';
-import useWithErrorBound from '../error-boundary/withErrorBound';
+import ErrorBoundProvider from '../error-boundary/withErrorBound';
 
-const Auth = () => useWithErrorBound(<Form />);
+const Auth = () => (
+  <ErrorBoundProvider>
+    <Form />
+  </ErrorBoundProvider>
+);
 
 export default Auth;

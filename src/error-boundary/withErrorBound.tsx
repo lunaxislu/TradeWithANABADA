@@ -1,9 +1,10 @@
-import React from 'react';
+import { PropsWithChildren } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router';
 import { ErrorFallBack, logError } from './ErrorFallBack';
 
-const useWithErrorBound = (component: React.ReactNode) => {
+// component를 받는 것 보단 보다 선언적으로 propsChildren으로 받는 것으로 명칭과 코드를 바꾸는 것이 리패토링의 방식
+const ErrorBoundProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   return (
     <ErrorBoundary
@@ -21,9 +22,9 @@ const useWithErrorBound = (component: React.ReactNode) => {
       onError={logError}
       FallbackComponent={ErrorFallBack}
     >
-      {component}
+      {children}
     </ErrorBoundary>
   );
 };
 
-export default useWithErrorBound;
+export default ErrorBoundProvider;
