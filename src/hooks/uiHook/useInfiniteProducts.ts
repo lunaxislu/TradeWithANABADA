@@ -6,28 +6,13 @@ export const useInfiniteProducts = (keyword: string) => {
     initialPageParam: 1,
     queryKey: ['products', keyword], // keyword가 바뀔 때마다 새로운 데이터를 가져옴
     queryFn: async ({ pageParam = 1 }) => {
-      switch (keyword) {
-        case '최신 상품':
-          return await getLatestProducts(pageParam);
-        case '실시간 인기 상품':
-          return await getPopularProducts(pageParam);
-        case '여성의류':
-          return await getCategoryWithOneDepth(pageParam, keyword);
-        case '남성의류':
-          return await getCategoryWithOneDepth(pageParam, keyword);
-        case '신발':
-          return await getCategoryWithOneDepth(pageParam, keyword);
-        case '쥬얼리':
-          return await getCategoryWithOneDepth(pageParam, keyword);
-        case '디지털':
-          return await getCategoryWithOneDepth(pageParam, keyword);
-        case '가전의류':
-          return await getCategoryWithOneDepth(pageParam, keyword);
-        case '도서':
-          return await getCategoryWithOneDepth(pageParam, keyword);
-        default:
-          return await searchProducts(pageParam, keyword);
-      }
+      const productCategories = ['여성의류', '남성의류', '신발', '쥬얼리', '디지털', '가전의류', '도서'];
+
+      if (keyword === '최신 상품') return await getLatestProducts(pageParam);
+      if (keyword === '실시간 인기 상품') return await getPopularProducts(pageParam);
+      if (productCategories.includes(keyword)) return await getCategoryWithOneDepth(pageParam, keyword);
+
+      return await searchProducts(pageParam, keyword);
     },
     getNextPageParam: (lastPage, allPage) => {
       if (lastPage?.length === 0) {

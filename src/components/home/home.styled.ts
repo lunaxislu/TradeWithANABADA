@@ -31,10 +31,13 @@ export const SlideItems = styled.div<{ $translateX: number }>`
   transform: translateX(-${(props) => props.$translateX}%);
 `;
 
-export const SlideItem = styled.div<{ $color: string }>`
+export const SlideItem = styled.div<{ $url: string }>`
   width: 100vw;
   height: 100%;
-  background: ${(props) => props.$color};
+  background: url(${(props) => props.$url});
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 `;
 
 export const SlideButton = styled.div`

@@ -852,11 +852,23 @@ export const createTalkChannel = async (user1_id: string, user2_id: string, prod
       .insert([{ author_id: user1_id, chat_id: talkChannelInfo[0].id, content: '', id: 'dummy', type: 'message' }]);
 
     await supabase.from('chat_messages').delete().eq('id', 'dummy');
-
-    return talkChannelInfo[0].id;
   }
 };
 
 export const updateSales = async (user_id: string, product_id: number) => {
   await supabase.from('sales').insert([{ user_id, product_id, review_status: false }]);
+};
+export const getProduct = async (product_id: number) => {
+  const { data } = await supabase.from('products').select(`*`).eq('id', product_id);
+  if (data) return data;
+};
+
+export const checkSalesUser = async (sellerId: string, chat_id: number) => {
+  const { data } = await supabase.from('chat_user').select(`user1_id, user2_id`).eq('chat_id', chat_id);
+
+  if (data) {
+    if (data[0].user1_id === sellerId) return data[0].user2_id;
+
+    if (data[0].user2_id === sellerId) return data[0].user1_id;
+  }
 };
