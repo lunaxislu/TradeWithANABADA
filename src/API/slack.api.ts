@@ -9,7 +9,15 @@ type SlackWithError = {
   status?: number;
   name?: string;
   stack?: string;
-};
+} & Error;
+
+// react에 있는 모듈의 ErrorInfo에 대한 overriding 맞는지 물어보기
+declare module 'react' {
+  interface ErrorInfo {
+    message: string;
+    code?: number;
+  }
+}
 
 export const postSlackApiWithError = async (error: SlackWithError, info: ErrorInfo, whose?: string) => {
   const errorTarget = info.componentStack?.split('\n')[1].trim();

@@ -1,6 +1,10 @@
 import Goods from '../components/detail/Goods';
-import useWithErrorBound from '../error-boundary/withErrorBound';
+import ErrorBoundProvider from '../error-boundary/withErrorBound';
 
-const Detail = () => useWithErrorBound(<Goods />);
+const Detail = () => (
+  <ErrorBoundProvider>
+    <Goods />
+  </ErrorBoundProvider>
+);
 
 export default Detail;

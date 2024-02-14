@@ -20,7 +20,7 @@ const ImageForm = ({ imgFiles, setImgFiles, productInfo }: CommonImageInputType)
   const previewImages = async (e: ParamOfEventType) => {
     if (showImages.length >= 5) return alert('5개가 최대입니다.');
 
-    const imageFile = e.target.files || [];
+    const imageFile = e.target.files ?? [];
 
     const resizeFile = (file: File) =>
       new Promise((res) => {
@@ -40,6 +40,7 @@ const ImageForm = ({ imgFiles, setImgFiles, productInfo }: CommonImageInputType)
     setShowImages((prev) => [...prev, currentImageUrl]);
     setImgFiles((pre) => [...pre, resize as Blob]);
   };
+
   const deletePreviewImage = (id: number) => {
     const editImages = showImages.filter((_, idx) => idx !== id);
     const updateImgFiles = imgFiles.filter((_, idx) => idx !== id);

@@ -8,7 +8,10 @@ declare module 'styled-components' {
     // 샘플입니다.
     defaultColor: string;
     mediaQuery: {
-      [key: string]: (arg: Styles<object>) => CSSProp;
+      sm: (arg: Styles<object>) => CSSProp;
+      md: (arg: Styles<object>) => CSSProp;
+      lg: (arg: Styles<object>) => CSSProp;
+      // [key: string]: (arg: Styles<object>) => CSSProp;
     };
   }
 }

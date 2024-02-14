@@ -1,6 +1,10 @@
 import UserProfile from '../components/profile/UserProfile';
-import useWithErrorBound from '../error-boundary/withErrorBound';
+import ErrorBoundProvider from '../error-boundary/withErrorBound';
 
-const Profile = () => useWithErrorBound(<UserProfile />);
+const Profile = () => (
+  <ErrorBoundProvider>
+    <UserProfile />
+  </ErrorBoundProvider>
+);
 
 export default Profile;

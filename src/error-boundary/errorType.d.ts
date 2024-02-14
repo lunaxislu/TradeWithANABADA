@@ -1,3 +1,4 @@
+// declare만 d.ts에서는
 type AuthApiError = {
   _isAuthError: boolean;
   name: string;
@@ -11,6 +12,7 @@ type PostgrestError = {
   hint: string;
   code: string;
 };
+
 type ErrorInComponent = {
   stack: string;
 };
