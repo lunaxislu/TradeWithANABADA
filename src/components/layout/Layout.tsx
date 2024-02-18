@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import ErrorBoundProvider from '../../error-boundary/withErrorBound';
 
 import MainContextProvider from '../../contexts/MainContext';
-import useWithErrorBound from '../../error-boundary/withErrorBound';
 
 import { Footer, Header } from './';
 
@@ -19,7 +18,6 @@ const EmptyContainer = styled.div`
 `;
 
 const Layout = () => {
-
   return (
     <ErrorBoundProvider>
       <MainContextProvider>
@@ -30,6 +28,7 @@ const Layout = () => {
         <Footer />
       </MainContextProvider>
     </ErrorBoundProvider>
+  );
 };
 
 export default Layout;
